@@ -1,9 +1,6 @@
 package com.player.playlistapplication.repository;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.Set;
 
@@ -14,7 +11,7 @@ public class Playlist {
     @GeneratedValue
     private long playlistId;
     private String name;
-    @OneToMany(mappedBy="playlist")
+    @ManyToMany(mappedBy = "playlists")
     private Set<Music> musicSet;
 
     public Playlist() {

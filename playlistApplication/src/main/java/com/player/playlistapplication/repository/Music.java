@@ -2,6 +2,8 @@ package com.player.playlistapplication.repository;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class Music {
     @Id
@@ -11,10 +13,15 @@ public class Music {
     private String artist;
     private Integer pubYear;
 
+    @ManyToMany
+    @JoinTable(
+            name = "music_playlist",
+            joinColumns = @JoinColumn(name = "musicId"),
+            inverseJoinColumns = @JoinColumn(name = "playlistId"))
+    private Set<Playlist> playlists;
+
     @ManyToOne
-//            (fetch = FetchType.LAZY)
-//    @JoinColumn(name="playlistId", nullable=false)
-    private Playlist playlist;
+    private Genre generalist;
 
     public Music() {
     }
@@ -51,12 +58,20 @@ public class Music {
         this.pubYear = year;
     }
 
-    public Playlist getPlaylist() {
-        return playlist;
+    public Set<Playlist> getPlaylist() {
+        return playlists;
     }
 
-    public void setPlaylist(Playlist playlist) {
-        this.playlist = playlist;
+    public void setPlaylist(Set<Playlist> playlist) {
+        this.playlists = playlist;
+    }
+
+    public Genre getGeneralist() {
+        return generalist;
+    }
+
+    public void setGeneralist(Genre generalist) {
+        this.generalist = generalist;
     }
 
     @Override
@@ -66,7 +81,8 @@ public class Music {
                 ", name='" + name + '\'' +
                 ", artist='" + artist + '\'' +
                 ", pubYear=" + pubYear +
-                ", playlist=" + playlist +
+                ", playlists=" + playlists +
+                ", generalist=" + generalist +
                 '}';
     }
 }
