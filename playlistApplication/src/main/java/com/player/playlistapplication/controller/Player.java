@@ -1,26 +1,26 @@
 package com.player.playlistapplication.controller;
 
-import com.player.playlistapplication.helper.MusicSpeed;
-import com.player.playlistapplication.helper.PlaybackState;
-import com.player.playlistapplication.helper.PlaybackType;
-import com.player.playlistapplication.helper.Volume;
+import com.player.playlistapplication.helper.MusicSpeedEnum;
+import com.player.playlistapplication.helper.PlaybackStateEnum;
+import com.player.playlistapplication.helper.PlaybackTypeEnum;
+import com.player.playlistapplication.helper.VolumeEnum;
 
 public abstract class Player {
-    protected MusicSpeed musicSpeed;
-    protected PlaybackState playbackState;
-    protected PlaybackType playbackType;
-    protected Volume volume;
+    protected MusicSpeedEnum musicSpeedEnum;
+    protected PlaybackStateEnum playbackStateEnum;
+    protected PlaybackTypeEnum playbackTypeEnum;
+    protected VolumeEnum volumeEnum;
 
-    public abstract void setMusicSpeed(MusicSpeed musicSpeed);
+    public abstract void setMusicSpeed(MusicSpeedEnum musicSpeedEnum);
 
-    public abstract void setPlaybackState(PlaybackState playbackState);
+    public abstract void setPlaybackState(PlaybackStateEnum playbackStateEnum);
 
-    public abstract void setPlaybackType(PlaybackType playbackType);
+    public abstract void setPlaybackType(PlaybackTypeEnum playbackTypeEnum);
 
-    public abstract void setVolume(Volume volume);
+    public abstract void setVolume(VolumeEnum volumeEnum);
 
     public void playing() {
-        switch (this.musicSpeed) {
+        switch (this.musicSpeedEnum) {
             case VERY_SLOW -> this.playVerySlow();
             case SLOW -> this.playSlow();
             case FAST -> this.playFast();
@@ -28,7 +28,7 @@ public abstract class Player {
             case NORMAL -> this.playNormal();
         }
 
-        switch (this.playbackState) {
+        switch (this.playbackStateEnum) {
             case PAUSE -> this.pause();
             case STOP -> this.stop();
             case NEXT -> this.next();
@@ -36,14 +36,14 @@ public abstract class Player {
             case PLAY -> this.play();
         }
 
-        switch (this.playbackType) {
+        switch (this.playbackTypeEnum) {
             case SHUFFLE -> this.playShuffleType();
             case REPEAT_ONE -> this.repeatOneType();
             case REPEAT_ALL -> this.repeatAllType();
             case NORMAL -> this.normalType();
         }
 
-        switch (this.volume) {
+        switch (this.volumeEnum) {
             case INCREASE -> this.increaseVolume();
             case DECREASE -> this.decreaseVolume();
             case MEDIUM -> this.mediumVolume();
@@ -76,7 +76,6 @@ public abstract class Player {
 
     public abstract void repeatAllType();
     public abstract void normalType();
-
 
     public abstract void increaseVolume();
 

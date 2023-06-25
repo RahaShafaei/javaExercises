@@ -1,25 +1,25 @@
 package com.player.playlistapplication.controller;
 
-import com.player.playlistapplication.helper.MusicSpeed;
-import com.player.playlistapplication.helper.PlaybackState;
-import com.player.playlistapplication.helper.PlaybackType;
-import com.player.playlistapplication.helper.Volume;
+import com.player.playlistapplication.helper.MusicSpeedEnum;
+import com.player.playlistapplication.helper.PlaybackStateEnum;
+import com.player.playlistapplication.helper.PlaybackTypeEnum;
+import com.player.playlistapplication.helper.VolumeEnum;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayingAdjustments {
-    private MusicSpeed musicSpeed;
-    private PlaybackState playbackState;
-    private PlaybackType playbackType;
-    private Volume volume;
+    private MusicSpeedEnum musicSpeedEnum;
+    private PlaybackStateEnum playbackStateEnum;
+    private PlaybackTypeEnum playbackTypeEnum;
+    private VolumeEnum volumeEnum;
     final List<Player> players;
 
     public PlayingAdjustments() {
-        this.musicSpeed = MusicSpeed.NORMAL;
-        this.playbackState = PlaybackState.PLAY;
-        this.playbackType = PlaybackType.NORMAL;
-        this.volume = Volume.MEDIUM;
+        this.musicSpeedEnum = MusicSpeedEnum.NORMAL;
+        this.playbackStateEnum = PlaybackStateEnum.PLAY;
+        this.playbackTypeEnum = PlaybackTypeEnum.NORMAL;
+        this.volumeEnum = VolumeEnum.MEDIUM;
         players = new ArrayList<>();
     }
 
@@ -32,23 +32,33 @@ public class PlayingAdjustments {
     }
 
 
-    void adjusting(MusicSpeed musicSpeed,
-                   PlaybackState playbackState,
-                   PlaybackType playbackType,
-                   Volume volume) {
-        this.musicSpeed = musicSpeed;
-        this.playbackState = playbackState;
-        this.playbackType = playbackType;
-        this.volume = volume;
+    public void playingByDefaultAdjustments() {
+        for (var mus : players) {
+            mus.setMusicSpeed(this.musicSpeedEnum);
+            mus.setPlaybackState(this.playbackStateEnum);
+            mus.setPlaybackType(this.playbackTypeEnum);
+            mus.setVolume(this.volumeEnum);
+            mus.playing();
+        }
+    }
+
+    public void changeAdjustmentsAndPlaying(MusicSpeedEnum musicSpeedEnum,
+                                            PlaybackStateEnum playbackStateEnum,
+                                            PlaybackTypeEnum playbackTypeEnum,
+                                            VolumeEnum volumeEnum) {
+        this.musicSpeedEnum = musicSpeedEnum;
+        this.playbackStateEnum = playbackStateEnum;
+        this.playbackTypeEnum = playbackTypeEnum;
+        this.volumeEnum = volumeEnum;
         this.notifyMusicians();
     }
 
     private void notifyMusicians() {
         for (var mus : players) {
-            mus.setMusicSpeed(this.musicSpeed);
-            mus.setPlaybackState(this.playbackState);
-            mus.setPlaybackType(this.playbackType);
-            mus.setVolume(this.volume);
+            mus.setMusicSpeed(this.musicSpeedEnum);
+            mus.setPlaybackState(this.playbackStateEnum);
+            mus.setPlaybackType(this.playbackTypeEnum);
+            mus.setVolume(this.volumeEnum);
             mus.playing();
         }
     }

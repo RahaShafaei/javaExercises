@@ -1,6 +1,6 @@
 package com.player.playlistapplication.helper;
 
-public enum MusicSpeed {
+public enum MusicSpeedEnum {
     VERY_SLOW,
     SLOW,
     NORMAL,

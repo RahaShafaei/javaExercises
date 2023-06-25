@@ -1,6 +1,6 @@
 package com.player.playlistapplication.helper;
 
-public enum PlaybackType {
+public enum PlaybackTypeEnum {
     SHUFFLE,
     REPEAT_ONE,
     REPEAT_ALL,

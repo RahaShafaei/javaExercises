@@ -1,6 +1,6 @@
 package com.player.playlistapplication.helper;
 
-public enum Volume {
+public enum VolumeEnum {
     INCREASE,
     DECREASE,
     MEDIUM;

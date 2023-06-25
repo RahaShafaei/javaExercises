@@ -1,6 +1,6 @@
 package com.player.playlistapplication.helper;
 
-public enum PlaybackState {
+public enum PlaybackStateEnum {
     PLAY,
     PAUSE,
     STOP,
