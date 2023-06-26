@@ -1,7 +1,6 @@
-package com.player.playlistapplication.controller;
+package com.player.playlistapplication.helper;
 
-import com.player.playlistapplication.repository.Music;
-import com.player.playlistapplication.repository.Playlist;
+import com.player.playlistapplication.model.Playlist;
 
 import java.util.List;
 

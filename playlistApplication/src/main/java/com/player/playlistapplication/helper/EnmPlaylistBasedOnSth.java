@@ -1,6 +1,6 @@
 package com.player.playlistapplication.helper;
 
-public enum PlaylistBasedOnSthEnum {
+public enum EnmPlaylistBasedOnSth {
     ARTIST,
     GENRE;
 }

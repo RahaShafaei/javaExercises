@@ -1,9 +1,14 @@
-package com.player.playlistapplication.repository;
+package com.player.playlistapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
-
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "musicId")
 @Entity
 public class Music {
     @Id
@@ -18,10 +23,10 @@ public class Music {
             name = "music_playlist",
             joinColumns = @JoinColumn(name = "musicId"),
             inverseJoinColumns = @JoinColumn(name = "playlistId"))
-    private Set<Playlist> playlists;
+    private List<Playlist> playlists;
 
     @ManyToOne
-    private Genre generalist;
+    private Genre genre;
 
     public Music() {
     }
@@ -58,20 +63,20 @@ public class Music {
         this.pubYear = year;
     }
 
-    public Set<Playlist> getPlaylist() {
+    public List<Playlist> getPlaylist() {
         return playlists;
     }
 
-    public void setPlaylist(Set<Playlist> playlist) {
+    public void setPlaylist(List<Playlist> playlist) {
         this.playlists = playlist;
     }
 
-    public Genre getGeneralist() {
-        return generalist;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setGeneralist(Genre generalist) {
-        this.generalist = generalist;
+    public void setGenre(Genre generalist) {
+        this.genre = generalist;
     }
 
     @Override
@@ -82,7 +87,7 @@ public class Music {
                 ", artist='" + artist + '\'' +
                 ", pubYear=" + pubYear +
                 ", playlists=" + playlists +
-                ", generalist=" + generalist +
+                ", genre=" + genre +
                 '}';
     }
 }

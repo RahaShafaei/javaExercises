@@ -18,7 +18,7 @@ VALUES (1, 'Hip-Hop'),
        (6, 'Dance'),
        (7, 'Jazz');
 --------------------------------------
-INSERT INTO MUSIC (MUSIC_ID, GENERALIST_GENRE_ID , PUB_YEAR, ARTIST, NAME)
+INSERT INTO MUSIC (MUSIC_ID, GENRE_GENRE_ID , PUB_YEAR, ARTIST, NAME)
 VALUES (1, 1, 2013, 'JWP and Bez Cenzury', 'A Pamietasz Jak? (Blend)'),
        (2, 1, 1998, 'Molesta Ewenement', 'Wiedzialem, ze Tak Bedzie'),
        (3, 1, 1999, 'DJ 600 V', '93...94'),

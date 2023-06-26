@@ -1,9 +1,14 @@
-package com.player.playlistapplication.repository;
+package com.player.playlistapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
-
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "playlistId")
 @Entity
 public class Playlist {
 
@@ -12,7 +17,7 @@ public class Playlist {
     private long playlistId;
     private String name;
     @ManyToMany(mappedBy = "playlists")
-    private Set<Music> musicSet;
+    private List<Music> musicList;
 
     public Playlist() {
     }
@@ -33,12 +38,12 @@ public class Playlist {
         this.name = name;
     }
 
-    public Set<Music> getMusicSet() {
-        return musicSet;
+    public List<Music> getMusicList() {
+        return musicList;
     }
 
-    public void setMusicSet(Set<Music> musicSet) {
-        this.musicSet = musicSet;
+    public void setMusicList(List<Music> musicSet) {
+        this.musicList = musicSet;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class Playlist {
         return "Playlist{" +
                 "playlistId=" + playlistId +
                 ", name='" + name + '\'' +
-                ", musicSet=" + musicSet +
+                ", musicSet=" + musicList +
                 '}';
     }
 }
