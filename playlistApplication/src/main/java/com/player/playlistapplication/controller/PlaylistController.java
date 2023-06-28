@@ -10,6 +10,7 @@ import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.repository.InfMusicRepository;
 import com.player.playlistapplication.repository.InfPlaylistRepository;
+import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +52,12 @@ public class PlaylistController {
 
     @GetMapping("/playlists/{id}")
     public PlaylistDto retrievePlaylist(@PathVariable Long id) {
-        return playlistMapper.toDto(playlistRepository.findById(id).get());
+        Optional<Playlist> playlist = playlistRepository.findById(id);
+
+        if (playlist.isEmpty())
+            throw new ItemNotFoundException("id: " + id);
+
+        return playlistMapper.toDto(playlist.get());
     }
 
     @GetMapping("/playlists/{id}/musics")
@@ -79,7 +85,7 @@ public class PlaylistController {
     }
 
     @PostMapping("/playlists")
-    public ResponseEntity<Playlist> createPlaylist(@RequestBody Playlist playlist) {
+    public ResponseEntity<Playlist> createPlaylist(@Valid  @RequestBody Playlist playlist) {
         Playlist savedPlaylist = playlistRepository.save(playlist);
 
         URI location = ServletUriComponentsBuilder
@@ -109,7 +115,7 @@ public class PlaylistController {
         EntityModel<Playlist> entityModel = EntityModel.of(savedPlaylist);
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrievePlaylist(playlistID));
-        entityModel.add(link.withRel("all-musics"));
+        entityModel.add(link.withRel("all-playlists"));
 
         return entityModel;
     }
@@ -132,7 +138,7 @@ public class PlaylistController {
         EntityModel<Playlist> entityModel = EntityModel.of(savedPlaylist);
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrievePlaylist(playlistID));
-        entityModel.add(link.withRel("all-musics"));
+        entityModel.add(link.withRel("all-playlists"));
 
         return entityModel;
     }

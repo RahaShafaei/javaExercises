@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -26,6 +27,7 @@ public class Playlist {
             }
     )
     private long playlistId;
+    @Size(min = 2, message = "Name should have at least 2 character")
     private String name;
 
     @ManyToMany

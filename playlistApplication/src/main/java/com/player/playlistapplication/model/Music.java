@@ -8,8 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -31,8 +31,14 @@ public class Music {
             }
     )
     private long musicId;
+
+    @Size(min = 2, message = "name should have at least 2 character")
     private String name;
+
+    @Size(min = 2, message = "artist should have at least 2 character")
     private String artist;
+
+    @Digits(message = "pubYear should be a four-digit number", integer = 4, fraction = 0)
     private Integer pubYear;
 
     @ManyToMany(mappedBy = "musicList")

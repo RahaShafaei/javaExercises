@@ -6,9 +6,8 @@ import com.player.playlistapplication.dto.MusicDto;
 import com.player.playlistapplication.dto.MusicMapper;
 import com.player.playlistapplication.exception.ItemNotFoundException;
 import com.player.playlistapplication.model.Genre;
-import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.repository.InfGenreRepository;
-import org.springframework.dao.DataIntegrityViolationException;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,7 +42,12 @@ public class GenreController {
 
     @GetMapping("/genres/{id}")
     public GenreDto retrieveGenre(@PathVariable Long id) {
-        return genreMapper.toDto(repository.findById(id).get());
+        Optional<Genre> genre = repository.findById(id);
+
+        if (genre.isEmpty())
+            throw new ItemNotFoundException("Genre id: " + id);
+
+        return genreMapper.toDto(genre.get());
     }
 
     @GetMapping("/genres/origin/{id}")
@@ -56,7 +60,7 @@ public class GenreController {
         Optional<Genre> genre = repository.findById(id);
 
         if (genre.isEmpty())
-            throw new ItemNotFoundException("id: " + id);
+            throw new ItemNotFoundException("Genre id: " + id);
 
         return genre.get()
                 .getMusicList()
@@ -70,13 +74,13 @@ public class GenreController {
         Optional<Genre> genre = repository.findById(id);
 
         if (genre.isEmpty())
-            throw new ItemNotFoundException("id: " + id);
+            throw new ItemNotFoundException("Genre id: " + id);
 
         repository.deleteById(id);
     }
 
     @PostMapping("/genres")
-    public ResponseEntity<Genre> createGenre(@RequestBody Genre genre) {
+    public ResponseEntity<Genre> createGenre(@Valid @RequestBody Genre genre) {
         Genre savedGenre = repository.save(genre);
 
         URI location = ServletUriComponentsBuilder

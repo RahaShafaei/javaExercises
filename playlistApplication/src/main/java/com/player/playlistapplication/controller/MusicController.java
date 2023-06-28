@@ -7,10 +7,11 @@ import com.player.playlistapplication.dto.PlaylistMapper;
 import com.player.playlistapplication.exception.ItemNotFoundException;
 import com.player.playlistapplication.model.Genre;
 import com.player.playlistapplication.model.Music;
+import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.repository.InfGenreRepository;
 import com.player.playlistapplication.repository.InfMusicRepository;
 
-import org.springframework.dao.DataIntegrityViolationException;
+import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,12 @@ public class MusicController {
 
     @GetMapping("/musics/{id}")
     public MusicDto retrieveMusic(@PathVariable Long id) {
-        return musicMapper.toDto(musicRepository.findById(id).get());
+        Optional<Music> music = musicRepository.findById(id);
+
+        if (music.isEmpty())
+            throw new ItemNotFoundException("Music id: " + id);
+
+        return musicMapper.toDto(music.get());
     }
 
     @GetMapping("/musics/{id}/playlists")
@@ -57,7 +63,7 @@ public class MusicController {
         Optional<Music> music = musicRepository.findById(id);
 
         if (music.isEmpty())
-            throw new ItemNotFoundException("id: " + id);
+            throw new ItemNotFoundException("Music id: " + id);
 
         return music.get()
                 .getPlaylist()
@@ -71,17 +77,17 @@ public class MusicController {
         Optional<Music> music = musicRepository.findById(id);
 
         if (music.isEmpty())
-            throw new ItemNotFoundException("id: " + id);
+            throw new ItemNotFoundException("Music id: " + id);
 
         musicRepository.deleteById(id);
     }
 
     @PostMapping("/musics/genre/{id}")
-    public EntityModel<Music> createMusicOfGenre(@PathVariable Long id , @RequestBody Music music) {
+    public EntityModel<Music> createMusicOfGenre(@PathVariable Long id ,@Valid @RequestBody Music music) {
         Optional<Genre> genre = genreRepository.findById(id);
 
         if (genre.isEmpty())
-            throw new ItemNotFoundException("id: " + id);
+            throw new ItemNotFoundException("Genre id: " + id);
 
         music.setGenre(genre.get());
         Music savedMusic = musicRepository.save(music);
@@ -89,7 +95,7 @@ public class MusicController {
         EntityModel<Music> entityModel = EntityModel.of(savedMusic);
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveMusic(savedMusic.getMusicId()));
-        entityModel.add(link.withRel("all-musics"));
+        entityModel.add(link.withRel("all-genres"));
 
         return entityModel;
     }
