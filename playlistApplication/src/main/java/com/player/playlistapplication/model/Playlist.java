@@ -2,10 +2,12 @@ package com.player.playlistapplication.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.List;
-import java.util.Set;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "playlistId")
@@ -13,10 +15,24 @@ import java.util.Set;
 public class Playlist {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "playlist_sequence-generator")
+    @GenericGenerator(
+            name = "playlist_sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "playlist_sequence"),
+                    @Parameter(name = "initial_value", value = "10"),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
     private long playlistId;
     private String name;
-    @ManyToMany(mappedBy = "playlists")
+
+    @ManyToMany
+    @JoinTable(
+            name = "music_playlist",
+            joinColumns = @JoinColumn(name = "playlistId"),
+            inverseJoinColumns = @JoinColumn(name = "musicId"))
     private List<Music> musicList;
 
     public Playlist() {
@@ -42,8 +58,8 @@ public class Playlist {
         return musicList;
     }
 
-    public void setMusicList(List<Music> musicSet) {
-        this.musicList = musicSet;
+    public void setMusicList(List<Music> musicList) {
+        this.musicList = musicList;
     }
 
     @Override

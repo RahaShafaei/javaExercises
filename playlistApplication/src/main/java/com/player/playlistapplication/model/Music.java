@@ -2,27 +2,40 @@ package com.player.playlistapplication.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.List;
-import java.util.Set;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "musicId")
 @Entity
 public class Music {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "music_sequence-generator")
+    @GenericGenerator(
+            name = "music_sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "music_sequence"),
+                    @Parameter(name = "initial_value", value = "23"),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
     private long musicId;
     private String name;
     private String artist;
     private Integer pubYear;
 
-    @ManyToMany
-    @JoinTable(
-            name = "music_playlist",
-            joinColumns = @JoinColumn(name = "musicId"),
-            inverseJoinColumns = @JoinColumn(name = "playlistId"))
+    @ManyToMany(mappedBy = "musicList")
     private List<Playlist> playlists;
 
     @ManyToOne
