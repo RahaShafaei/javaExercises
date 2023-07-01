@@ -1,11 +1,16 @@
 package com.player.playlistapplication.controller;
 
+import com.player.playlistapplication.controller.smartPlaylist.InfFactoryPlaylistBasedOnSth;
+import com.player.playlistapplication.controller.smartPlaylist.PlaylistBasedOnSth;
+import com.player.playlistapplication.controller.smartPlaylist.UsePlaylistBasedOnSthInf;
 import com.player.playlistapplication.dto.MusicDto;
 import com.player.playlistapplication.dto.MusicMapper;
 import com.player.playlistapplication.dto.PlaylistDto;
 import com.player.playlistapplication.dto.PlaylistMapper;
 import com.player.playlistapplication.exception.ItemExistException;
 import com.player.playlistapplication.exception.ItemNotFoundException;
+import com.player.playlistapplication.helper.EnmPlaylistBasedOnSth;
+import com.player.playlistapplication.helper.EntryBean;
 import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.repository.InfMusicRepository;
@@ -18,8 +23,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -31,15 +38,18 @@ public class PlaylistController {
     private PlaylistMapper playlistMapper;
     private InfMusicRepository musicRepository;
     private MusicMapper musicMapper;
+    private UsePlaylistBasedOnSthInf usePlaylistBasedOnSthInf;
 
     public PlaylistController(InfPlaylistRepository playlistRepository,
                               PlaylistMapper playlistMapper,
                               InfMusicRepository musicRepository,
-                              MusicMapper musicMapper) {
+                              MusicMapper musicMapper,
+                              UsePlaylistBasedOnSthInf usePlaylistBasedOnSthInf) {
         this.playlistRepository = playlistRepository;
         this.playlistMapper = playlistMapper;
         this.musicRepository = musicRepository;
         this.musicMapper = musicMapper;
+        this.usePlaylistBasedOnSthInf = usePlaylistBasedOnSthInf;
     }
 
     @GetMapping("/playlists")
@@ -85,7 +95,7 @@ public class PlaylistController {
     }
 
     @PostMapping("/playlists")
-    public ResponseEntity<Playlist> createPlaylist(@Valid  @RequestBody Playlist playlist) {
+    public ResponseEntity<Playlist> createPlaylist(@Valid @RequestBody Playlist playlist) {
         Playlist savedPlaylist = playlistRepository.save(playlist);
 
         URI location = ServletUriComponentsBuilder
@@ -99,12 +109,12 @@ public class PlaylistController {
 
     @PostMapping("/playlists/{playlistID}/music/{musicId}/add")
     public EntityModel<Playlist> addMusicToPlaylist(@PathVariable Long playlistID,
-                                                       @PathVariable Long musicId) {
+                                                    @PathVariable Long musicId) {
 
         Optional<Playlist> playlist = playlistRepository.findById(playlistID);
         Optional<Music> music = musicRepository.findById(musicId);
 
-        if (playlist.get().getMusicList().contains(music.get())){
+        if (playlist.get().getMusicList().contains(music.get())) {
             throw new ItemExistException("musicId: " + musicId);
         }
 
@@ -127,7 +137,7 @@ public class PlaylistController {
         Optional<Playlist> playlist = playlistRepository.findById(playlistID);
         Optional<Music> music = musicRepository.findById(musicId);
 
-        if (!playlist.get().getMusicList().contains(music.get())){
+        if (!playlist.get().getMusicList().contains(music.get())) {
             throw new ItemNotFoundException("musicId: " + musicId);
         }
 
@@ -142,4 +152,52 @@ public class PlaylistController {
 
         return entityModel;
     }
+
+    //Smart Playlist  ===================================================
+
+    @GetMapping("/playlists/smart/{smartType}/{name}")
+    public List<PlaylistDto> retrieveAllPlaylistOfSmartType(@PathVariable String smartType,
+                                                            @PathVariable String name) {
+
+        InfFactoryPlaylistBasedOnSth creation = usePlaylistBasedOnSthInf;
+        usePlaylistBasedOnSthInf.setEntryBean(new EntryBean(name));
+
+        List<Playlist> playlists = Stream.of(EnmPlaylistBasedOnSth.valueOf(smartType.toUpperCase()))
+                .map(creation::create)
+                .map(PlaylistBasedOnSth::findPlaylistBasedOnSth)
+                .flatMap(Collection::stream)
+                .toList();
+
+        return playlists
+                .stream()
+                .map(playlistMapper::toDto)
+                .collect(toList());
+    }
+
+    @PostMapping("/playlists/smart/{smartType}")
+    public EntityModel<Playlist> createSmartPlaylist(@PathVariable String smartType,
+                                                        @RequestBody EntryBean entryBean) {
+        InfFactoryPlaylistBasedOnSth creation = usePlaylistBasedOnSthInf;
+        usePlaylistBasedOnSthInf.setEntryBean(entryBean);
+
+        List<Music> musicList = Stream.of(EnmPlaylistBasedOnSth.valueOf(smartType.toUpperCase()))
+                .map(creation::create)
+                .map(PlaylistBasedOnSth::collectingMusic)
+                .flatMap(Collection::stream)
+                .toList();
+
+        Playlist playlist = new Playlist();
+        playlist.setName(entryBean.getPlayListName());
+        playlist.setMusicList(musicList);
+
+        Playlist savedPlaylist = playlistRepository.save(playlist);
+
+        EntityModel<Playlist> entityModel = EntityModel.of(savedPlaylist);
+
+        WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrievePlaylist(savedPlaylist.getPlaylistId()));
+        entityModel.add(link.withRel("all-playlists"));
+
+        return entityModel;
+    }
+
 }

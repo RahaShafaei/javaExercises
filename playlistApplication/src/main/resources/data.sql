@@ -36,10 +36,10 @@ VALUES (1, 1, 2013, 'JWP and Bez Cenzury', 'A Pamietasz Jak? (Blend)'),
        (15, 3, 1998, 'Molesta Ewenement', 'Jeszcze Jedno'),
        (16, 3, 2001, 'Peja and Slums Attack', 'Moj Rap Moja Rzeczywistosc'),
        (17, 3, 2004, 'Jesse Dangerously', 'Tom Lehrer''s the Elements'),
-       (18, 7, 1974, 'Stanley Cowell Jazz', 'Travelin Man Jazz'),
+       (18, 7, 1974, 'Stanley Cowell', 'Travelin Man Jazz'),
        (19, 5, 1974, 'Stanley Cowell', 'Travelin Man'),
        (20, 4, 1974, 'Matthew Nelson and Gunnar Nelson', 'Travelin Man'),
-       (21, 4, 1971, 'Nacha Guevara ', 'Los Elementos'),
+       (21, 4, 1971, 'Nacha Guevara', 'Los Elementos'),
        (22, 4, 2012, 'Dani Alvarez and Sergi Sirvent', 'The Elements');
 -----------------------------------------------
 INSERT INTO  MUSIC_PLAYLIST (MUSIC_ID , PLAYLIST_ID )

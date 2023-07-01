@@ -1,4 +1,9 @@
-package com.player.playlistapplication.helper;
+package com.player.playlistapplication.controller.adjustments;
+
+import com.player.playlistapplication.helper.EnmMusicSpeed;
+import com.player.playlistapplication.helper.EnmPlaybackState;
+import com.player.playlistapplication.helper.EnmPlaybackType;
+import com.player.playlistapplication.helper.EnmVolume;
 
 public class PlaylistPlayer extends Player {
 
