@@ -1,13 +1,11 @@
 package com.player.playlistapplication.controller.smartPlaylist;
 
-import com.player.playlistapplication.dto.PlaylistMapper;
 import com.player.playlistapplication.exception.BadParameterException;
-import com.player.playlistapplication.helper.EnmPlaylistBasedOnSth;
+import com.player.playlistapplication.helper.EnmBasedOnSth;
 import com.player.playlistapplication.helper.EntryBean;
 import com.player.playlistapplication.repository.InfGenreRepository;
 import com.player.playlistapplication.repository.InfMusicRepository;
 import com.player.playlistapplication.repository.InfPlaylistRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,7 +38,7 @@ public class UsePlaylistBasedOnSthInf implements InfFactoryPlaylistBasedOnSth {
     }
 
     @Override
-    public PlaylistBasedOnSth create(EnmPlaylistBasedOnSth type) {
+    public PlaylistBasedOnSth create(EnmBasedOnSth type) {
 
         PlaylistBasedOnSth playlistBasedOnSth = switch (type) {
             case ARTIST -> new PlaylistBasedOnArtist(this.entryBean);

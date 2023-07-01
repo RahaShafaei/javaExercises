@@ -4,12 +4,26 @@ import com.player.playlistapplication.helper.EnmMusicSpeed;
 import com.player.playlistapplication.helper.EnmPlaybackState;
 import com.player.playlistapplication.helper.EnmPlaybackType;
 import com.player.playlistapplication.helper.EnmVolume;
+import com.player.playlistapplication.repository.InfMusicRepository;
+import com.player.playlistapplication.repository.InfPlaylistRepository;
 
 public abstract class Player {
     protected EnmMusicSpeed enmMusicSpeed;
     protected EnmPlaybackState enmPlaybackState;
     protected EnmPlaybackType enmPlaybackType;
     protected EnmVolume enmVolume;
+
+    protected Long id;
+    protected InfPlaylistRepository playlistRepository;
+    protected InfMusicRepository musicRepository;
+
+    public Player(Long id,
+                  InfPlaylistRepository playlistRepository,
+                  InfMusicRepository musicRepository) {
+        this.id = id;
+        this.playlistRepository = playlistRepository;
+        this.musicRepository = musicRepository;
+    }
 
     public abstract void setMusicSpeed(EnmMusicSpeed enmMusicSpeed);
 
@@ -18,6 +32,22 @@ public abstract class Player {
     public abstract void setPlaybackType(EnmPlaybackType enmPlaybackType);
 
     public abstract void setVolume(EnmVolume enmVolume);
+
+    public InfPlaylistRepository getPlaylistRepository() {
+        return playlistRepository;
+    }
+
+    public void setPlaylistRepository(InfPlaylistRepository playlistRepository) {
+        this.playlistRepository = playlistRepository;
+    }
+
+    public InfMusicRepository getMusicRepository() {
+        return musicRepository;
+    }
+
+    public void setMusicRepository(InfMusicRepository musicRepository) {
+        this.musicRepository = musicRepository;
+    }
 
     public void playing() {
         switch (this.enmMusicSpeed) {
@@ -75,6 +105,7 @@ public abstract class Player {
     public abstract void repeatOneType();
 
     public abstract void repeatAllType();
+
     public abstract void normalType();
 
     public abstract void increaseVolume();
@@ -82,4 +113,6 @@ public abstract class Player {
     public abstract void decreaseVolume();
 
     public abstract void mediumVolume();
+
+
 }

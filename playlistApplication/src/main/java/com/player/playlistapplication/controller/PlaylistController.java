@@ -1,5 +1,8 @@
 package com.player.playlistapplication.controller;
 
+import com.player.playlistapplication.controller.adjustments.Player;
+import com.player.playlistapplication.controller.adjustments.Playing;
+import com.player.playlistapplication.controller.adjustments.PlayingAdjustments;
 import com.player.playlistapplication.controller.smartPlaylist.InfFactoryPlaylistBasedOnSth;
 import com.player.playlistapplication.controller.smartPlaylist.PlaylistBasedOnSth;
 import com.player.playlistapplication.controller.smartPlaylist.UsePlaylistBasedOnSthInf;
@@ -9,7 +12,7 @@ import com.player.playlistapplication.dto.PlaylistDto;
 import com.player.playlistapplication.dto.PlaylistMapper;
 import com.player.playlistapplication.exception.ItemExistException;
 import com.player.playlistapplication.exception.ItemNotFoundException;
-import com.player.playlistapplication.helper.EnmPlaylistBasedOnSth;
+import com.player.playlistapplication.helper.EnmBasedOnSth;
 import com.player.playlistapplication.helper.EntryBean;
 import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
@@ -39,17 +42,20 @@ public class PlaylistController {
     private InfMusicRepository musicRepository;
     private MusicMapper musicMapper;
     private UsePlaylistBasedOnSthInf usePlaylistBasedOnSthInf;
+    private Playing playing;
 
     public PlaylistController(InfPlaylistRepository playlistRepository,
                               PlaylistMapper playlistMapper,
                               InfMusicRepository musicRepository,
                               MusicMapper musicMapper,
-                              UsePlaylistBasedOnSthInf usePlaylistBasedOnSthInf) {
+                              UsePlaylistBasedOnSthInf usePlaylistBasedOnSthInf,
+                              Playing playing) {
         this.playlistRepository = playlistRepository;
         this.playlistMapper = playlistMapper;
         this.musicRepository = musicRepository;
         this.musicMapper = musicMapper;
         this.usePlaylistBasedOnSthInf = usePlaylistBasedOnSthInf;
+        this.playing = playing;
     }
 
     @GetMapping("/playlists")
@@ -162,7 +168,7 @@ public class PlaylistController {
         InfFactoryPlaylistBasedOnSth creation = usePlaylistBasedOnSthInf;
         usePlaylistBasedOnSthInf.setEntryBean(new EntryBean(name));
 
-        List<Playlist> playlists = Stream.of(EnmPlaylistBasedOnSth.valueOf(smartType.toUpperCase()))
+        List<Playlist> playlists = Stream.of(EnmBasedOnSth.valueOf(smartType.toUpperCase()))
                 .map(creation::create)
                 .map(PlaylistBasedOnSth::findPlaylistBasedOnSth)
                 .flatMap(Collection::stream)
@@ -180,7 +186,7 @@ public class PlaylistController {
         InfFactoryPlaylistBasedOnSth creation = usePlaylistBasedOnSthInf;
         usePlaylistBasedOnSthInf.setEntryBean(entryBean);
 
-        List<Music> musicList = Stream.of(EnmPlaylistBasedOnSth.valueOf(smartType.toUpperCase()))
+        List<Music> musicList = Stream.of(EnmBasedOnSth.valueOf(smartType.toUpperCase()))
                 .map(creation::create)
                 .map(PlaylistBasedOnSth::collectingMusic)
                 .flatMap(Collection::stream)
@@ -198,6 +204,19 @@ public class PlaylistController {
         entityModel.add(link.withRel("all-playlists"));
 
         return entityModel;
+    }
+
+    // simple adjustment test ================================
+    @GetMapping("/playlists/adjustment/{adjustmentType}/{id}")
+    public void playingByDefaultAdjustment(@PathVariable String adjustmentType,
+                                                            @PathVariable Long id) {
+
+        playing.setId(id);
+        Player player = playing.create(EnmBasedOnSth.valueOf(adjustmentType.toUpperCase()));
+
+        PlayingAdjustments playingAdjustments = new PlayingAdjustments();
+        playingAdjustments.addPlayer(player);
+        playingAdjustments.playingByDefaultAdjustments();
     }
 
 }

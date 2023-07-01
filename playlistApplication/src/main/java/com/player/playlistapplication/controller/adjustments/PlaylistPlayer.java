@@ -4,8 +4,19 @@ import com.player.playlistapplication.helper.EnmMusicSpeed;
 import com.player.playlistapplication.helper.EnmPlaybackState;
 import com.player.playlistapplication.helper.EnmPlaybackType;
 import com.player.playlistapplication.helper.EnmVolume;
+import com.player.playlistapplication.model.Playlist;
+import com.player.playlistapplication.repository.InfMusicRepository;
+import com.player.playlistapplication.repository.InfPlaylistRepository;
 
 public class PlaylistPlayer extends Player {
+    private Playlist playlist;
+
+    public PlaylistPlayer(Long id,
+                          InfPlaylistRepository playlistRepository,
+                          InfMusicRepository musicRepository) {
+        super(id, playlistRepository, musicRepository);
+        this.playlist = playlistRepository.findById(id).get();
+    }
 
     @Override
     public void setMusicSpeed(EnmMusicSpeed enmMusicSpeed) {
@@ -29,86 +40,97 @@ public class PlaylistPlayer extends Player {
 
     @Override
     public void playVerySlow() {
-        System.out.println(String.format("Playlist playing %s.",super.enmMusicSpeed));
+        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playSlow() {
-        System.out.println(String.format("Playlist playing %s.",super.enmMusicSpeed));
+        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playNormal() {
-        System.out.println(String.format("Playlist playing %s.",super.enmMusicSpeed));
+        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playFast() {
-        System.out.println(String.format("Playlist playing %s.",super.enmMusicSpeed));
+        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playVeryFast() {
-        System.out.println(String.format("Playlist playing %s.",super.enmMusicSpeed));
+        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void play() {
-        System.out.println(String.format("Playlist %sed.",super.enmPlaybackState));
+        System.out.printf("Playlist '%s' %sed.%n", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void pause() {
-        System.out.println(String.format("Playlist %sed.",super.enmPlaybackState));
+        System.out.printf("Playlist '%s' %sed.%n", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void stop() {
-        System.out.println(String.format("Playlist %sed.",super.enmPlaybackState));
+        System.out.printf("Playlist '%s' %sed.%n", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void next() {
-        System.out.println(String.format("%s playlist playing.",super.enmPlaybackState));
+        System.out.printf("%s playlist '%s' playing.%n", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void previous() {
-        System.out.println(String.format("%s playlist playing.",super.enmPlaybackState));
+        System.out.printf("%s playlist '%s' playing.%n", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void playShuffleType() {
-        System.out.println(String.format("Playlists played in %s type.",super.enmPlaybackType));
+        System.out.printf("Playlists '%s' played in %s type.%n", playlist.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void repeatOneType() {
-        System.out.println(String.format("Playlists played in %s type.",super.enmPlaybackType));
+        System.out.printf("Playlists '%s' played in %s type.%n", playlist.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void repeatAllType() {
-        System.out.println(String.format("Playlists played in %s type.",super.enmPlaybackType));
+        System.out.printf("Playlists '%s' played in %s type.%n", playlist.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void normalType() {
-        System.out.println(String.format("Playlists played in %s type.",super.enmPlaybackType));
+        System.out.printf("Playlists '%s' played in %s type.%n", playlist.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void increaseVolume() {
-        System.out.println(String.format("Playlist enmVolume %sed.",super.enmVolume));
+        System.out.printf("Playlist '%s' volume %sed.%n", playlist.getName(), super.enmVolume);
     }
 
     @Override
     public void decreaseVolume() {
-        System.out.println(String.format("Playlist enmVolume %sed.",super.enmVolume));
+        System.out.printf("Playlist '%s' volume %sed.%n", playlist.getName(), super.enmVolume);
     }
 
     @Override
     public void mediumVolume() {
-        System.out.println(String.format("Playlist enmVolume set on %s.",super.enmVolume));
+        System.out.printf("Playlist '%s' volume set on %s.%n", playlist.getName(), super.enmVolume);
+    }
+
+    @Override
+    public String toString() {
+        return "PlaylistPlayer{" +
+                "playlist=" + playlist.getName() +
+                ", enmMusicSpeed=" + enmMusicSpeed +
+                ", enmPlaybackState=" + enmPlaybackState +
+                ", enmPlaybackType=" + enmPlaybackType +
+                ", enmVolume=" + enmVolume +
+                '}';
     }
 }

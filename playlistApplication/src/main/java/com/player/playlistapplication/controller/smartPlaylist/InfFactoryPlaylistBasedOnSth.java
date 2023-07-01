@@ -1,8 +1,7 @@
 package com.player.playlistapplication.controller.smartPlaylist;
 
-import com.player.playlistapplication.helper.EnmPlaylistBasedOnSth;
-import org.springframework.stereotype.Component;
+import com.player.playlistapplication.helper.EnmBasedOnSth;
 
 public interface InfFactoryPlaylistBasedOnSth {
-    PlaylistBasedOnSth create(EnmPlaylistBasedOnSth type);
+    PlaylistBasedOnSth create(EnmBasedOnSth type);
 }
