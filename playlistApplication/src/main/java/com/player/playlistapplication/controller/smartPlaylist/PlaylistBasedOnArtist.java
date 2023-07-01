@@ -14,7 +14,7 @@ public class PlaylistBasedOnArtist extends PlaylistBasedOnSth {
 
     @Override
     public List<Music> collectingMusic() {
-        List<Music> musicList = musicRepository.findAllByNameAndPubYearBetween(
+        List<Music> musicList = musicRepository.findAllByArtistAndPubYearBetween(
                 entryBean.getName(),
                 entryBean.getFromYear(),
                 entryBean.getToYear()

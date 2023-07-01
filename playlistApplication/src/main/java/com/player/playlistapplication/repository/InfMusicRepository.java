@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface InfMusicRepository extends JpaRepository<Music, Long> {
-    List<Music> findAllByNameAndPubYearBetween(
-            String name,
+    List<Music> findAllByArtistAndPubYearBetween(
+            String artist,
             Integer pubYearStart,
             Integer pubYearEnd
     );
