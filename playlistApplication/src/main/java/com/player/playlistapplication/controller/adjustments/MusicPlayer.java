@@ -7,8 +7,21 @@ import com.player.playlistapplication.helper.EnmVolume;
 import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.repository.InfMusicRepository;
 import com.player.playlistapplication.repository.InfPlaylistRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     This is one of {@link Player} subclasses to implement Observer Pattern's
+ *     settings for {@link Music}s.
+ * </p>
+ */
 
 public class MusicPlayer extends Player {
+    private static final Logger logger = LoggerFactory.getLogger(MusicPlayer.class);
     private Music music;
 
     public MusicPlayer(Long id,
@@ -41,87 +54,88 @@ public class MusicPlayer extends Player {
 
     @Override
     public void playVerySlow() {
-        System.out.printf("Music '%s' playing %s.%n", this.music.getName(), super.enmMusicSpeed);
+        logger.info("Music '{}' playing {}.", this.music.getName(), super.enmMusicSpeed);
+
     }
 
     @Override
     public void playSlow() {
-        System.out.printf("Music '%s' playing %s.%n", this.music.getName(), super.enmMusicSpeed);
+        logger.info("Music '{}' playing {}.", this.music.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playNormal() {
-        System.out.printf("Music '%s' playing %s.%n", this.music.getName(), super.enmMusicSpeed);
+        logger.info("Music '{}' playing {}.", this.music.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playFast() {
-        System.out.printf("Music '%s' playing %s.%n", this.music.getName(), super.enmMusicSpeed);
+        logger.info("Music '{}' playing {}.", this.music.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playVeryFast() {
-        System.out.printf("Music '%s' playing %s.%n", this.music.getName(), super.enmMusicSpeed);
+        logger.info("Music '{}' playing {}.", this.music.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void play() {
-        System.out.printf("Music '%s' %sed.%n", this.music.getName(), super.enmPlaybackState);
+        logger.info("Music '{}' {}ed.", this.music.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void pause() {
-        System.out.printf("Music '%s' %sed.%n", this.music.getName(), super.enmPlaybackState);
+        logger.info("Music '{}' {}ed.", this.music.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void stop() {
-        System.out.printf("Music '%s' %sed.%n", this.music.getName(), super.enmPlaybackState);
+        logger.info("Music '{}' {}ed.", this.music.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void next() {
-        System.out.printf("%s music '%s' playing.%n", this.music.getName(), super.enmPlaybackState);
+        logger.info("{} music '{}' playing.", this.music.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void previous() {
-        System.out.printf("%s music '%s' playing.%n", this.music.getName(), super.enmPlaybackState);
+        logger.info("{} music '{}' playing.", this.music.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void playShuffleType() {
-        System.out.printf("Music '%s' played in %s type.%n", this.music.getName(), super.enmPlaybackType);
+        logger.info("Music '{}' played in {} type.", this.music.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void repeatOneType() {
-        System.out.printf("Music '%s' played in %s type.%n", this.music.getName(), super.enmPlaybackType);
+        logger.info("Music '{}' played in {} type.", this.music.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void repeatAllType() {
-        System.out.printf("Music '%s' played in %s type.%n", this.music.getName(), super.enmPlaybackType);
+        logger.info("Music '{}' played in {} type.", this.music.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void normalType() {
-        System.out.printf("Music '%s' played in %s type.%n", this.music.getName(), super.enmPlaybackType);
+        logger.info("Music '{}' played in {} type.", this.music.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void increaseVolume() {
-        System.out.printf("Music '%s' volume %sed.%n", this.music.getName(), super.enmVolume);
+        logger.info("Music '{}' volume {}ed.", this.music.getName(), super.enmVolume);
     }
 
     @Override
     public void decreaseVolume() {
-        System.out.printf("Music '%s' volume %sed.%n", this.music.getName(), super.enmVolume);
+        logger.info("Music '{}' volume {}ed.", this.music.getName(), super.enmVolume);
     }
 
     @Override
     public void mediumVolume() {
-        System.out.printf("Music '%s' volume set on %s.%n", this.music.getName(), super.enmVolume);
+        logger.info("Music '{}' volume set on {}.", this.music.getName(), super.enmVolume);
     }
 
     @Override

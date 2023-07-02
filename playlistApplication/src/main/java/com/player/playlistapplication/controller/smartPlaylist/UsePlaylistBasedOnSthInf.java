@@ -10,8 +10,17 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author Raha
- * @since 2023-06-22
  * @see com.player.playlistapplication.controller.smartPlaylist.InfFactoryPlaylistBasedOnSth
+ *
+ * <p>
+ * The Factory pattern is useful when you need to create objects of different
+ * types based on some conditions or criteria. In a playlist application,
+ * you might have different types of playlists (e.g., normal playlist,
+ * smart playlist based on genre, artist, etc.). The Factory pattern can
+ * be used to encapsulate the creation logic and provide a central place
+ * to create instances of different playlist types.
+ * </p>
+ * @since 2023-06-22
  */
 
 @Component
@@ -37,6 +46,16 @@ public class UsePlaylistBasedOnSthInf implements InfFactoryPlaylistBasedOnSth {
         this.entryBean = entryBean;
     }
 
+    /**
+     * @param type {@link EnmBasedOnSth}
+     *             <p>
+     *
+     *             </p>
+     *             <p>
+     *             According to {@link EnmBasedOnSth} value create an instance of {@link PlaylistBasedOnSth}'s
+     *             subclasses.
+     *             </p>
+     */
     @Override
     public PlaylistBasedOnSth create(EnmBasedOnSth type) {
 

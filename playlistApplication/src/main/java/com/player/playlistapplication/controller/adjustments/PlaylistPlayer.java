@@ -4,11 +4,25 @@ import com.player.playlistapplication.helper.EnmMusicSpeed;
 import com.player.playlistapplication.helper.EnmPlaybackState;
 import com.player.playlistapplication.helper.EnmPlaybackType;
 import com.player.playlistapplication.helper.EnmVolume;
+import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.repository.InfMusicRepository;
 import com.player.playlistapplication.repository.InfPlaylistRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     This is one of {@link Player} subclasses to implement Observer Pattern's
+ *     settings for {@link Playlist}s.
+ * </p>
+ */
 
 public class PlaylistPlayer extends Player {
+    private static final Logger logger = LoggerFactory.getLogger(MusicPlayer.class);
     private Playlist playlist;
 
     public PlaylistPlayer(Long id,
@@ -40,87 +54,87 @@ public class PlaylistPlayer extends Player {
 
     @Override
     public void playVerySlow() {
-        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
+        logger.info("Playlist '{}' playing {}.", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playSlow() {
-        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
+        logger.info("Playlist '{}' playing {}.", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playNormal() {
-        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
+        logger.info("Playlist '{}' playing {}.", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playFast() {
-        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
+        logger.info("Playlist '{}' playing {}.", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void playVeryFast() {
-        System.out.printf("Playlist '%s' playing %s.%n", playlist.getName(), super.enmMusicSpeed);
+        logger.info("Playlist '{}' playing {}.", playlist.getName(), super.enmMusicSpeed);
     }
 
     @Override
     public void play() {
-        System.out.printf("Playlist '%s' %sed.%n", playlist.getName(), super.enmPlaybackState);
+        logger.info("Playlist '{}' {}ed.", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void pause() {
-        System.out.printf("Playlist '%s' %sed.%n", playlist.getName(), super.enmPlaybackState);
+        logger.info("Playlist '{}' {}ed.", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void stop() {
-        System.out.printf("Playlist '%s' %sed.%n", playlist.getName(), super.enmPlaybackState);
+        logger.info("Playlist '{}' {}ed.", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void next() {
-        System.out.printf("%s playlist '%s' playing.%n", playlist.getName(), super.enmPlaybackState);
+        logger.info("{} playlist '{}' playing.", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void previous() {
-        System.out.printf("%s playlist '%s' playing.%n", playlist.getName(), super.enmPlaybackState);
+        logger.info("{} playlist '{}' playing.", playlist.getName(), super.enmPlaybackState);
     }
 
     @Override
     public void playShuffleType() {
-        System.out.printf("Playlists '%s' played in %s type.%n", playlist.getName(), super.enmPlaybackType);
+        logger.info("Playlists '{}' played in {} type.", playlist.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void repeatOneType() {
-        System.out.printf("Playlists '%s' played in %s type.%n", playlist.getName(), super.enmPlaybackType);
+        logger.info("Playlists '{}' played in {} type.", playlist.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void repeatAllType() {
-        System.out.printf("Playlists '%s' played in %s type.%n", playlist.getName(), super.enmPlaybackType);
+        logger.info("Playlists '{}' played in {} type.", playlist.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void normalType() {
-        System.out.printf("Playlists '%s' played in %s type.%n", playlist.getName(), super.enmPlaybackType);
+        logger.info("Playlists '{}' played in {} type.", playlist.getName(), super.enmPlaybackType);
     }
 
     @Override
     public void increaseVolume() {
-        System.out.printf("Playlist '%s' volume %sed.%n", playlist.getName(), super.enmVolume);
+        logger.info("Playlist '{}' volume {}ed.", playlist.getName(), super.enmVolume);
     }
 
     @Override
     public void decreaseVolume() {
-        System.out.printf("Playlist '%s' volume %sed.%n", playlist.getName(), super.enmVolume);
+        logger.info("Playlist '{}' volume {}ed.", playlist.getName(), super.enmVolume);
     }
 
     @Override
     public void mediumVolume() {
-        System.out.printf("Playlist '%s' volume set on %s.%n", playlist.getName(), super.enmVolume);
+        logger.info("Playlist '{}' volume set on {}.", playlist.getName(), super.enmVolume);
     }
 
     @Override

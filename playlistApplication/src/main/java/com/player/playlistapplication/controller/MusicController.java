@@ -10,7 +10,6 @@ import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.repository.InfGenreRepository;
 import com.player.playlistapplication.repository.InfMusicRepository;
-
 import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -23,6 +22,14 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     Handle all {@link Music} interactions.
+ * </p>
+ */
 @RestController
 public class MusicController {
     private InfMusicRepository musicRepository;
@@ -40,6 +47,11 @@ public class MusicController {
         this.playlistMapper = playlistMapper;
     }
 
+    /**
+     * <p>Find all {@link Music}s,convert them to {@link MusicDto} and return them.</p>
+     *
+     * @return list of {@link MusicDto}
+     */
     @GetMapping("/musics")
     public List<MusicDto> retrieveAllMusic() {
         return musicRepository.findAll()
@@ -48,6 +60,14 @@ public class MusicController {
                 .collect(toList());
     }
 
+    /**
+     * <p>
+     * Find a specific {@link Music} according to taken id,
+     * convert it to {@link MusicDto} and return it.
+     * </p>
+     *
+     * @return A {@link MusicDto}
+     */
     @GetMapping("/musics/{id}")
     public MusicDto retrieveMusic(@PathVariable Long id) {
         Optional<Music> music = musicRepository.findById(id);
@@ -58,6 +78,14 @@ public class MusicController {
         return musicMapper.toDto(music.get());
     }
 
+    /**
+     * <p>
+     * Find a specific {@link Music} according to taken id,
+     * get all of its {@link Playlist}, convert them to {@link PlaylistDto} and return them.
+     * </p>
+     *
+     * @return list of {@link PlaylistDto}
+     */
     @GetMapping("/musics/{id}/playlists")
     public List<PlaylistDto> retrievePlaylistsOfMusic(@PathVariable Long id) {
         Optional<Music> music = musicRepository.findById(id);
@@ -72,6 +100,9 @@ public class MusicController {
                 .collect(toList());
     }
 
+    /**
+     * Find a specific {@link Music} according to taken id and delete it.
+     */
     @DeleteMapping("/musics/{id}")
     public void deleteMusic(@PathVariable Long id) {
         Optional<Music> music = musicRepository.findById(id);
@@ -82,8 +113,13 @@ public class MusicController {
         musicRepository.deleteById(id);
     }
 
+    /**
+     * <p>Create a {@link Music} by use of taken existing {@link Genre} entity id.</p>
+     *
+     * @return {@link EntityModel} of {@link Music}
+     */
     @PostMapping("/musics/genre/{id}")
-    public EntityModel<Music> createMusicOfGenre(@PathVariable Long id ,@Valid @RequestBody Music music) {
+    public EntityModel<Music> createMusicOfGenre(@PathVariable Long id, @Valid @RequestBody Music music) {
         Optional<Genre> genre = genreRepository.findById(id);
 
         if (genre.isEmpty())

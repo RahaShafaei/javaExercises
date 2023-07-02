@@ -7,6 +7,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     To convert {@link Genre} to {@link GenreDto}.
+ * </p>
+ */
 @Component
 public class GenreMapper {
 

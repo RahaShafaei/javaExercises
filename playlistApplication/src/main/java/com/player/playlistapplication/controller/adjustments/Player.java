@@ -7,6 +7,19 @@ import com.player.playlistapplication.helper.EnmVolume;
 import com.player.playlistapplication.repository.InfMusicRepository;
 import com.player.playlistapplication.repository.InfPlaylistRepository;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     This is the main class of Observer Pattern to apply desire adjustments.
+ * </p>
+ *
+ * <p>
+ *     Because it was necessary to get an instance of this class, it was not possible
+ *     to add a Spring annotation for this class to use IOC.
+ * </p>
+ */
 public abstract class Player {
     protected EnmMusicSpeed enmMusicSpeed;
     protected EnmPlaybackState enmPlaybackState;
@@ -49,6 +62,9 @@ public abstract class Player {
         this.musicRepository = musicRepository;
     }
 
+    /**
+     * It is the main method of Observer pattern to apply the taken settings.
+     */
     public void playing() {
         switch (this.enmMusicSpeed) {
             case VERY_SLOW -> this.playVerySlow();
@@ -113,6 +129,5 @@ public abstract class Player {
     public abstract void decreaseVolume();
 
     public abstract void mediumVolume();
-
 
 }

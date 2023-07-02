@@ -1,6 +1,7 @@
 package com.player.playlistapplication.dto;
 
 import com.player.playlistapplication.helper.Helper;
+import com.player.playlistapplication.model.Genre;
 import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.model.Playlist;
@@ -9,6 +10,14 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     To convert {@link Playlist} to {@link PlaylistDto}.
+ * </p>
+ */
 @Component
 public class PlaylistMapper {
     

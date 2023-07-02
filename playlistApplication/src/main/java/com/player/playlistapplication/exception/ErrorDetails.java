@@ -2,6 +2,14 @@ package com.player.playlistapplication.exception;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     To handle exception and errors response.
+ * </p>
+ */
 public class ErrorDetails {
     private LocalDateTime timeStamp;
     private String message;

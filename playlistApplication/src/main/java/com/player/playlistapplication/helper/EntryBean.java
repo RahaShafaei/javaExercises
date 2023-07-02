@@ -1,5 +1,13 @@
 package com.player.playlistapplication.helper;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     To hold music and playlist data for transfer between server and client.
+ * </p>
+ */
 public class EntryBean {
     private Integer fromYear;
     private Integer toYear;

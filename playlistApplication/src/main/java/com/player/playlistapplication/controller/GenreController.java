@@ -6,6 +6,7 @@ import com.player.playlistapplication.dto.MusicDto;
 import com.player.playlistapplication.dto.MusicMapper;
 import com.player.playlistapplication.exception.ItemNotFoundException;
 import com.player.playlistapplication.model.Genre;
+import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.repository.InfGenreRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,14 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     Handle all {@link Genre} interactions.
+ * </p>
+ */
 @RestController
 public class GenreController {
     private InfGenreRepository repository;
@@ -32,6 +41,11 @@ public class GenreController {
         this.musicMapper = musicMapper;
     }
 
+    /**
+     * <p>Find all {@link Genre}s,convert them to {@link GenreDto} and return them.</p>
+     *
+     * @return list of {@link GenreDto}
+     */
     @GetMapping("/genres")
     public List<GenreDto> retrieveAllGenres() {
         return repository.findAll()
@@ -40,6 +54,14 @@ public class GenreController {
                 .collect(toList());
     }
 
+    /**
+     * <p>
+     * Find a specific {@link Genre} according to taken id,
+     * convert it to {@link GenreDto} and return it.
+     * </p>
+     *
+     * @return A {@link GenreDto}
+     */
     @GetMapping("/genres/{id}")
     public GenreDto retrieveGenre(@PathVariable Long id) {
         Optional<Genre> genre = repository.findById(id);
@@ -50,11 +72,14 @@ public class GenreController {
         return genreMapper.toDto(genre.get());
     }
 
-    @GetMapping("/genres/origin/{id}")
-    public Genre retrieveOriginGenre(@PathVariable Long id) {
-        return repository.findById(id).get();
-    }
-
+    /**
+     * <p>
+     * Find a specific {@link Genre} according to taken id,
+     * get all of its {@link Music}, convert them to {@link MusicDto} and return them.
+     * </p>
+     *
+     * @return list of {@link MusicDto}
+     */
     @GetMapping("/genres/{id}/musics")
     public List<MusicDto> retrieveMusicsOfGenre(@PathVariable Long id) {
         Optional<Genre> genre = repository.findById(id);
@@ -69,6 +94,9 @@ public class GenreController {
                 .collect(toList());
     }
 
+    /**
+     * Find a specific {@link Genre} according to taken id and delete it.
+     */
     @DeleteMapping("/genres/{id}")
     public void deleteGenre(@PathVariable Long id) {
         Optional<Genre> genre = repository.findById(id);
@@ -79,6 +107,11 @@ public class GenreController {
         repository.deleteById(id);
     }
 
+    /**
+     * <p>Create a {@link Genre} </p>
+     *
+     * @return {@link ResponseEntity} of {@link Genre}
+     */
     @PostMapping("/genres")
     public ResponseEntity<Genre> createGenre(@Valid @RequestBody Genre genre) {
         Genre savedGenre = repository.save(genre);

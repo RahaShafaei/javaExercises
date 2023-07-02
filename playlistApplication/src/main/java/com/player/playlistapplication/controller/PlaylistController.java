@@ -34,6 +34,14 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     Handle all {@link Playlist} interactions.
+ * </p>
+ */
 @RestController
 public class PlaylistController {
     private InfPlaylistRepository playlistRepository;
@@ -57,6 +65,10 @@ public class PlaylistController {
         this.playing = playing;
     }
 
+    /**
+     * <p>Find all {@link Playlist}s,convert them to {@link PlaylistDto} and return them.</p>
+     * @return list of {@link PlaylistDto}
+     */
     @GetMapping("/playlists")
     public List<PlaylistDto> retrieveAllPlaylists() {
         return playlistRepository.findAll()
@@ -65,6 +77,11 @@ public class PlaylistController {
                 .collect(toList());
     }
 
+    /**
+     * <p>Find a specific {@link Playlist} according to taken id,
+     * convert it to {@link PlaylistDto} and return it.</p>
+     * @return list of {@link PlaylistDto}
+     */
     @GetMapping("/playlists/{id}")
     public PlaylistDto retrievePlaylist(@PathVariable Long id) {
         Optional<Playlist> playlist = playlistRepository.findById(id);
@@ -75,6 +92,11 @@ public class PlaylistController {
         return playlistMapper.toDto(playlist.get());
     }
 
+    /**
+     * Find a specific {@link Playlist} according to taken id,
+     * get all of its {@link Music}, convert them to {@link MusicDto} and return them.
+     * @return list of {@link MusicDto}
+     */
     @GetMapping("/playlists/{id}/musics")
     public List<MusicDto> retrieveMusicsOfPlaylist(@PathVariable Long id) {
         Optional<Playlist> playlist = playlistRepository.findById(id);
@@ -89,6 +111,9 @@ public class PlaylistController {
                 .collect(toList());
     }
 
+    /**
+     * Find a specific {@link Playlist} according to taken id and delete it.
+     */
     @DeleteMapping("/playlists/{id}")
     public void deletePlaylist(@PathVariable Long id) {
         Optional<Playlist> playlist = playlistRepository.findById(id);
@@ -99,6 +124,10 @@ public class PlaylistController {
         playlistRepository.deleteById(id);
     }
 
+    /**
+     * Create a {@link Playlist} by use of taken {@link Playlist} object data.
+     * @return {@link ResponseEntity} of {@link Playlist}
+     */
     @PostMapping("/playlists")
     public ResponseEntity<Playlist> createPlaylist(@Valid @RequestBody Playlist playlist) {
         Playlist savedPlaylist = playlistRepository.save(playlist);
@@ -112,6 +141,10 @@ public class PlaylistController {
         return ResponseEntity.created(location).build();
     }
 
+    /**
+     * Add one of existing {@link Music} to one of existing {@link Playlist}.
+     * @return an {@link EntityModel} of {@link Playlist}
+     */
     @PostMapping("/playlists/{playlistID}/music/{musicId}/add")
     public EntityModel<Playlist> addMusicToPlaylist(@PathVariable Long playlistID,
                                                     @PathVariable Long musicId) {
@@ -135,6 +168,10 @@ public class PlaylistController {
         return entityModel;
     }
 
+    /**
+     * Remove one of existing {@link Music} from one of existing {@link Playlist}.
+     * @return an {@link EntityModel} of {@link Playlist}
+     */
     @PostMapping("/playlists/{playlistID}/music/{musicId}/remove")
     public EntityModel<Playlist> removeMusicToPlaylist(@PathVariable Long playlistID,
                                                        @PathVariable Long musicId) {
@@ -160,6 +197,19 @@ public class PlaylistController {
 
     //Smart Playlist  ===================================================
 
+    /**
+     * <p>
+     *     Retrieve all {@link Playlist}s of specific type({@link EnmBasedOnSth}.ARTIST or
+     *     {@link EnmBasedOnSth}.GENRE) and specific exist {@link Music}'s ({@link EnmBasedOnSth}.ARTIST or
+     *     {@link EnmBasedOnSth}.GENRE) name and convert returned {@link Playlist} list to {@link PlaylistDto}.</p>
+     * @param
+     *        smartType a string to specify type of returning {@link Playlist}s.
+     *                  should be on of these values {@link EnmBasedOnSth}.ARTIST or
+     *                  {@link EnmBasedOnSth}.GENRE.
+     * @param
+     *      name name of "Artist" or "Genre" that exist in {@link Music} entity.
+     * @return an {@link List} of {@link PlaylistDto}
+     */
     @GetMapping("/playlists/smart/{smartType}/{name}")
     public List<PlaylistDto> retrieveAllPlaylistOfSmartType(@PathVariable String smartType,
                                                             @PathVariable String name) {
@@ -179,6 +229,19 @@ public class PlaylistController {
                 .collect(toList());
     }
 
+    /**
+     * <p>
+     *     Create a {@link Playlist}s of specific type({@link EnmBasedOnSth}.ARTIST or
+     *     {@link EnmBasedOnSth}.GENRE) and specific exist {@link Music}'s ({@link EnmBasedOnSth}.ARTIST or
+     *     {@link EnmBasedOnSth}.GENRE) name.</p>
+     * @param
+     *        smartType a string to specify type of returning {@link Playlist}s.
+     *                  should be on of these values {@link EnmBasedOnSth}.ARTIST or
+     *                  {@link EnmBasedOnSth}.GENRE.
+     * @param
+     *      entryBean a bean of {@link EntryBean} that contains new {@link Playlist} data.
+     * @return an {@link EntityModel} of {@link Playlist}
+     */
     @PostMapping("/playlists/smart/{smartType}")
     public EntityModel<Playlist> createSmartPlaylist(@PathVariable String smartType,
                                                      @RequestBody EntryBean entryBean) {
@@ -206,6 +269,19 @@ public class PlaylistController {
     }
 
     // Adjustment test ================================
+    /**
+     * <p>
+     *     Playing ByDefaultAdjustment of {@link com.player.playlistapplication.controller.adjustments.MusicPlayer}
+     *     or {@link com.player.playlistapplication.controller.adjustments.PlaylistPlayer}
+     *     of specific type({@link EnmBasedOnSth}.PLAYLIST or {@link EnmBasedOnSth}.MUSIC)
+     *     by getting an id of existing {@link Playlist} or {@link Music}.
+     * @param
+     *        adjustmentType a string to specify type of playing.
+     *                  should be on of these values {@link EnmBasedOnSth}.MUSIC or
+     *                  {@link EnmBasedOnSth}.PLAYLIST.
+     * @param
+     *      id name of existing {@link Music} or {@link Playlist} entity.
+     */
     @GetMapping("/playlists/adjustment/{adjustmentType}/{id}")
     public void playingByDefaultAdjustment(@PathVariable String adjustmentType,
                                            @PathVariable Long id) {
@@ -213,11 +289,26 @@ public class PlaylistController {
         playing.setId(id);
         Player player = playing.create(EnmBasedOnSth.valueOf(adjustmentType.toUpperCase()));
 
-        PlayingAdjustments playingAdjustments = new PlayingAdjustments();
+        PlayingAdjustments playingAdjustments = PlayingAdjustments.getInstance();
         playingAdjustments.addPlayer(player);
         playingAdjustments.playingByDefaultAdjustments();
     }
 
+    /**
+     * <p>
+     *     Playing ByCustomizeAdjustment of {@link com.player.playlistapplication.controller.adjustments.MusicPlayer}
+     *     or {@link com.player.playlistapplication.controller.adjustments.PlaylistPlayer}
+     *     of specific type({@link EnmBasedOnSth}.PLAYLIST or {@link EnmBasedOnSth}.MUSIC)
+     *     by getting an id of existing {@link Playlist} or {@link Music} and getting {@link AdjustmentBean}.
+     * @param
+     *        adjustmentType a string to specify type of playing.
+     *                  should be on of these values {@link EnmBasedOnSth}.MUSIC or
+     *                  {@link EnmBasedOnSth}.PLAYLIST.
+     * @param
+     *      id name of existing {@link Music} or {@link Playlist} entity.
+     * @param
+     *      adjustmentBean Necessary adjustments for playing {@link Music} or {@link Playlist}.
+     */
     @PostMapping("/playlists/adjustment/{adjustmentType}/{id}")
     public void playingByCustomizeAdjustment(@PathVariable String adjustmentType,
                                              @PathVariable Long id,
@@ -226,7 +317,7 @@ public class PlaylistController {
         playing.setId(id);
         Player player = playing.create(EnmBasedOnSth.valueOf(adjustmentType.toUpperCase()));
 
-        PlayingAdjustments playingAdjustments = new PlayingAdjustments();
+        PlayingAdjustments playingAdjustments = PlayingAdjustments.getInstance();
         playingAdjustments.addPlayer(player);
         playingAdjustments.changeAdjustmentsAndPlaying(
                 EnmMusicSpeed.valueOf(adjustmentBean.getEnmMusicSpeed().toUpperCase()),

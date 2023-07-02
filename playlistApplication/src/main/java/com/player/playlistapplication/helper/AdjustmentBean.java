@@ -1,5 +1,13 @@
 package com.player.playlistapplication.helper;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     To handle playing adjustments.
+ * </p>
+ */
 public class AdjustmentBean {
     private String enmMusicSpeed;
     private String enmPlaybackState;

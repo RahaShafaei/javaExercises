@@ -6,6 +6,18 @@ import com.player.playlistapplication.repository.InfMusicRepository;
 import com.player.playlistapplication.repository.InfPlaylistRepository;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ *     Specifies which kind of instance of {@link com.player.playlistapplication.controller.adjustments.Player}
+ *     should be taken according to taken {@link EnmBasedOnSth}.
+ * </p>
+ * <p>
+ *     This class is another kind of implementing FactoryMethod pattern.
+ * </p>
+ */
 @Component
 public class Playing {
     private Long id;
@@ -27,6 +39,17 @@ public class Playing {
     }
 
 
+    /**
+     *
+     * @param type {@link EnmBasedOnSth}
+     * <p>
+     *
+     * </p>
+     * <p>
+     *     According to {@link EnmBasedOnSth} value create an instance of {@link Player}'s
+     *     subclasses.
+     * </p>
+     */
     public Player create(EnmBasedOnSth type) {
 
         Player player = switch (type) {
