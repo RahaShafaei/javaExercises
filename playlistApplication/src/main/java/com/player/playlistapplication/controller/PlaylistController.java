@@ -12,8 +12,7 @@ import com.player.playlistapplication.dto.PlaylistDto;
 import com.player.playlistapplication.dto.PlaylistMapper;
 import com.player.playlistapplication.exception.ItemExistException;
 import com.player.playlistapplication.exception.ItemNotFoundException;
-import com.player.playlistapplication.helper.EnmBasedOnSth;
-import com.player.playlistapplication.helper.EntryBean;
+import com.player.playlistapplication.helper.*;
 import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.repository.InfMusicRepository;
@@ -182,7 +181,7 @@ public class PlaylistController {
 
     @PostMapping("/playlists/smart/{smartType}")
     public EntityModel<Playlist> createSmartPlaylist(@PathVariable String smartType,
-                                                        @RequestBody EntryBean entryBean) {
+                                                     @RequestBody EntryBean entryBean) {
         InfFactoryPlaylistBasedOnSth creation = usePlaylistBasedOnSthInf;
         usePlaylistBasedOnSthInf.setEntryBean(entryBean);
 
@@ -206,10 +205,10 @@ public class PlaylistController {
         return entityModel;
     }
 
-    // simple adjustment test ================================
+    // Adjustment test ================================
     @GetMapping("/playlists/adjustment/{adjustmentType}/{id}")
     public void playingByDefaultAdjustment(@PathVariable String adjustmentType,
-                                                            @PathVariable Long id) {
+                                           @PathVariable Long id) {
 
         playing.setId(id);
         Player player = playing.create(EnmBasedOnSth.valueOf(adjustmentType.toUpperCase()));
@@ -217,6 +216,24 @@ public class PlaylistController {
         PlayingAdjustments playingAdjustments = new PlayingAdjustments();
         playingAdjustments.addPlayer(player);
         playingAdjustments.playingByDefaultAdjustments();
+    }
+
+    @PostMapping("/playlists/adjustment/{adjustmentType}/{id}")
+    public void playingByCustomizeAdjustment(@PathVariable String adjustmentType,
+                                             @PathVariable Long id,
+                                             @RequestBody AdjustmentBean adjustmentBean) {
+
+        playing.setId(id);
+        Player player = playing.create(EnmBasedOnSth.valueOf(adjustmentType.toUpperCase()));
+
+        PlayingAdjustments playingAdjustments = new PlayingAdjustments();
+        playingAdjustments.addPlayer(player);
+        playingAdjustments.changeAdjustmentsAndPlaying(
+                EnmMusicSpeed.valueOf(adjustmentBean.getEnmMusicSpeed().toUpperCase()),
+                EnmPlaybackState.valueOf(adjustmentBean.getEnmPlaybackState().toUpperCase()),
+                EnmPlaybackType.valueOf(adjustmentBean.getEnmPlaybackType().toUpperCase()),
+                EnmVolume.valueOf(adjustmentBean.getEnmVolume().toUpperCase())
+        );
     }
 
 }
