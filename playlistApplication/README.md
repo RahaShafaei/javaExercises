@@ -20,4 +20,4 @@ This project uses technologies related to the Spring framework, and the main com
 * Use **DTO Design Pattern**, to prevent `StackOverflow Exception` happening when using `Entity Beans`.
 * Use **Observer Pattern** to notify the playlist or song objects when there are changes or updates.
 * Use **FactoryMethod Pattern** to create smart playlist based on genre, artist.
-* use **Singleton Pattern** to  have a central controller that handles the playlist operations.
+* Use **Singleton Pattern** to  have a central controller that handles the playlist operations.
