@@ -39,4 +39,13 @@ public class PlaylistDto {
     public void setMusicList(Map<Long, String> musicList) {
         this.musicList = musicList;
     }
+
+    @Override
+    public String toString() {
+        return "PlaylistDto{" +
+                "playlistId=" + playlistId +
+                ", name='" + name + '\'' +
+                ", musicList=" + musicList +
+                '}';
+    }
 }

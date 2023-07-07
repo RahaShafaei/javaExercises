@@ -66,4 +66,16 @@ public class MusicDto {
     public void setPlaylists(Map<Long, String> playlists) {
         this.playlists = playlists;
     }
+
+    @Override
+    public String toString() {
+        return "MusicDto{" +
+                "musicId=" + musicId +
+                ", name='" + name + '\'' +
+                ", artist='" + artist + '\'' +
+                ", pubYear=" + pubYear +
+                ", playlists=" + playlists +
+                ", genre=" + genre +
+                '}';
+    }
 }

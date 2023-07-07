@@ -13,8 +13,11 @@ import com.player.playlistapplication.repository.InfMusicRepository;
 import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -119,7 +122,10 @@ public class MusicController {
      * @return {@link EntityModel} of {@link Music}
      */
     @PostMapping("/musics/genre/{id}")
-    public EntityModel<Music> createMusicOfGenre(@PathVariable Long id, @Valid @RequestBody Music music) {
+    public ResponseEntity<EntityModel<MusicDto>> createMusicOfGenre(
+            @PathVariable Long id,
+            @Valid @RequestBody Music music
+    ) {
         Optional<Genre> genre = genreRepository.findById(id);
 
         if (genre.isEmpty())
@@ -128,12 +134,12 @@ public class MusicController {
         music.setGenre(genre.get());
         Music savedMusic = musicRepository.save(music);
 
-        EntityModel<Music> entityModel = EntityModel.of(savedMusic);
+        EntityModel<MusicDto> entityModel = EntityModel.of(musicMapper.toDto(savedMusic));
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveMusic(savedMusic.getMusicId()));
-        entityModel.add(link.withRel("all-genres"));
+        entityModel.add(link.withRel("music_link"));
 
-        return entityModel;
+        return ResponseEntity.created(link.toUri()).body(entityModel);
     }
 
 }

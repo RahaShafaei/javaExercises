@@ -1,7 +1,6 @@
 package com.player.playlistapplication.dto;
 
 import com.player.playlistapplication.helper.Helper;
-import com.player.playlistapplication.model.Genre;
 import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ import java.util.Map;
  * @since 2023-06-22
  *
  * <p>
- *     To convert {@link Music} to {@link MusicDto}.
+ * To convert {@link Music} to {@link MusicDto}.
  * </p>
  */
 @Component
@@ -29,15 +28,17 @@ public class MusicMapper {
         musicDto.setPubYear(music.getPubYear());
 
         Map<Long, String> tempGenre = new HashMap<>();
-        tempGenre.put(music.getGenre().getGenreId(),music.getGenre().getName());
+        tempGenre.put(music.getGenre().getGenreId(), music.getGenre().getName());
         musicDto.setGenre(tempGenre);
 
-        Map<Long, String> playlistDtl = Helper.convertListToMap(
-                music.getPlaylist(),
-                Playlist::getPlaylistId,
-                Playlist::getName
-        );
-        musicDto.setPlaylists(playlistDtl);
+        if (music.getPlaylist() != null) {
+            Map<Long, String> playlistDtl = Helper.convertListToMap(
+                    music.getPlaylist(),
+                    Playlist::getPlaylistId,
+                    Playlist::getName
+            );
+            musicDto.setPlaylists(playlistDtl);
+        }
 
         return musicDto;
     }

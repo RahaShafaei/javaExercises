@@ -129,7 +129,7 @@ public class PlaylistController {
      * @return {@link ResponseEntity} of {@link Playlist}
      */
     @PostMapping("/playlists")
-    public ResponseEntity<Playlist> createPlaylist(@Valid @RequestBody Playlist playlist) {
+    public ResponseEntity<PlaylistDto> createPlaylist(@Valid @RequestBody Playlist playlist) {
         Playlist savedPlaylist = playlistRepository.save(playlist);
 
         URI location = ServletUriComponentsBuilder
@@ -138,7 +138,7 @@ public class PlaylistController {
                 .buildAndExpand(savedPlaylist.getPlaylistId())
                 .toUri();
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(playlistMapper.toDto(savedPlaylist));
     }
 
     /**
@@ -146,7 +146,7 @@ public class PlaylistController {
      * @return an {@link EntityModel} of {@link Playlist}
      */
     @PostMapping("/playlists/{playlistID}/music/{musicId}/add")
-    public EntityModel<Playlist> addMusicToPlaylist(@PathVariable Long playlistID,
+    public ResponseEntity<EntityModel<PlaylistDto>> addMusicToPlaylist(@PathVariable Long playlistID,
                                                     @PathVariable Long musicId) {
 
         Optional<Playlist> playlist = playlistRepository.findById(playlistID);
@@ -160,12 +160,12 @@ public class PlaylistController {
 
         Playlist savedPlaylist = playlistRepository.save(playlist.get());
 
-        EntityModel<Playlist> entityModel = EntityModel.of(savedPlaylist);
+        EntityModel<PlaylistDto> entityModel = EntityModel.of(playlistMapper.toDto(savedPlaylist));
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrievePlaylist(playlistID));
-        entityModel.add(link.withRel("all-playlists"));
+        entityModel.add(link.withRel("playlists"));
 
-        return entityModel;
+        return ResponseEntity.created(link.toUri()).body(entityModel);
     }
 
     /**
@@ -173,7 +173,7 @@ public class PlaylistController {
      * @return an {@link EntityModel} of {@link Playlist}
      */
     @PostMapping("/playlists/{playlistID}/music/{musicId}/remove")
-    public EntityModel<Playlist> removeMusicToPlaylist(@PathVariable Long playlistID,
+    public ResponseEntity<EntityModel<PlaylistDto>> removeMusicToPlaylist(@PathVariable Long playlistID,
                                                        @PathVariable Long musicId) {
 
         Optional<Playlist> playlist = playlistRepository.findById(playlistID);
@@ -187,12 +187,12 @@ public class PlaylistController {
 
         Playlist savedPlaylist = playlistRepository.save(playlist.get());
 
-        EntityModel<Playlist> entityModel = EntityModel.of(savedPlaylist);
+        EntityModel<PlaylistDto> entityModel = EntityModel.of(playlistMapper.toDto(savedPlaylist));
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrievePlaylist(playlistID));
-        entityModel.add(link.withRel("all-playlists"));
+        entityModel.add(link.withRel("playlist_link"));
 
-        return entityModel;
+        return ResponseEntity.created(link.toUri()).body(entityModel);
     }
 
     //Smart Playlist  ===================================================
@@ -263,7 +263,7 @@ public class PlaylistController {
         EntityModel<Playlist> entityModel = EntityModel.of(savedPlaylist);
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrievePlaylist(savedPlaylist.getPlaylistId()));
-        entityModel.add(link.withRel("all-playlists"));
+        entityModel.add(link.withRel("playlist_link"));
 
         return entityModel;
     }

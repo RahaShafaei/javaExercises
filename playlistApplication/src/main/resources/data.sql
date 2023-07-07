@@ -16,7 +16,8 @@ VALUES (1, 'Hip-Hop'),
        (4, 'Rock'),
        (5, 'Blues'),
        (6, 'Dance'),
-       (7, 'Jazz');
+       (7, 'Jazz'),
+       (8, 'ForTest');
 --------------------------------------
 INSERT INTO MUSIC (MUSIC_ID, GENRE_GENRE_ID , PUB_YEAR, ARTIST, NAME)
 VALUES (1, 1, 2013, 'JWP and Bez Cenzury', 'A Pamietasz Jak? (Blend)'),

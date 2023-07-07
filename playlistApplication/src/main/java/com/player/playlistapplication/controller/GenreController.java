@@ -24,7 +24,7 @@ import static java.util.stream.Collectors.toList;
  * @since 2023-06-22
  *
  * <p>
- *     Handle all {@link Genre} interactions.
+ * Handle all {@link Genre} interactions.
  * </p>
  */
 @RestController
@@ -98,13 +98,15 @@ public class GenreController {
      * Find a specific {@link Genre} according to taken id and delete it.
      */
     @DeleteMapping("/genres/{id}")
-    public void deleteGenre(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteGenre(@PathVariable Long id) {
         Optional<Genre> genre = repository.findById(id);
 
-        if (genre.isEmpty())
-            throw new ItemNotFoundException("Genre id: " + id);
-
-        repository.deleteById(id);
+        if (!genre.isEmpty()) {
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -122,6 +124,6 @@ public class GenreController {
                 .buildAndExpand(savedGenre.getGenreId())
                 .toUri();
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(savedGenre);
     }
 }

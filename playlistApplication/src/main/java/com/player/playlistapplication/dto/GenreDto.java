@@ -41,4 +41,13 @@ public class GenreDto {
     public void setMusicList(Map<Long, String> musicList) {
         this.musicList = musicList;
     }
+
+    @Override
+    public String toString() {
+        return "GenreDto{" +
+                "genreId=" + genreId +
+                ", name='" + name + '\'' +
+                ", musicList=" + musicList +
+                '}';
+    }
 }
