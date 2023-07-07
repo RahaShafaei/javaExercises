@@ -2,6 +2,7 @@ package com.player.playlistapplication.controller;
 
 import com.player.playlistapplication.dto.MusicDto;
 import com.player.playlistapplication.dto.PlaylistDto;
+import com.player.playlistapplication.model.Playlist;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +19,14 @@ import org.springframework.http.*;
 
 import java.util.List;
 
+/**
+ * @author Raha
+ * @since 2023-06-22
+ *
+ * <p>
+ * Handle all {@link Playlist} tests.
+ * </p>
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PlaylistControllerIntegrationTest {
@@ -157,18 +166,65 @@ class PlaylistControllerIntegrationTest {
     }
 
     @Test
-    void retrieveAllPlaylistOfSmartType() {
+    @DisplayName("Playlist of smartType and specific name.")
+    void testRetrieveAllPlaylistOfSmartType_whenGetSmartTypeAndName_thenReturnPlaylist() {
+        // Arrange Act
+        ResponseEntity<List<PlaylistDto>> musicResponse =
+                testRestTemplate.exchange(
+                        "/playlists/smart/Artist/Robyx",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<PlaylistDto>>() {
+                        }
+                );
+        List<PlaylistDto> playlistDtos = musicResponse.getBody();
+
+        // Assert
+        Assertions.assertEquals(
+                HttpStatus.OK,
+                musicResponse.getStatusCode()
+        );
+        Assertions.assertEquals(
+                playlistDtos.size(),
+                3,
+                "Returned playlist's numbers seems to be incorrect"
+        );
     }
 
     @Test
-    void createSmartPlaylist() {
+    @DisplayName("Create playlist of smartType.")
+    void testCreateSmartPlaylist_whenGetSmartType_thenReturnPlaylist() throws JSONException {
+        // Arrange
+        JSONObject playlistDetailsRequestJson = new JSONObject();
+        playlistDetailsRequestJson.put("playListName", "Hip-Hop_PLAYLIST");
+        playlistDetailsRequestJson.put("name", "Robyx");
+        playlistDetailsRequestJson.put("fromYear", 1989);
+        playlistDetailsRequestJson.put("toYear", 2015);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<String> request = new HttpEntity<>(playlistDetailsRequestJson.toString(), headers);
+
+        // Act
+        ResponseEntity<PlaylistDto> createdMusicDetailsEntity = testRestTemplate.postForEntity(
+                "/playlists/smart/Artist",
+                request,
+                PlaylistDto.class
+        );
+        PlaylistDto createdPlaylistDetails = createdMusicDetailsEntity.getBody();
+
+        // Assert
+        Assertions.assertEquals(HttpStatus.CREATED, createdMusicDetailsEntity.getStatusCode());
+
+        assert createdPlaylistDetails != null;
+
+        Assertions.assertEquals(
+                playlistDetailsRequestJson.getString("playListName"),
+                createdPlaylistDetails.getName(),
+                "Returned playlist's name seems to be incorrect"
+        );
     }
 
-    @Test
-    void playingByDefaultAdjustment() {
-    }
-
-    @Test
-    void playingByCustomizeAdjustment() {
-    }
 }

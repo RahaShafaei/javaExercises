@@ -199,13 +199,13 @@ public class PlaylistController {
 
     /**
      * <p>
-     *     Retrieve all {@link Playlist}s of specific type({@link EnmBasedOnSth}.ARTIST or
-     *     {@link EnmBasedOnSth}.GENRE) and specific exist {@link Music}'s ({@link EnmBasedOnSth}.ARTIST or
-     *     {@link EnmBasedOnSth}.GENRE) name and convert returned {@link Playlist} list to {@link PlaylistDto}.</p>
+     *     Retrieve all {@link Playlist}s of specific type({@link EnmBasedOnSth#ARTIST} or
+     *     {@link EnmBasedOnSth#GENRE}) and specific exist {@link Music}'s ({@link EnmBasedOnSth#ARTIST} or
+     *     {@link EnmBasedOnSth#GENRE}) name and convert returned {@link Playlist} list to {@link PlaylistDto}.</p>
      * @param
      *        smartType a string to specify type of returning {@link Playlist}s.
-     *                  should be on of these values {@link EnmBasedOnSth}.ARTIST or
-     *                  {@link EnmBasedOnSth}.GENRE.
+     *                  should be one of these values {@link EnmBasedOnSth#ARTIST} or
+     *                  {@link EnmBasedOnSth#GENRE}.
      * @param
      *      name name of "Artist" or "Genre" that exist in {@link Music} entity.
      * @return an {@link List} of {@link PlaylistDto}
@@ -231,19 +231,19 @@ public class PlaylistController {
 
     /**
      * <p>
-     *     Create a {@link Playlist}s of specific type({@link EnmBasedOnSth}.ARTIST or
-     *     {@link EnmBasedOnSth}.GENRE) and specific exist {@link Music}'s ({@link EnmBasedOnSth}.ARTIST or
-     *     {@link EnmBasedOnSth}.GENRE) name.</p>
+     *     Create a {@link Playlist}s of specific type({@link EnmBasedOnSth#ARTIST} or
+     *     {@link EnmBasedOnSth#GENRE}) and specific exist {@link Music}'s ({@link EnmBasedOnSth#ARTIST} or
+     *     {@link EnmBasedOnSth#GENRE}) name.</p>
      * @param
      *        smartType a string to specify type of returning {@link Playlist}s.
-     *                  should be on of these values {@link EnmBasedOnSth}.ARTIST or
-     *                  {@link EnmBasedOnSth}.GENRE.
+     *                  should be one of these values {@link EnmBasedOnSth#ARTIST} or
+     *                  {@link EnmBasedOnSth#GENRE}.
      * @param
      *      entryBean a bean of {@link EntryBean} that contains new {@link Playlist} data.
      * @return an {@link EntityModel} of {@link Playlist}
      */
     @PostMapping("/playlists/smart/{smartType}")
-    public EntityModel<Playlist> createSmartPlaylist(@PathVariable String smartType,
+    public ResponseEntity<EntityModel<PlaylistDto>> createSmartPlaylist(@PathVariable String smartType,
                                                      @RequestBody EntryBean entryBean) {
         InfFactoryPlaylistBasedOnSth creation = usePlaylistBasedOnSthInf;
         usePlaylistBasedOnSthInf.setEntryBean(entryBean);
@@ -260,12 +260,12 @@ public class PlaylistController {
 
         Playlist savedPlaylist = playlistRepository.save(playlist);
 
-        EntityModel<Playlist> entityModel = EntityModel.of(savedPlaylist);
+        EntityModel<PlaylistDto> entityModel = EntityModel.of(playlistMapper.toDto(savedPlaylist));
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrievePlaylist(savedPlaylist.getPlaylistId()));
         entityModel.add(link.withRel("playlist_link"));
 
-        return entityModel;
+        return ResponseEntity.created(link.toUri()).body(entityModel);
     }
 
     // Adjustment test ================================
