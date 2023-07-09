@@ -2,7 +2,6 @@ package com.example.schoolpaymentmanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,38 +13,38 @@ import java.util.List;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "studentId")
+        property = "teacherId")
 @Entity
-public class Student {
+public class Teacher {
     @Id
-    @GeneratedValue(generator = "student_sequence-generator")
+    @GeneratedValue(generator = "teacher_sequence-generator")
     @GenericGenerator(
-            name = "student_sequence-generator",
+            name = "teacher_sequence-generator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @Parameter(name = "sequence_name", value = "student_sequence"),
+                    @Parameter(name = "sequence_name", value = "teacher_sequence"),
                     @Parameter(name = "initial_value", value = "5"),
                     @Parameter(name = "increment_size", value = "1")
             }
     )
-    private long studentId;
+    private long teacherId;
 
     private String firstName;
 
     private String lastName;
 
-    @OneToMany(mappedBy="student")
-    private List<Fee> fees;
+    @OneToMany(mappedBy="teacher")
+    private List<Salary> salaries;
 
-    public Student() {
+    public Teacher() {
     }
 
-    public long getStudentId() {
-        return studentId;
+    public long getTeacherId() {
+        return teacherId;
     }
 
-    public void setStudentId(long studentId) {
-        this.studentId = studentId;
+    public void setTeacherId(long teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getFirstName() {
@@ -64,21 +63,21 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public List<Fee> getFees() {
-        return fees;
+    public List<Salary> getSalaries() {
+        return salaries;
     }
 
-    public void setFees(List<Fee> fees) {
-        this.fees = fees;
+    public void setSalaries(List<Salary> salaries) {
+        this.salaries = salaries;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
-                "studentId=" + studentId +
+        return "Teacher{" +
+                "teacherId=" + teacherId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", fees=" + fees +
+                ", salaries=" + salaries +
                 '}';
     }
 }
