@@ -1,4 +1,4 @@
-package com.example.schoolpaymentmanagementsystem.model;
+package com.example.schoolPaymentManagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -13,36 +13,36 @@ import java.time.LocalDate;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "salaryPaymentId")
+        property = "feePaymentId")
 @Entity
-public class SalaryPayment {
+public class FeePayment {
     @Id
-    @GeneratedValue(generator = "salaryPayment_sequence-generator")
+    @GeneratedValue(generator = "feePayment_sequence-generator")
     @GenericGenerator(
-            name = "salaryPayment_sequence-generator",
+            name = "feePayment_sequence-generator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @Parameter(name = "sequence_name", value = "salaryPayment_sequence"),
-                    @Parameter(name = "initial_value", value = "8"),
+                    @Parameter(name = "sequence_name", value = "feePayment_sequence"),
+                    @Parameter(name = "initial_value", value = "6"),
                     @Parameter(name = "increment_size", value = "1")
             }
     )
-    private long salaryPaymentId;
+    private long feePaymentId;
 
     private LocalDate paymentDate;
 
     @OneToOne
-    private Salary salary;
+    private Fee fee;
 
-    public SalaryPayment() {
+    public FeePayment() {
     }
 
-    public long getSalaryPaymentId() {
-        return salaryPaymentId;
+    public long getFeePaymentId() {
+        return feePaymentId;
     }
 
-    public void setSalaryPaymentId(long salaryPaymentId) {
-        this.salaryPaymentId = salaryPaymentId;
+    public void setFeePaymentId(long feePaymentId) {
+        this.feePaymentId = feePaymentId;
     }
 
     public LocalDate getPaymentDate() {
@@ -53,20 +53,20 @@ public class SalaryPayment {
         this.paymentDate = paymentDate;
     }
 
-    public Salary getSalary() {
-        return salary;
+    public Fee getFee() {
+        return fee;
     }
 
-    public void setSalary(Salary salary) {
-        this.salary = salary;
+    public void setFee(Fee fee) {
+        this.fee = fee;
     }
 
     @Override
     public String toString() {
-        return "SalaryPayment{" +
-                "salaryPaymentId=" + salaryPaymentId +
+        return "FeePayment{" +
+                "feePaymentId=" + feePaymentId +
                 ", paymentDate=" + paymentDate +
-                ", salary=" + salary +
+                ", fee=" + fee +
                 '}';
     }
 }

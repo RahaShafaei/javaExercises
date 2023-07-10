@@ -42,8 +42,8 @@ INSERT INTO FEE_PAYMENT (FEE_PAYMENT_ID, FEE_FEE_ID, PAYMENT_DATE)
 VALUES (1, 1, '2022-11-26'),
        (2, 2, '2022-11-28'),
        (3, 3, '2022-12-30'),
-       (6, 6, '2022-12-01'),
-       (7, 9, '2022-12-03');
+       (4, 6, '2022-12-01'),
+       (5, 9, '2022-12-03');
 -- ==============================================
 INSERT INTO SALARY (SALARY_ID, COST, DEAD_LINE, GRADE_GRADE_ID, TEACHER_TEACHER_ID)
 VALUES (1, 1000, '2022-11-28', 1, 1),
@@ -60,5 +60,5 @@ INSERT INTO SALARY_PAYMENT (SALARY_PAYMENT_ID, SALARY_SALARY_ID, PAYMENT_DATE)
 VALUES (1, 1, '2022-11-26'),
        (2, 2, '2022-11-28'),
        (3, 3, '2022-12-30'),
-       (6, 6, '2022-12-01'),
-       (7, 9, '2022-12-03');
+       (4, 6, '2022-12-01'),
+       (5, 9, '2022-12-03');

@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -74,7 +73,7 @@ public class PlaylistController {
         return playlistRepository.findAll()
                 .stream()
                 .map(playlistMapper::toDto)
-                .collect(toList());
+                .toList();
     }
 
     /**
@@ -108,7 +107,7 @@ public class PlaylistController {
                 .getMusicList()
                 .stream()
                 .map(musicMapper::toDto)
-                .collect(toList());
+                .toList();
     }
 
     /**
@@ -226,7 +225,7 @@ public class PlaylistController {
         return playlists
                 .stream()
                 .map(playlistMapper::toDto)
-                .collect(toList());
+                .toList();
     }
 
     /**

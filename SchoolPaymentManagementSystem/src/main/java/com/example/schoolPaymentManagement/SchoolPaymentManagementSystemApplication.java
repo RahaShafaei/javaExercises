@@ -1,4 +1,4 @@
-package com.example.schoolpaymentmanagementsystem;
+package com.example.schoolPaymentManagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

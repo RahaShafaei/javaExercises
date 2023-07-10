@@ -1,4 +1,4 @@
-package com.example.schoolpaymentmanagementsystem.model;
+package com.example.schoolPaymentManagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;

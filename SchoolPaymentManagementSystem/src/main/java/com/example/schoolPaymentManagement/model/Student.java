@@ -1,4 +1,4 @@
-package com.example.schoolpaymentmanagementsystem.model;
+package com.example.schoolPaymentManagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -24,7 +24,7 @@ public class Student {
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
                     @Parameter(name = "sequence_name", value = "student_sequence"),
-                    @Parameter(name = "initial_value", value = "5"),
+                    @Parameter(name = "initial_value", value = "10"),
                     @Parameter(name = "increment_size", value = "1")
             }
     )
