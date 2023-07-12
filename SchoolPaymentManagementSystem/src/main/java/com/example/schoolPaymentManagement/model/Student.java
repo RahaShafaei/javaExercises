@@ -3,10 +3,7 @@ package com.example.schoolPaymentManagement.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -36,6 +33,13 @@ public class Student {
 
     @OneToMany(mappedBy="student")
     private List<Fee> fees;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_grade",
+            joinColumns = @JoinColumn(name = "studentId"),
+            inverseJoinColumns = @JoinColumn(name = "gradeId"))
+    private List<Grade> gradeList;
 
     public Student() {
     }
@@ -72,6 +76,14 @@ public class Student {
         this.fees = fees;
     }
 
+    public List<Grade> getGradeList() {
+        return gradeList;
+    }
+
+    public void setGradeList(List<Grade> gradeList) {
+        this.gradeList = gradeList;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -79,6 +91,7 @@ public class Student {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", fees=" + fees +
+                ", gradeList=" + gradeList +
                 '}';
     }
 }

@@ -1,9 +1,7 @@
 package com.example.schoolPaymentManagement.dto;
 
 import com.example.schoolPaymentManagement.helper.Helper;
-import com.example.schoolPaymentManagement.model.Fee;
-import com.example.schoolPaymentManagement.model.Grade;
-import com.example.schoolPaymentManagement.model.Salary;
+import com.example.schoolPaymentManagement.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -36,24 +34,22 @@ public class GradeMapper {
         gradeDto.setGradeId(grade.getGradeId());
         gradeDto.setName(grade.getName());
 
-        if (grade.getFees() != null) {
-            Map<Long, StudentDto> feeDtl = Helper.convertListToMapAccordingToMapper(
-                    grade.getFees(),
-                    Fee::getFeeId,
-                    Fee::getStudent,
+        if (grade.getStudentList() != null) {
+            Map<Long, StudentDto> studentDtl = Helper.convertListToMap(
+                    grade.getStudentList(),
+                    Student::getStudentId,
                     studentMapper::toDto
             );
-            gradeDto.setFees(feeDtl);
+            gradeDto.setStudentDtos(studentDtl);
         }
 
-        if (grade.getSalaries() != null) {
-            Map<Long, TeacherDto> salaryDtl = Helper.convertListToMapAccordingToMapper(
-                    grade.getSalaries(),
-                    Salary::getSalaryId,
-                    Salary::getTeacher,
+        if (grade.getTeacherList() != null) {
+            Map<Long, TeacherDto> teacherDtl = Helper.convertListToMap(
+                    grade.getTeacherList(),
+                    Teacher::getTeacherId,
                     teacherMapper::toDto
             );
-            gradeDto.setSalaries(salaryDtl);
+            gradeDto.setTeacherDtos(teacherDtl);
         }
 
         return gradeDto;

@@ -15,6 +15,10 @@ import java.util.function.Function;
  * </p>
  */
 public class Helper {
+
+    private Helper() {
+        throw new IllegalStateException("Helper Utility class");
+    }
     public static <T, R, Y> Map<R, Y> convertListToMap(List<T> lst,
                                                        Function<T, R> func1,
                                                        Function<T, Y> func2

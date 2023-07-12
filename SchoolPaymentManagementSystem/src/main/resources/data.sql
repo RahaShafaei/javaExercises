@@ -27,6 +27,30 @@ VALUES (1, 'Jordan', 'Johnson'),
        (8, 'Kevin', 'Darnell'),
        (9, 'Sara', 'Robins');
 -- ==============================================
+INSERT INTO  STUDENT_GRADE (STUDENT_ID , GRADE_ID )
+VALUES
+    (1,1),
+    (2,1),
+    (3,2),
+    (4,2),
+    (5,2),
+    (6,3),
+    (7,3),
+    (8,3),
+    (9,3);
+-- ==============================================
+INSERT INTO  TEACHER_GRADE (TEACHER_ID , GRADE_ID )
+VALUES
+    (1,1),
+    (2,1),
+    (3,2),
+    (4,2),
+    (5,2),
+    (6,3),
+    (7,3),
+    (8,3),
+    (9,3);
+-- ==============================================
 INSERT INTO FEE (FEE_ID, COST, DEAD_LINE, GRADE_GRADE_ID, STUDENT_STUDENT_ID)
 VALUES (1, 1000, '2022-11-28', 1, 1),
        (2, 1000, '2022-11-28', 1, 2),

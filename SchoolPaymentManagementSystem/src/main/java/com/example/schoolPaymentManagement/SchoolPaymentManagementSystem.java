@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SchoolPaymentManagementSystemApplication {
-
+public class SchoolPaymentManagementSystem {
     public static void main(String[] args) {
-        SpringApplication.run(SchoolPaymentManagementSystemApplication.class, args);
+        SpringApplication.run(SchoolPaymentManagementSystem.class, args);
     }
 
 }
