@@ -26,9 +26,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class UsePlaylistBasedOnSthInf implements InfFactoryPlaylistBasedOnSth {
     private EntryBean entryBean;
-    private InfPlaylistRepository playlistRepository;
-    private InfMusicRepository musicRepository;
-    private InfGenreRepository genreRepository;
+    private final InfPlaylistRepository playlistRepository;
+    private final InfMusicRepository musicRepository;
+    private final InfGenreRepository genreRepository;
 
     public UsePlaylistBasedOnSthInf(InfPlaylistRepository playlistRepository,
                                     InfMusicRepository musicRepository,

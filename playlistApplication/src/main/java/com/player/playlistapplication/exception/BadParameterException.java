@@ -1,8 +1,5 @@
 package com.player.playlistapplication.exception;
 
-import com.player.playlistapplication.dto.GenreDto;
-import com.player.playlistapplication.model.Genre;
-
 /**
  * @author Raha
  * @since 2023-06-22

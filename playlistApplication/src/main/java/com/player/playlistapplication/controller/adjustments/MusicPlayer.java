@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
  */
 
 public class MusicPlayer extends Player {
-
     private static final Logger logger = LoggerFactory.getLogger(MusicPlayer.class);
     private Music music;
 

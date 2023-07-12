@@ -1,7 +1,6 @@
 package com.player.playlistapplication.controller.smartPlaylist;
 
 import com.player.playlistapplication.helper.EntryBean;
-import com.player.playlistapplication.model.Genre;
 import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 
@@ -12,8 +11,8 @@ import java.util.List;
  * @since 2023-06-22
  *
  * <p>
- *     This is one of {@link PlaylistBasedOnSth} subclasses to implement FactoryMethod Pattern's
- *     settings for Artists.
+ * This is one of {@link PlaylistBasedOnSth} subclasses to implement FactoryMethod Pattern's
+ * settings for Artists.
  * </p>
  */
 
@@ -25,32 +24,30 @@ public class PlaylistBasedOnArtist extends PlaylistBasedOnSth {
 
     /**
      * <p>
-     *     Collecting list of {@link Music} according {@link Music}'s "Artist".
+     * Collecting list of {@link Music} according {@link Music}'s "Artist".
      * </p>
+     *
      * @return List of {@link Music}
      */
     @Override
     public List<Music> collectingMusic() {
-        List<Music> musicList = musicRepository.findAllByArtistAndPubYearBetween(
+        return musicRepository.findAllByArtistAndPubYearBetween(
                 entryBean.getName(),
                 entryBean.getFromYear(),
                 entryBean.getToYear()
         );
-
-        return musicList;
     }
 
 
     /**
      * <p>
-     *     Find list of {@link Playlist} according to {@link Music}'s "Artist".
+     * Find list of {@link Playlist} according to {@link Music}'s "Artist".
      * </p>
+     *
      * @return List of {@link Playlist}
      */
     @Override
     public List<Playlist> findPlaylistBasedOnSth() {
-        List<Playlist> playlists = playlistRepository.findByMusicList_Artist(entryBean.getName());
-
-        return playlists;
+        return playlistRepository.findByMusicList_Artist(entryBean.getName());
     }
 }

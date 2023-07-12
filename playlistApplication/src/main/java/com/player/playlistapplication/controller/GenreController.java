@@ -17,8 +17,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.toList;
-
 /**
  * @author Raha
  * @since 2023-06-22
@@ -51,7 +49,7 @@ public class GenreController {
         return repository.findAll()
                 .stream()
                 .map(genreMapper::toDto)
-                .collect(toList());
+                .toList();
     }
 
     /**
@@ -91,7 +89,7 @@ public class GenreController {
                 .getMusicList()
                 .stream()
                 .map(musicMapper::toDto)
-                .collect(toList());
+                .toList();
     }
 
     /**

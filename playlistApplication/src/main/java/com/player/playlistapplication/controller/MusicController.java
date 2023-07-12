@@ -15,13 +15,10 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.toList;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -30,15 +27,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * @since 2023-06-22
  *
  * <p>
- *     Handle all {@link Music} interactions.
+ * Handle all {@link Music} interactions.
  * </p>
  */
 @RestController
 public class MusicController {
-    private InfMusicRepository musicRepository;
-    private InfGenreRepository genreRepository;
-    private MusicMapper musicMapper;
-    private PlaylistMapper playlistMapper;
+    private static final String MUSIC_ID = "Music id: ";
+    private final InfMusicRepository musicRepository;
+    private final InfGenreRepository genreRepository;
+    private final MusicMapper musicMapper;
+    private final PlaylistMapper playlistMapper;
 
     public MusicController(InfMusicRepository musicRepository,
                            MusicMapper musicMapper,
@@ -60,7 +58,7 @@ public class MusicController {
         return musicRepository.findAll()
                 .stream()
                 .map(musicMapper::toDto)
-                .collect(toList());
+                .toList();
     }
 
     /**
@@ -76,7 +74,7 @@ public class MusicController {
         Optional<Music> music = musicRepository.findById(id);
 
         if (music.isEmpty())
-            throw new ItemNotFoundException("Music id: " + id);
+            throw new ItemNotFoundException(MUSIC_ID + id);
 
         return musicMapper.toDto(music.get());
     }
@@ -94,13 +92,13 @@ public class MusicController {
         Optional<Music> music = musicRepository.findById(id);
 
         if (music.isEmpty())
-            throw new ItemNotFoundException("Music id: " + id);
+            throw new ItemNotFoundException(MUSIC_ID + id);
 
         return music.get()
                 .getPlaylist()
                 .stream()
                 .map(playlistMapper::toDto)
-                .collect(toList());
+                .toList();
     }
 
     /**
@@ -111,7 +109,7 @@ public class MusicController {
         Optional<Music> music = musicRepository.findById(id);
 
         if (music.isEmpty())
-            throw new ItemNotFoundException("Music id: " + id);
+            throw new ItemNotFoundException(MUSIC_ID + id);
 
         musicRepository.deleteById(id);
     }
