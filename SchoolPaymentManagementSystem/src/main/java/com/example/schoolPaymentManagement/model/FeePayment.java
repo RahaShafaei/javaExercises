@@ -1,7 +1,9 @@
 package com.example.schoolPaymentManagement.model;
 
+import com.example.schoolPaymentManagement.validator.CustomDateDeserializer;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -29,6 +31,7 @@ public class FeePayment {
     )
     private long feePaymentId;
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     private LocalDate paymentDate;
 
     @OneToOne

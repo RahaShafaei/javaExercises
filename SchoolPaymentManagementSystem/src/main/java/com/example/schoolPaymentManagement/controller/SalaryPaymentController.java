@@ -5,6 +5,7 @@ import com.example.schoolPaymentManagement.dto.SalaryMapper;
 import com.example.schoolPaymentManagement.dto.SalaryPaymentDto;
 import com.example.schoolPaymentManagement.dto.SalaryPaymentMapper;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
+import com.example.schoolPaymentManagement.exception.ParametersNotValidException;
 import com.example.schoolPaymentManagement.model.Salary;
 import com.example.schoolPaymentManagement.model.SalaryPayment;
 import com.example.schoolPaymentManagement.repository.InfSalaryPaymentRepository;
@@ -129,6 +130,10 @@ public class SalaryPaymentController {
 
         if (salary.isEmpty())
             throw new ItemNotFoundException("Salary id: " + id);
+
+        if (salaryPayment.getPaymentDate() != null && salaryPayment.getPaymentDate().isBefore(salary.get().getDeadLine()))
+            throw new ParametersNotValidException("PaymentDate is NULL or PaymentDate is before Salary's DeadLine.");
+
 
         salaryPayment.setSalary(salary.get());
         SalaryPayment savedSalaryPayment = salaryPaymentRepository.save(salaryPayment);

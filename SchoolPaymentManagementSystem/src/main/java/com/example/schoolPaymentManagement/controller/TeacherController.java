@@ -1,10 +1,12 @@
 package com.example.schoolPaymentManagement.controller;
 
-import com.example.schoolPaymentManagement.dto.*;
+import com.example.schoolPaymentManagement.dto.SalaryDto;
+import com.example.schoolPaymentManagement.dto.SalaryMapper;
+import com.example.schoolPaymentManagement.dto.TeacherDto;
+import com.example.schoolPaymentManagement.dto.TeacherMapper;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
 import com.example.schoolPaymentManagement.model.Grade;
 import com.example.schoolPaymentManagement.model.Salary;
-import com.example.schoolPaymentManagement.model.Student;
 import com.example.schoolPaymentManagement.model.Teacher;
 import com.example.schoolPaymentManagement.repository.InfGradeRepository;
 import com.example.schoolPaymentManagement.repository.InfTeacherRepository;
@@ -13,9 +15,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -105,6 +105,7 @@ public class TeacherController {
 
     /**
      * Find a specific {@link Teacher} according to taken id and delete it.
+     *
      * @param id of a valid {@link Teacher}.
      */
     @DeleteMapping("/teachers/{id}")
@@ -126,7 +127,7 @@ public class TeacherController {
      */
     @PostMapping("/teachers/grade/{gradeId}")
     public ResponseEntity<EntityModel<TeacherDto>> createTeacher(@Valid @RequestBody Teacher teacher,
-                                                    @PathVariable Long gradeId) {
+                                                                 @PathVariable Long gradeId) {
         Optional<Grade> grade = gradeRepository.findById(gradeId);
 
         if (grade.isEmpty())

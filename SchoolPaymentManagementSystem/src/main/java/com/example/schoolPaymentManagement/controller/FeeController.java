@@ -2,6 +2,7 @@ package com.example.schoolPaymentManagement.controller;
 
 import com.example.schoolPaymentManagement.dto.*;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
+import com.example.schoolPaymentManagement.exception.ItemNotIncludedException;
 import com.example.schoolPaymentManagement.model.Fee;
 import com.example.schoolPaymentManagement.model.Grade;
 import com.example.schoolPaymentManagement.model.Student;
@@ -160,7 +161,20 @@ public class FeeController {
         Optional<Grade> grade = gradeRepository.findById(gradeId);
 
         if (student.isEmpty() || grade.isEmpty())
-            throw new ItemNotFoundException("Student id: " + studentId + " OR Grade id: " + gradeId);
+            throw new ItemNotFoundException(
+                    "Student id: "
+                            + studentId
+                            + " OR Grade id: "
+                            + gradeId
+            );
+
+        if (!grade.get().getStudentList().contains(student.get()))
+            throw new ItemNotIncludedException(
+                    "There isn't any student by id: "
+                            + studentId
+                            + " in grade by id: "
+                            + gradeId
+            );
 
         fee.setStudent(student.get());
         fee.setGrade(grade.get());
@@ -170,7 +184,7 @@ public class FeeController {
         EntityModel<FeeDto> entityModel = EntityModel.of(feeMapper.toDto(savedFee));
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveFee(savedFee.getFeeId()));
-        entityModel.add(link.withRel("playlist_link"));
+        entityModel.add(link.withRel("fee_link"));
 
         return ResponseEntity.created(link.toUri()).body(entityModel);
     }

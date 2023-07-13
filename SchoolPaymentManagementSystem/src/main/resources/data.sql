@@ -31,6 +31,7 @@ INSERT INTO  STUDENT_GRADE (STUDENT_ID , GRADE_ID )
 VALUES
     (1,1),
     (2,1),
+    (3,1),
     (3,2),
     (4,2),
     (5,2),
@@ -43,6 +44,7 @@ INSERT INTO  TEACHER_GRADE (TEACHER_ID , GRADE_ID )
 VALUES
     (1,1),
     (2,1),
+    (3,1),
     (3,2),
     (4,2),
     (5,2),

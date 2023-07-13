@@ -1,10 +1,7 @@
 package com.example.schoolPaymentManagement.dto;
 
-import com.example.schoolPaymentManagement.helper.Helper;
 import com.example.schoolPaymentManagement.model.Salary;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * @author Raha
@@ -16,19 +13,19 @@ import java.util.Map;
  */
 @Component
 public class SalaryMapper {
-    private GradeMapper grade;
+    private final GradeMapper gradeMapper;
 
-    private TeacherMapper teacher;
+    private final TeacherMapper teacherMapper;
 
-    private SalaryPaymentMapper salaryPayment;
+    private final SalaryPaymentMapper salaryPaymentMapper;
 
-    public SalaryMapper(GradeMapper grade,
-                        TeacherMapper teacher,
-                        SalaryPaymentMapper salaryPayment
+    public SalaryMapper(GradeMapper gradeMapper,
+                        TeacherMapper teacherMapper,
+                        SalaryPaymentMapper salaryPaymentMapper
     ) {
-        this.grade = grade;
-        this.teacher = teacher;
-        this.salaryPayment = salaryPayment;
+        this.gradeMapper = gradeMapper;
+        this.teacherMapper = teacherMapper;
+        this.salaryPaymentMapper = salaryPaymentMapper;
     }
 
     public SalaryDto toDto(Salary salary) {
@@ -36,9 +33,21 @@ public class SalaryMapper {
 
         salaryDto.setSalaryId(salary.getSalaryId());
         salaryDto.setCost(salary.getCost());
-        salaryDto.setGrade(this.grade.toDto(salary.getGrade()));
-        salaryDto.setTeacher(this.teacher.toDto(salary.getTeacher()));
-        salaryDto.setSalaryPayment(this.salaryPayment.toDto(salary.getSalaryPayment()));
+        salaryDto.setGrade(
+                salary.getGrade() != null ?
+                        this.gradeMapper.toDto(salary.getGrade()) :
+                        null
+        );
+        salaryDto.setTeacher(
+                salary.getTeacher() != null ?
+                        this.teacherMapper.toDto(salary.getTeacher()) :
+                        null
+        );
+        salaryDto.setSalaryPayment(
+                salary.getSalaryPayment() != null ?
+                        this.salaryPaymentMapper.toDto(salary.getSalaryPayment()) :
+                        null
+        );
 
         return salaryDto;
     }

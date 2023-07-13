@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class FeeMapper {
 
-    private StudentMapper studentMapper;
+    private final StudentMapper studentMapper;
 
-    private GradeMapper gradeMapper;
+    private final GradeMapper gradeMapper;
 
-    private FeePaymentMapper feePaymentMapper;
+    private final FeePaymentMapper feePaymentMapper;
 
     public FeeMapper(StudentMapper studentMapper,
                      GradeMapper gradeMapper,
@@ -35,9 +35,21 @@ public class FeeMapper {
         feeDto.setFeeId(fee.getFeeId());
         feeDto.setCost(fee.getCost());
         feeDto.setDeadLine(fee.getDeadLine());
-        feeDto.setStudent(this.studentMapper.toDto(fee.getStudent()));
-        feeDto.setGrade(this.gradeMapper.toDto(fee.getGrade()));
-        feeDto.setFeePayment(this.feePaymentMapper.toDto(fee.getFeePayment()));
+        feeDto.setStudent(
+                fee.getStudent() != null ?
+                        this.studentMapper.toDto(fee.getStudent()) :
+                        null
+        );
+        feeDto.setGrade(
+                fee.getGrade() != null ?
+                        this.gradeMapper.toDto(fee.getGrade()) :
+                        null
+        );
+        feeDto.setFeePayment(
+                fee.getFeePayment() != null ?
+                        this.feePaymentMapper.toDto(fee.getFeePayment()) :
+                        null
+        );
 
         return feeDto;
     }

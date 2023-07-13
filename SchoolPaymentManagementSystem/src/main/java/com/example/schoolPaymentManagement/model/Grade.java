@@ -3,6 +3,7 @@ package com.example.schoolPaymentManagement.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -26,12 +27,13 @@ public class Grade {
     )
     private long gradeId;
 
+    @Size(min = 2, message = "Name should have at least 2 character")
     private String name;
 
-    @OneToMany(mappedBy="grade")
+    @OneToMany(mappedBy = "grade")
     private List<Fee> fees;
 
-    @OneToMany(mappedBy="grade")
+    @OneToMany(mappedBy = "grade")
     private List<Salary> salaries;
 
     @ManyToMany(mappedBy = "gradeList")

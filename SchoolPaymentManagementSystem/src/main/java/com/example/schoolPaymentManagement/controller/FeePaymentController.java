@@ -5,6 +5,7 @@ import com.example.schoolPaymentManagement.dto.FeeMapper;
 import com.example.schoolPaymentManagement.dto.FeePaymentDto;
 import com.example.schoolPaymentManagement.dto.FeePaymentMapper;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
+import com.example.schoolPaymentManagement.exception.ParametersNotValidException;
 import com.example.schoolPaymentManagement.model.Fee;
 import com.example.schoolPaymentManagement.model.FeePayment;
 import com.example.schoolPaymentManagement.repository.InfFeePaymentRepository;
@@ -130,6 +131,9 @@ public class FeePaymentController {
 
         if (fee.isEmpty())
             throw new ItemNotFoundException("Fee id: " + id);
+
+        if (feePayment.getPaymentDate() != null && feePayment.getPaymentDate().isBefore(fee.get().getDeadLine()))
+            throw new ParametersNotValidException("PaymentDate is NULL or PaymentDate is before Fee's DeadLine.");
 
         feePayment.setFee(fee.get());
         FeePayment savedFeePayment = feePaymentRepository.save(feePayment);

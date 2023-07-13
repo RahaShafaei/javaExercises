@@ -1,10 +1,8 @@
 package com.example.schoolPaymentManagement.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,6 +46,20 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ItemNotIncludedException.class)
+    public final ResponseEntity<ErrorDetails> handleItemNotIncludedException(Exception ex,
+                                                                             WebRequest request) throws Exception {
+
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                ex.getClass().getSimpleName(),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
@@ -60,6 +72,22 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 msg,
+                ex.getClass().getSimpleName(),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+                                                                  HttpHeaders headers,
+                                                                  HttpStatusCode status,
+                                                                  WebRequest request) {
+
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                ex.getLocalizedMessage(),
                 ex.getClass().getSimpleName(),
                 request.getDescription(false)
         );

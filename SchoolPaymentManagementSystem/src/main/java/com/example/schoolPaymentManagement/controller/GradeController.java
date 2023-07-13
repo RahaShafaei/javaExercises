@@ -2,12 +2,8 @@ package com.example.schoolPaymentManagement.controller;
 
 import com.example.schoolPaymentManagement.dto.*;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
-import com.example.schoolPaymentManagement.model.Grade;
+import com.example.schoolPaymentManagement.model.*;
 import com.example.schoolPaymentManagement.repository.InfGradeRepository;
-import com.example.schoolPaymentManagement.model.Student;
-import com.example.schoolPaymentManagement.model.Teacher;
-import com.example.schoolPaymentManagement.model.Fee;
-import com.example.schoolPaymentManagement.model.Salary;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

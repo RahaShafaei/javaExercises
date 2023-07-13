@@ -1,7 +1,9 @@
 package com.example.schoolPaymentManagement.dto;
 
 import com.example.schoolPaymentManagement.helper.Helper;
-import com.example.schoolPaymentManagement.model.*;
+import com.example.schoolPaymentManagement.model.Grade;
+import com.example.schoolPaymentManagement.model.Student;
+import com.example.schoolPaymentManagement.model.Teacher;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -17,9 +19,9 @@ import java.util.Map;
 @Component
 public class GradeMapper {
 
-    private StudentMapper studentMapper;
+    private final StudentMapper studentMapper;
 
-    private TeacherMapper teacherMapper;
+    private final TeacherMapper teacherMapper;
 
     public GradeMapper(StudentMapper studentMapper,
                        TeacherMapper teacherMapper

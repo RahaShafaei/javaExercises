@@ -2,6 +2,7 @@ package com.example.schoolPaymentManagement.controller;
 
 import com.example.schoolPaymentManagement.dto.*;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
+import com.example.schoolPaymentManagement.exception.ItemNotIncludedException;
 import com.example.schoolPaymentManagement.model.Grade;
 import com.example.schoolPaymentManagement.model.Salary;
 import com.example.schoolPaymentManagement.model.Teacher;
@@ -162,6 +163,14 @@ public class SalaryController {
         if (teacher.isEmpty() || grade.isEmpty())
             throw new ItemNotFoundException("Student id: " + teacherId + " OR Grade id: " + gradeId);
 
+        if (!grade.get().getTeacherList().contains(teacher.get()))
+            throw new ItemNotIncludedException(
+                    "There isn't any teacher by id: "
+                            + teacherId
+                            + " in grade by id: "
+                            + gradeId
+            );
+
         salary.setTeacher(teacher.get());
         salary.setGrade(grade.get());
 
@@ -170,7 +179,7 @@ public class SalaryController {
         EntityModel<SalaryDto> entityModel = EntityModel.of(salaryMapper.toDto(savedSalary));
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveSalary(savedSalary.getSalaryId()));
-        entityModel.add(link.withRel("playlist_link"));
+        entityModel.add(link.withRel("salary_link"));
 
         return ResponseEntity.created(link.toUri()).body(entityModel);
     }

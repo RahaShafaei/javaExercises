@@ -1,7 +1,10 @@
 package com.example.schoolPaymentManagement.model;
 
+import com.example.schoolPaymentManagement.validator.BigDecimalLength;
+import com.example.schoolPaymentManagement.validator.CustomDateDeserializer;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -27,8 +30,10 @@ public class Salary {
     )
     private long salaryId;
 
+    @BigDecimalLength(minLength = 3)
     private BigDecimal cost;
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     private LocalDate deadLine;
 
     @ManyToOne
