@@ -22,7 +22,12 @@ import org.slf4j.LoggerFactory;
  */
 
 public class PlaylistPlayer extends Player {
-    private static final Logger logger = LoggerFactory.getLogger(MusicPlayer.class);
+    private static final Logger logger;
+
+    static {
+        logger = LoggerFactory.getLogger(PlaylistPlayer.class);
+    }
+
     private Playlist playlist;
 
     public PlaylistPlayer(Long id,

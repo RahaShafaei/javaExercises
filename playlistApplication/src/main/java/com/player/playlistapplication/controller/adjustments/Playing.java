@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Playing {
     private Long id;
-    private InfPlaylistRepository playlistRepository;
-    private InfMusicRepository musicRepository;
+    private final InfPlaylistRepository playlistRepository;
+    private final InfMusicRepository musicRepository;
 
     public Playing(InfPlaylistRepository playlistRepository,
                    InfMusicRepository musicRepository) {
@@ -52,12 +52,10 @@ public class Playing {
      */
     public Player create(EnmBasedOnSth type) {
 
-        Player player = switch (type) {
+        return switch (type) {
             case MUSIC -> new MusicPlayer(this.id, this.playlistRepository, this.musicRepository);
             case PLAYLIST -> new PlaylistPlayer(this.id, this.playlistRepository, this.musicRepository);
             default -> throw new BadParameterException("The type is not in defined parameters.");
         };
-
-        return player;
     }
 }

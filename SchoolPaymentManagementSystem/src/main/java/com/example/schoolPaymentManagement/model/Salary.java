@@ -36,6 +36,8 @@ public class Salary {
     @JsonDeserialize(using = CustomDateDeserializer.class)
     private LocalDate deadLine;
 
+    private Boolean status;
+
     @ManyToOne
     private Grade grade;
 
@@ -96,12 +98,21 @@ public class Salary {
         this.payment = payment;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Salary{" +
                 "salaryId=" + salaryId +
                 ", cost=" + cost +
                 ", deadLine=" + deadLine +
+                ", status=" + status +
                 ", grade=" + grade +
                 ", teacher=" + teacher +
                 ", payment=" + payment +

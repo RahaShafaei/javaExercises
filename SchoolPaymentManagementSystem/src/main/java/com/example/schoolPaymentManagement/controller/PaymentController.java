@@ -2,23 +2,26 @@ package com.example.schoolPaymentManagement.controller;
 
 import com.example.schoolPaymentManagement.controller.paymentFactory.InfFactoryPaymentGeneralities;
 import com.example.schoolPaymentManagement.controller.paymentFactory.UseInfFactoryPaymentGeneralities;
+import com.example.schoolPaymentManagement.controller.paymentObserver.FeeObserver;
+import com.example.schoolPaymentManagement.controller.paymentObserver.PaymentStatus;
+import com.example.schoolPaymentManagement.controller.paymentObserver.SalaryObserver;
 import com.example.schoolPaymentManagement.dto.FeeDto;
-import com.example.schoolPaymentManagement.dto.SalaryDto;
 import com.example.schoolPaymentManagement.dto.PaymentDto;
 import com.example.schoolPaymentManagement.dto.PaymentMapper;
+import com.example.schoolPaymentManagement.dto.SalaryDto;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
-import com.example.schoolPaymentManagement.exception.ParametersNotValidException;
 import com.example.schoolPaymentManagement.helper.EnmPaymentTypes;
-import com.example.schoolPaymentManagement.model.Fee;
-import com.example.schoolPaymentManagement.model.Salary;
-import com.example.schoolPaymentManagement.model.Payment;
+import com.example.schoolPaymentManagement.model.*;
+import com.example.schoolPaymentManagement.repository.InfFeeRepository;
 import com.example.schoolPaymentManagement.repository.InfPaymentRepository;
+import com.example.schoolPaymentManagement.repository.InfSalaryRepository;
 import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,15 +41,25 @@ public class PaymentController {
 
     private static final String PAYMENT_ID = "Payment id: ";
     private final InfPaymentRepository infPaymentRepository;
+    private final InfSalaryRepository infSalaryRepository;
+    private final InfFeeRepository infFeeRepository;
     private final PaymentMapper paymentMapper;
     private final UseInfFactoryPaymentGeneralities useInfFactoryPaymentGeneralities;
 
+    private final PaymentStatus paymentStatus;
+
     public PaymentController(InfPaymentRepository infPaymentRepository,
+                             InfSalaryRepository infSalaryRepository,
+                             InfFeeRepository infFeeRepository,
                              PaymentMapper paymentMapper,
-                             UseInfFactoryPaymentGeneralities useInfFactoryPaymentGeneralities) {
+                             UseInfFactoryPaymentGeneralities useInfFactoryPaymentGeneralities,
+                             PaymentStatus paymentStatus) {
         this.infPaymentRepository = infPaymentRepository;
+        this.infSalaryRepository = infSalaryRepository;
+        this.infFeeRepository = infFeeRepository;
         this.paymentMapper = paymentMapper;
         this.useInfFactoryPaymentGeneralities = useInfFactoryPaymentGeneralities;
+        this.paymentStatus = paymentStatus;
     }
 
     /**
@@ -88,11 +101,10 @@ public class PaymentController {
      * {@link SalaryDto} respectively and return it.
      * </p>
      *
-     * @param id of {@link Payment}
-     * @param
-     *        type a string to specify type of returning {@link PaymentDto}s.
-     *                  should be one of these values {@link EnmPaymentTypes#FEE} or
-     *                  {@link EnmPaymentTypes#SALARY}.
+     * @param id   of {@link Payment}
+     * @param type a string to specify type of returning {@link PaymentDto}s.
+     *             should be one of these values {@link EnmPaymentTypes#FEE} or
+     *             {@link EnmPaymentTypes#SALARY}.
      * @return {@link PaymentDto}
      */
     @GetMapping("/payments/{type}/{id}")
@@ -126,10 +138,9 @@ public class PaymentController {
      * <p>Create a {@link Payment} by use of taken existing {@link Fee} or {@link Salary} entity id.</p>
      *
      * @param id      of a valid {@link Fee} or {@link Salary}.
-     * @param
-     *        type a string to specify type of returning {@link PaymentDto}s.
-     *                  should be one of these values {@link EnmPaymentTypes#FEE} or
-     *                  {@link EnmPaymentTypes#SALARY}.
+     * @param type    a string to specify type of returning {@link PaymentDto}s.
+     *                should be one of these values {@link EnmPaymentTypes#FEE} or
+     *                {@link EnmPaymentTypes#SALARY}.
      * @param payment object of a valid {@link Payment}
      * @return {@link ResponseEntity} of {@link EntityModel} of {@link PaymentDto}
      */
@@ -152,6 +163,51 @@ public class PaymentController {
         entityModel.add(link.withRel("payment_link"));
 
         return ResponseEntity.created(link.toUri()).body(entityModel);
+    }
+    // Observers Notifications ================================
+
+    /**
+     * Notifying {@link Student}s or {@link Teacher}s that their payment has been made.
+     */
+    @GetMapping("/payments/notifying/done")
+    public void notifyingDone() {
+//         Create Observable and Observers
+        List<Fee> fees = infFeeRepository.findAllByStatusNullAndDeadLineGreaterThanEqualOrPaymentNotNull(LocalDate.now());
+        List<Salary> salaries = infSalaryRepository.findAllByStatusNullAndDeadLineGreaterThanEqualOrPaymentNotNull(LocalDate.now());
+
+        notifying(true, fees, salaries);
+    }
+
+    /**
+     * Notifying {@link Student}s or {@link Teacher}s that their payment has not been made.
+     */
+    @GetMapping("/payments/notifying/notDone")
+    public void notifyingNotDone() {
+        //Create Observable and Observers
+        List<Fee> fees = infFeeRepository.findAllByStatusNullAndDeadLineBeforeAndPaymentNull(LocalDate.now());
+        List<Salary> salaries = infSalaryRepository.findAllByStatusNullAndDeadLineBeforeAndPaymentNull(LocalDate.now());
+
+        notifying(false, fees, salaries);
+    }
+
+    private void notifying(Boolean paymentMade, List<Fee> fees, List<Salary> salaries) {
+        // Register observers
+        fees.stream()
+                .map(FeeObserver::new)
+                .forEach(f -> {
+                    f.setInfFeeRepository(infFeeRepository);
+                    paymentStatus.registerObserver(f);
+                });
+
+        salaries.stream()
+                .map(SalaryObserver::new)
+                .forEach(s -> {
+                    s.setInfSalaryRepository(infSalaryRepository);
+                    paymentStatus.registerObserver(s);
+                });
+
+        // Update payment status
+        paymentStatus.updatePaymentStatus(paymentMade);
     }
 
 }
