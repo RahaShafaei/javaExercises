@@ -17,15 +17,11 @@ public class SalaryMapper {
 
     private final TeacherMapper teacherMapper;
 
-    private final SalaryPaymentMapper salaryPaymentMapper;
-
     public SalaryMapper(GradeMapper gradeMapper,
-                        TeacherMapper teacherMapper,
-                        SalaryPaymentMapper salaryPaymentMapper
+                        TeacherMapper teacherMapper
     ) {
         this.gradeMapper = gradeMapper;
         this.teacherMapper = teacherMapper;
-        this.salaryPaymentMapper = salaryPaymentMapper;
     }
 
     public SalaryDto toDto(Salary salary) {
@@ -43,9 +39,9 @@ public class SalaryMapper {
                         this.teacherMapper.toDto(salary.getTeacher()) :
                         null
         );
-        salaryDto.setSalaryPayment(
-                salary.getSalaryPayment() != null ?
-                        this.salaryPaymentMapper.toDto(salary.getSalaryPayment()) :
+        salaryDto.setPaymentDate(
+                salary.getPayment() != null ?
+                        salary.getPayment().getPaymentDate() :
                         null
         );
 

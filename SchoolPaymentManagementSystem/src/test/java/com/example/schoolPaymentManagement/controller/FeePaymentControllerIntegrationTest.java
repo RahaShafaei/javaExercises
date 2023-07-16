@@ -1,7 +1,7 @@
 package com.example.schoolPaymentManagement.controller;
 
 import com.example.schoolPaymentManagement.dto.FeeDto;
-import com.example.schoolPaymentManagement.dto.FeePaymentDto;
+import com.example.schoolPaymentManagement.dto.PaymentDto;
 import com.example.schoolPaymentManagement.model.FeePayment;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,10 +93,10 @@ class FeePaymentControllerIntegrationTest {
         HttpEntity<String> request = new HttpEntity<>(feePaymentDetailsRequestJson.toString(), headers);
 
         // Act
-        ResponseEntity<FeePaymentDto> createdFeePaymentDetailsEntity = testRestTemplate.postForEntity(
+        ResponseEntity<PaymentDto> createdFeePaymentDetailsEntity = testRestTemplate.postForEntity(
                 "/feePayments/fee/8",
                 request,
-                FeePaymentDto.class
+                PaymentDto.class
         );
 
         // Assert

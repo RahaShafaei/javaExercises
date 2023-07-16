@@ -48,13 +48,11 @@ public class UsePlaylistBasedOnSthInf implements InfFactoryPlaylistBasedOnSth {
 
     /**
      * @param type {@link EnmBasedOnSth}
-     *             <p>
      *
-     *             </p>
-     *             <p>
-     *             According to {@link EnmBasedOnSth} value create an instance of {@link PlaylistBasedOnSth}'s
-     *             subclasses.
-     *             </p>
+     * <p>
+     * According to {@link EnmBasedOnSth} value create an instance of {@link PlaylistBasedOnSth}'s
+     * subclasses.
+     * </p>
      */
     @Override
     public PlaylistBasedOnSth create(EnmBasedOnSth type) {

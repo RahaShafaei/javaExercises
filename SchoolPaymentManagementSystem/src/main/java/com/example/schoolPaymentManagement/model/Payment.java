@@ -15,37 +15,40 @@ import java.time.LocalDate;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "salaryPaymentId")
+        property = "paymentId")
 @Entity
-public class SalaryPayment {
+public class Payment {
     @Id
-    @GeneratedValue(generator = "salaryPayment_sequence-generator")
+    @GeneratedValue(generator = "payment_sequence-generator")
     @GenericGenerator(
-            name = "salaryPayment_sequence-generator",
+            name = "payment_sequence-generator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @Parameter(name = "sequence_name", value = "salaryPayment_sequence"),
-                    @Parameter(name = "initial_value", value = "6"),
+                    @Parameter(name = "sequence_name", value = "payment_sequence"),
+                    @Parameter(name = "initial_value", value = "11"),
                     @Parameter(name = "increment_size", value = "1")
             }
     )
-    private long salaryPaymentId;
+    private long paymentId;
 
     @JsonDeserialize(using = CustomDateDeserializer.class)
     private LocalDate paymentDate;
 
     @OneToOne
+    private Fee fee;
+
+    @OneToOne
     private Salary salary;
 
-    public SalaryPayment() {
+    public Payment() {
     }
 
-    public long getSalaryPaymentId() {
-        return salaryPaymentId;
+    public long getPaymentId() {
+        return paymentId;
     }
 
-    public void setSalaryPaymentId(long salaryPaymentId) {
-        this.salaryPaymentId = salaryPaymentId;
+    public void setPaymentId(long paymentId) {
+        this.paymentId = paymentId;
     }
 
     public LocalDate getPaymentDate() {
@@ -54,6 +57,14 @@ public class SalaryPayment {
 
     public void setPaymentDate(LocalDate paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public Fee getFee() {
+        return fee;
+    }
+
+    public void setFee(Fee fee) {
+        this.fee = fee;
     }
 
     public Salary getSalary() {
@@ -66,9 +77,10 @@ public class SalaryPayment {
 
     @Override
     public String toString() {
-        return "SalaryPayment{" +
-                "salaryPaymentId=" + salaryPaymentId +
+        return "FeePayment{" +
+                "paymentId=" + paymentId +
                 ", paymentDate=" + paymentDate +
+                ", fee=" + fee +
                 ", salary=" + salary +
                 '}';
     }

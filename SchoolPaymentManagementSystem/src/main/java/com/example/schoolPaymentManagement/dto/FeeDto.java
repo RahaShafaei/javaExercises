@@ -26,7 +26,7 @@ public class FeeDto {
 
     private GradeDto grade;
 
-    private FeePaymentDto feePayment;
+    private LocalDate paymentDate;
 
     public long getFeeId() {
         return feeId;
@@ -68,12 +68,12 @@ public class FeeDto {
         this.grade = grade;
     }
 
-    public FeePaymentDto getFeePayment() {
-        return feePayment;
+    public LocalDate getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setFeePayment(FeePaymentDto feePayment) {
-        this.feePayment = feePayment;
+    public void setPaymentDto(LocalDate paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class FeeDto {
                 ", deadLine=" + deadLine +
                 ", student=" + student +
                 ", grade=" + grade +
-                ", feePayment=" + feePayment +
+                ", paymentDate=" + paymentDate +
                 '}';
     }
 }

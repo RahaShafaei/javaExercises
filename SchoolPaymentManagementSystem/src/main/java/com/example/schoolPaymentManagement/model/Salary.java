@@ -43,7 +43,7 @@ public class Salary {
     private Teacher teacher;
 
     @OneToOne(mappedBy = "salary")
-    private SalaryPayment salaryPayment;
+    private Payment payment;
 
     public Salary() {
     }
@@ -88,12 +88,12 @@ public class Salary {
         this.teacher = teacher;
     }
 
-    public SalaryPayment getSalaryPayment() {
-        return salaryPayment;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setSalaryPayment(SalaryPayment salaryPayment) {
-        this.salaryPayment = salaryPayment;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class Salary {
                 ", deadLine=" + deadLine +
                 ", grade=" + grade +
                 ", teacher=" + teacher +
-                ", salaryPayment=" + salaryPayment +
+                ", payment=" + payment +
                 '}';
     }
 }

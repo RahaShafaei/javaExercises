@@ -18,15 +18,12 @@ public class FeeMapper {
 
     private final GradeMapper gradeMapper;
 
-    private final FeePaymentMapper feePaymentMapper;
 
     public FeeMapper(StudentMapper studentMapper,
-                     GradeMapper gradeMapper,
-                     FeePaymentMapper feePaymentMapper
+                     GradeMapper gradeMapper
     ) {
         this.studentMapper = studentMapper;
         this.gradeMapper = gradeMapper;
-        this.feePaymentMapper = feePaymentMapper;
     }
 
     public FeeDto toDto(Fee fee) {
@@ -45,9 +42,9 @@ public class FeeMapper {
                         this.gradeMapper.toDto(fee.getGrade()) :
                         null
         );
-        feeDto.setFeePayment(
-                fee.getFeePayment() != null ?
-                        this.feePaymentMapper.toDto(fee.getFeePayment()) :
+        feeDto.setPaymentDto(
+                fee.getPayment() != null ?
+                        fee.getPayment().getPaymentDate() :
                         null
         );
 

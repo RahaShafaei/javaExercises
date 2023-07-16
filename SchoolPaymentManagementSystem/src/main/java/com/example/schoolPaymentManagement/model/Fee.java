@@ -43,7 +43,7 @@ public class Fee {
     private Grade grade;
 
     @OneToOne(mappedBy = "fee")
-    private FeePayment feePayment;
+    private Payment payment;
 
     public Fee() {
     }
@@ -88,12 +88,12 @@ public class Fee {
         this.grade = grade;
     }
 
-    public FeePayment getFeePayment() {
-        return feePayment;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setFeePayment(FeePayment feePayment) {
-        this.feePayment = feePayment;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class Fee {
                 ", deadLine=" + deadLine +
                 ", student=" + student +
                 ", grade=" + grade +
-                ", feePayment=" + feePayment +
+                ", payment=" + payment +
                 '}';
     }
 }

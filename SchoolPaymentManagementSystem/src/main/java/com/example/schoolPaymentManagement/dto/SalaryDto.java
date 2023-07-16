@@ -27,7 +27,7 @@ public class SalaryDto {
 
     private TeacherDto teacher;
 
-    private SalaryPaymentDto salaryPayment;
+    private LocalDate paymentDate;
 
     public long getSalaryId() {
         return salaryId;
@@ -69,12 +69,12 @@ public class SalaryDto {
         this.teacher = teacher;
     }
 
-    public SalaryPaymentDto getSalaryPayment() {
-        return salaryPayment;
+    public LocalDate getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setSalaryPayment(SalaryPaymentDto salaryPayment) {
-        this.salaryPayment = salaryPayment;
+    public void setPaymentDate(LocalDate paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class SalaryDto {
                 ", deadLine=" + deadLine +
                 ", grade=" + grade +
                 ", teacher=" + teacher +
-                ", salaryPayment=" + salaryPayment +
+                ", paymentDate=" + paymentDate +
                 '}';
     }
 }
