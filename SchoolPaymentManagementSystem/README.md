@@ -12,10 +12,10 @@ The School Payment Management project Basically, is a money management system fo
 This project uses technologies related to the Spring framework, and the main components of the project are implemented based on a number of patterns, which are explained below.
 
 ## Project Technologies
-* The database of this project is **H2**. A sample of how to set up this database could be found in [this](https://www.baeldung.com/spring-boot-h2-database) link. Data of this database produce through `data.sql` file which is placed in the [resource](https://github.com/RahaShafaei/javaExercises/tree/main/playlistApplication/src/main/resources) directory.
+* The database of this project is **H2**. A sample of how to set up this database could be found in [this](https://github.com/RahaShafaei/javaExercises/tree/main/SchoolPaymentManagementSystem/src/main/resources) directory.
 * The build tool of this project is **Maven**.
 * Interactions with the database are done through **Spring JPA**.
-* Building **RESTful** web services with **Spring Boot** to access the inner world of `Playlist Project`.
+* Building **RESTful** web services with **Spring Boot** to access the inner world of `School Payment Management Project`.
 * Use **HATEOAS** to Link builder API to create links pointing to Spring MVC controller methods.
 
 ## Project Details
