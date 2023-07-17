@@ -28,6 +28,7 @@ public class PaymentMapper {
 
         paymentDto.setPaymentId(payment.getPaymentId());
         paymentDto.setPaymentDate(payment.getPaymentDate());
+        paymentDto.setCost(payment.getCost());
 
         paymentDto.setFeeDto(
                 payment.getFee() != null ?

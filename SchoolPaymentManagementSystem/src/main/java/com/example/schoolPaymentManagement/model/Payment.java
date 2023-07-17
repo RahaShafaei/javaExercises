@@ -1,5 +1,6 @@
 package com.example.schoolPaymentManagement.model;
 
+import com.example.schoolPaymentManagement.validator.BigDecimalLength;
 import com.example.schoolPaymentManagement.validator.CustomDateDeserializer;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -11,6 +12,7 @@ import jakarta.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @JsonIdentityInfo(
@@ -33,6 +35,9 @@ public class Payment {
 
     @JsonDeserialize(using = CustomDateDeserializer.class)
     private LocalDate paymentDate;
+
+    @BigDecimalLength(minLength = 3)
+    private BigDecimal cost;
 
     @OneToOne
     private Fee fee;
@@ -75,11 +80,20 @@ public class Payment {
         this.salary = salary;
     }
 
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
+
     @Override
     public String toString() {
         return "FeePayment{" +
                 "paymentId=" + paymentId +
                 ", paymentDate=" + paymentDate +
+                ", cost=" + cost +
                 ", fee=" + fee +
                 ", salary=" + salary +
                 '}';

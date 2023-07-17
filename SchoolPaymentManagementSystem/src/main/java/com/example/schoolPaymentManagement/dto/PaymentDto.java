@@ -20,6 +20,7 @@ public class PaymentDto {
     private long paymentId;
 
     private LocalDate paymentDate;
+    private BigDecimal cost;
 
     private FeeDto feeDto;
 
@@ -57,11 +58,20 @@ public class PaymentDto {
         this.salaryDto = salaryDto;
     }
 
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
+
     @Override
     public String toString() {
         return "PaymentDto{" +
                 "feePaymentId=" + paymentId +
                 ", paymentDate=" + paymentDate +
+                ", cost=" + cost +
                 ", feeDto=" + feeDto +
                 ", salaryDto=" + salaryDto +
                 '}';
