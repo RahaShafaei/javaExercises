@@ -25,4 +25,4 @@ This project uses technologies related to the Spring framework, and the main com
 * Use **FactoryMethod Pattern** to create different types of payment objects based on the payment mode.
 * Use **Singleton Pattern** to manage the payment gateway integration or the notification system.
 * Use **Decorator Pattern** to apply additional processing or validation logic to payment or salary objects.
-* Use **Builder Pattern** Handle all `Controllers` constructor parameters.
+* Use **Builder Pattern** handle all `Controllers` constructor parameters.
