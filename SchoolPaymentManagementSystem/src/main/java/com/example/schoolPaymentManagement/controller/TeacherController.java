@@ -1,5 +1,6 @@
 package com.example.schoolPaymentManagement.controller;
 
+import com.example.schoolPaymentManagement.controller.builder.TeacherBuilder;
 import com.example.schoolPaymentManagement.dto.SalaryDto;
 import com.example.schoolPaymentManagement.dto.SalaryMapper;
 import com.example.schoolPaymentManagement.dto.TeacherDto;
@@ -39,14 +40,11 @@ public class TeacherController {
     private final TeacherMapper teacherMapper;
     private final SalaryMapper salaryMapper;
 
-    public TeacherController(InfTeacherRepository teacherRepository,
-                             InfGradeRepository gradeRepository,
-                             TeacherMapper teacherMapper,
-                             SalaryMapper feeMapper) {
-        this.teacherRepository = teacherRepository;
-        this.gradeRepository = gradeRepository;
-        this.teacherMapper = teacherMapper;
-        this.salaryMapper = feeMapper;
+    public TeacherController(TeacherBuilder teacherBuilder) {
+        this.teacherRepository = teacherBuilder.getTeacherRepository();
+        this.gradeRepository = teacherBuilder.getGradeRepository();
+        this.teacherMapper = teacherBuilder.getTeacherMapper();
+        this.salaryMapper = teacherBuilder.getSalaryMapper();
     }
 
     /**

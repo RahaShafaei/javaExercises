@@ -1,5 +1,6 @@
 package com.example.schoolPaymentManagement.controller;
 
+import com.example.schoolPaymentManagement.controller.builder.FeeBuilder;
 import com.example.schoolPaymentManagement.dto.*;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
 import com.example.schoolPaymentManagement.exception.ItemNotIncludedException;
@@ -39,21 +40,15 @@ public class FeeController {
     private final StudentMapper studentMapper;
     private final GradeMapper gradeMapper;
 
-    public FeeController(InfFeeRepository feeRepository,
-                         FeeMapper feeMapper,
-                         InfStudentRepository studentRepository,
-                         StudentMapper studentMapper,
-                         InfGradeRepository gradeRepository,
-                         GradeMapper gradeMapper) {
+    public FeeController(FeeBuilder feeBuilder) {
+        this.feeRepository = feeBuilder.getFeeRepository();
+        this.feeMapper = feeBuilder.getFeeMapper();
 
-        this.feeRepository = feeRepository;
-        this.feeMapper = feeMapper;
+        this.studentRepository = feeBuilder.getStudentRepository();
+        this.studentMapper = feeBuilder.getStudentMapper();
 
-        this.studentRepository = studentRepository;
-        this.studentMapper = studentMapper;
-
-        this.gradeRepository = gradeRepository;
-        this.gradeMapper = gradeMapper;
+        this.gradeRepository = feeBuilder.getGradeRepository();
+        this.gradeMapper = feeBuilder.getGradeMapper();
     }
 
     /**

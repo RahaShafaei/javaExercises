@@ -1,7 +1,5 @@
 package com.example.schoolPaymentManagement.controller.paymentObserver;
 
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +8,9 @@ import java.util.List;
  * @since 2023-07-10
  *
  * <p>
- *      The Observer Pattern used to  to notify students or teachers when their payment status changes.
- *      The Observer pattern promotes loose coupling and allows objects to be notified of changes
- *      without being tightly coupled to each other.
+ * The Observer Pattern used to  to notify students or teachers when their payment status changes.
+ * The Observer pattern promotes loose coupling and allows objects to be notified of changes
+ * without being tightly coupled to each other.
  * </p>
  * <p></p>
  * <p>Consider using the Singleton pattern for managing shared resources or components that
@@ -31,8 +29,14 @@ import java.util.List;
  * than the moment that getInstance() is called. Thus, this solution is thread-safe without
  * requiring special language constructs (i.e. volatile or synchronized).</p>
  */
-@Component
 public class PaymentStatus implements PaymentStatusObservable {
+
+    private List<PaymentStatusObserver> observers;
+    private boolean paymentMade;
+    public PaymentStatus() {
+        observers = new ArrayList<>();
+        paymentMade = false;
+    }
 
     /**
      * Singleton instance.
@@ -41,14 +45,6 @@ public class PaymentStatus implements PaymentStatusObservable {
      */
     public static PaymentStatus getInstance() {
         return HelperHolder.INSTANCE;
-    }
-
-    private List<PaymentStatusObserver> observers;
-    private boolean paymentMade;
-
-    public PaymentStatus() {
-        observers = new ArrayList<>();
-        paymentMade = false;
     }
 
     public List<PaymentStatusObserver> getObservers() {

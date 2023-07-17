@@ -1,5 +1,6 @@
 package com.example.schoolPaymentManagement.controller;
 
+import com.example.schoolPaymentManagement.controller.builder.GradeBuilder;
 import com.example.schoolPaymentManagement.dto.*;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
 import com.example.schoolPaymentManagement.model.*;
@@ -31,19 +32,13 @@ public class GradeController {
     private final FeeMapper feeMapper;
     private final SalaryMapper salaryMapper;
 
-    public GradeController(InfGradeRepository gradeRepository,
-                           GradeMapper gradeMapper,
-                           StudentMapper studentMapper,
-                           TeacherMapper teacherMapper,
-                           FeeMapper feeMapper,
-                           SalaryMapper salaryMapper
-    ) {
-        this.gradeRepository = gradeRepository;
-        this.gradeMapper = gradeMapper;
-        this.studentMapper = studentMapper;
-        this.teacherMapper = teacherMapper;
-        this.feeMapper = feeMapper;
-        this.salaryMapper = salaryMapper;
+    public GradeController(GradeBuilder gradeBuilder) {
+        this.gradeRepository = gradeBuilder.getGradeRepository();
+        this.gradeMapper = gradeBuilder.getGradeMapper();
+        this.studentMapper = gradeBuilder.getStudentMapper();
+        this.teacherMapper = gradeBuilder.getTeacherMapper();
+        this.feeMapper = gradeBuilder.getFeeMapper();
+        this.salaryMapper = gradeBuilder.getSalaryMapper();
     }
 
     /**

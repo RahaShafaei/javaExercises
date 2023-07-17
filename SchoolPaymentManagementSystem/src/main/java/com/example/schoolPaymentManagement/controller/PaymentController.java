@@ -1,5 +1,6 @@
 package com.example.schoolPaymentManagement.controller;
 
+import com.example.schoolPaymentManagement.controller.builder.PaymentBuilder;
 import com.example.schoolPaymentManagement.controller.paymentFactory.InfFactoryPaymentGeneralities;
 import com.example.schoolPaymentManagement.controller.paymentFactory.UseInfFactoryPaymentGeneralities;
 import com.example.schoolPaymentManagement.controller.paymentObserver.FeeObserver;
@@ -45,21 +46,15 @@ public class PaymentController {
     private final InfFeeRepository infFeeRepository;
     private final PaymentMapper paymentMapper;
     private final UseInfFactoryPaymentGeneralities useInfFactoryPaymentGeneralities;
-
     private final PaymentStatus paymentStatus;
 
-    public PaymentController(InfPaymentRepository infPaymentRepository,
-                             InfSalaryRepository infSalaryRepository,
-                             InfFeeRepository infFeeRepository,
-                             PaymentMapper paymentMapper,
-                             UseInfFactoryPaymentGeneralities useInfFactoryPaymentGeneralities,
-                             PaymentStatus paymentStatus) {
-        this.infPaymentRepository = infPaymentRepository;
-        this.infSalaryRepository = infSalaryRepository;
-        this.infFeeRepository = infFeeRepository;
-        this.paymentMapper = paymentMapper;
-        this.useInfFactoryPaymentGeneralities = useInfFactoryPaymentGeneralities;
-        this.paymentStatus = paymentStatus;
+    public PaymentController(PaymentBuilder paymentBuilder) {
+        this.infPaymentRepository = paymentBuilder.getInfPaymentRepository();
+        this.infSalaryRepository = paymentBuilder.getInfSalaryRepository();
+        this.infFeeRepository = paymentBuilder.getInfFeeRepository();
+        this.paymentMapper = paymentBuilder.getPaymentMapper();
+        this.useInfFactoryPaymentGeneralities = paymentBuilder.getUseInfFactoryPaymentGeneralities();
+        this.paymentStatus = paymentBuilder.getPaymentStatus();
     }
 
     /**
@@ -191,6 +186,12 @@ public class PaymentController {
         notifying(false, fees, salaries);
     }
 
+    /**
+     * A helper method.
+     * @param paymentMade {@link Boolean}
+     * @param fees {@link List} of {@link Fee}
+     * @param salaries {@link List} of {@link Salary}
+     */
     private void notifying(Boolean paymentMade, List<Fee> fees, List<Salary> salaries) {
         // Register observers
         fees.stream()
