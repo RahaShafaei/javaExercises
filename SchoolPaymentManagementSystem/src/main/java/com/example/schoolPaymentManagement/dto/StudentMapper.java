@@ -1,6 +1,6 @@
 package com.example.schoolPaymentManagement.dto;
 
-import com.example.schoolPaymentManagement.helper.Helper;
+import com.example.schoolPaymentManagement.exception.helper.ConvertListToMap;
 import com.example.schoolPaymentManagement.model.Fee;
 import com.example.schoolPaymentManagement.model.Student;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class StudentMapper {
         studentDto.setLastName(student.getLastName());
 
         if (student.getFees() != null) {
-            Map<Long, BigDecimal> feeDtl = Helper.convertListToMap(
+            Map<Long, BigDecimal> feeDtl = ConvertListToMap.apply(
                     student.getFees(),
                     Fee::getFeeId,
                     Fee::getCost

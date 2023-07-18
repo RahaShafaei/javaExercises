@@ -1,6 +1,7 @@
 package com.example.schoolPaymentManagement.dto;
 
-import com.example.schoolPaymentManagement.helper.Helper;
+import com.example.schoolPaymentManagement.controller.builder.GradeBuilder;
+import com.example.schoolPaymentManagement.exception.helper.ConvertListToMap;
 import com.example.schoolPaymentManagement.model.Grade;
 import com.example.schoolPaymentManagement.model.Student;
 import com.example.schoolPaymentManagement.model.Teacher;
@@ -23,11 +24,9 @@ public class GradeMapper {
 
     private final TeacherMapper teacherMapper;
 
-    public GradeMapper(StudentMapper studentMapper,
-                       TeacherMapper teacherMapper
-    ) {
-        this.studentMapper = studentMapper;
-        this.teacherMapper = teacherMapper;
+    public GradeMapper(GradeBuilder gradeBuilder) {
+        this.studentMapper = gradeBuilder.getStudentMapper();
+        this.teacherMapper = gradeBuilder.getTeacherMapper();
     }
 
     public GradeDto toDto(Grade grade) {
@@ -37,7 +36,7 @@ public class GradeMapper {
         gradeDto.setName(grade.getName());
 
         if (grade.getStudentList() != null) {
-            Map<Long, StudentDto> studentDtl = Helper.convertListToMap(
+            Map<Long, StudentDto> studentDtl = ConvertListToMap.apply(
                     grade.getStudentList(),
                     Student::getStudentId,
                     studentMapper::toDto
@@ -46,7 +45,7 @@ public class GradeMapper {
         }
 
         if (grade.getTeacherList() != null) {
-            Map<Long, TeacherDto> teacherDtl = Helper.convertListToMap(
+            Map<Long, TeacherDto> teacherDtl = ConvertListToMap.apply(
                     grade.getTeacherList(),
                     Teacher::getTeacherId,
                     teacherMapper::toDto

@@ -1,5 +1,6 @@
 package com.example.schoolPaymentManagement.validator;
 
+import com.example.schoolPaymentManagement.exception.ParametersNotValidException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -12,7 +13,7 @@ import java.time.format.DateTimeParseException;
 public class CustomDateDeserializer
         extends StdDeserializer<LocalDate> {
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public CustomDateDeserializer() {
         this(null);
@@ -31,7 +32,7 @@ public class CustomDateDeserializer
         try {
             return LocalDate.parse(date, formatter);
         } catch (DateTimeParseException e) {
-            throw new RuntimeException("Entered date format isn't correct.");
+            throw new ParametersNotValidException("Entered date format isn't correct.");
         }
     }
 }

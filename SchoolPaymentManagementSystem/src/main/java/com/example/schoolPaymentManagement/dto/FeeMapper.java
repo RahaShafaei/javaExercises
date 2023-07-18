@@ -1,5 +1,6 @@
 package com.example.schoolPaymentManagement.dto;
 
+import com.example.schoolPaymentManagement.controller.builder.FeeBuilder;
 import com.example.schoolPaymentManagement.model.Fee;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +19,9 @@ public class FeeMapper {
 
     private final GradeMapper gradeMapper;
 
-
-    public FeeMapper(StudentMapper studentMapper,
-                     GradeMapper gradeMapper
-    ) {
-        this.studentMapper = studentMapper;
-        this.gradeMapper = gradeMapper;
+    public FeeMapper(FeeBuilder feeBuilder) {
+        this.studentMapper = feeBuilder.getStudentMapper();
+        this.gradeMapper = feeBuilder.getGradeMapper();
     }
 
     public FeeDto toDto(Fee fee) {

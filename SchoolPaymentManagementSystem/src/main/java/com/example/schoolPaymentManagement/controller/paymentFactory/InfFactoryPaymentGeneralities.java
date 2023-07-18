@@ -1,6 +1,6 @@
 package com.example.schoolPaymentManagement.controller.paymentFactory;
 
-import com.example.schoolPaymentManagement.helper.EnmPaymentTypes;
+import com.example.schoolPaymentManagement.exception.helper.EnmPaymentTypes;
 
 /**
  * @author Raha
