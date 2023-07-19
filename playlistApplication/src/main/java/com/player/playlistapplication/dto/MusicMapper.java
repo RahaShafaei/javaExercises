@@ -31,9 +31,9 @@ public class MusicMapper {
         tempGenre.put(music.getGenre().getGenreId(), music.getGenre().getName());
         musicDto.setGenre(tempGenre);
 
-        if (music.getPlaylist() != null) {
+        if (music.getPlaylists() != null) {
             Map<Long, String> playlistDtl = ConvertListToMap.apply(
-                    music.getPlaylist(),
+                    music.getPlaylists(),
                     Playlist::getPlaylistId,
                     Playlist::getName
             );

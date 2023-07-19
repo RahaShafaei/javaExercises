@@ -9,12 +9,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "paymentId")
@@ -45,57 +53,4 @@ public class Payment {
     @OneToOne
     private Salary salary;
 
-    public Payment() {
-    }
-
-    public long getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(long paymentId) {
-        this.paymentId = paymentId;
-    }
-
-    public LocalDate getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(LocalDate paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
-    public Fee getFee() {
-        return fee;
-    }
-
-    public void setFee(Fee fee) {
-        this.fee = fee;
-    }
-
-    public Salary getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Salary salary) {
-        this.salary = salary;
-    }
-
-    public BigDecimal getCost() {
-        return cost;
-    }
-
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
-
-    @Override
-    public String toString() {
-        return "FeePayment{" +
-                "paymentId=" + paymentId +
-                ", paymentDate=" + paymentDate +
-                ", cost=" + cost +
-                ", fee=" + fee +
-                ", salary=" + salary +
-                '}';
-    }
 }

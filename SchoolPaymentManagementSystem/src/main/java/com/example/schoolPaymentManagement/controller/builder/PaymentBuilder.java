@@ -4,6 +4,7 @@ import com.example.schoolPaymentManagement.controller.PaymentController;
 import com.example.schoolPaymentManagement.controller.paymentFactory.UseInfFactoryPaymentGeneralities;
 import com.example.schoolPaymentManagement.dto.PaymentMapper;
 import com.example.schoolPaymentManagement.repository.InfPaymentRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
  * Handle all {@link PaymentController} constructor parameters.
  * </p>
  */
+@Getter
 @Component
 public class PaymentBuilder {
     private final InfPaymentRepository infPaymentRepository;
@@ -27,18 +29,6 @@ public class PaymentBuilder {
         this.infPaymentRepository = builder.infPaymentRepository;
         this.paymentMapper = builder.paymentMapper;
         this.useInfFactoryPaymentGeneralities = builder.useInfFactoryPaymentGeneralities;
-    }
-
-    public InfPaymentRepository getInfPaymentRepository() {
-        return infPaymentRepository;
-    }
-
-    public PaymentMapper getPaymentMapper() {
-        return paymentMapper;
-    }
-
-    public UseInfFactoryPaymentGeneralities getUseInfFactoryPaymentGeneralities() {
-        return useInfFactoryPaymentGeneralities;
     }
 
     @Component

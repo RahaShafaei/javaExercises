@@ -6,6 +6,7 @@ import com.player.playlistapplication.dto.MusicMapper;
 import com.player.playlistapplication.dto.PlaylistMapper;
 import com.player.playlistapplication.repository.InfMusicRepository;
 import com.player.playlistapplication.repository.InfPlaylistRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
  * Handle all {@link PlaylistController} constructor parameters.
  * </p>
  */
+@Getter
 @Component
 public class PlaylistBuilder {
     private final InfPlaylistRepository playlistRepository;
@@ -31,26 +33,6 @@ public class PlaylistBuilder {
         this.musicRepository = builder.musicRepository;
         this.musicMapper = builder.musicMapper;
         this.usePlaylistBasedOnSthInf = builder.usePlaylistBasedOnSthInf;
-    }
-
-    public InfPlaylistRepository getPlaylistRepository() {
-        return playlistRepository;
-    }
-
-    public PlaylistMapper getPlaylistMapper() {
-        return playlistMapper;
-    }
-
-    public InfMusicRepository getMusicRepository() {
-        return musicRepository;
-    }
-
-    public MusicMapper getMusicMapper() {
-        return musicMapper;
-    }
-
-    public UsePlaylistBasedOnSthInf getUsePlaylistBasedOnSthInf() {
-        return usePlaylistBasedOnSthInf;
     }
 
     @Component

@@ -10,10 +10,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import java.util.List;
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "musicId")
@@ -47,66 +55,4 @@ public class Music {
     @ManyToOne
     private Genre genre;
 
-    public Music() {
-    }
-
-    public long getMusicId() {
-        return musicId;
-    }
-
-    public void setMusicId(long id) {
-        this.musicId = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public Integer getPubYear() {
-        return pubYear;
-    }
-
-    public void setPubYear(Integer year) {
-        this.pubYear = year;
-    }
-
-    public List<Playlist> getPlaylist() {
-        return playlists;
-    }
-
-    public void setPlaylist(List<Playlist> playlist) {
-        this.playlists = playlist;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre generalist) {
-        this.genre = generalist;
-    }
-
-    @Override
-    public String toString() {
-        return "Music{" +
-                "musicId=" + musicId +
-                ", name='" + name + '\'' +
-                ", artist='" + artist + '\'' +
-                ", pubYear=" + pubYear +
-                ", playlists=" + playlists +
-                ", genre=" + genre +
-                '}';
-    }
 }

@@ -6,6 +6,7 @@ import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.repository.InfGenreRepository;
 import com.player.playlistapplication.repository.InfMusicRepository;
 import com.player.playlistapplication.repository.InfPlaylistRepository;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import java.util.List;
  * to add a Spring annotation for this class to use IOC.
  * </p>
  */
+@Setter
 public abstract class PlaylistBasedOnSth {
     protected EntryBean entryBean;
 
@@ -35,18 +37,6 @@ public abstract class PlaylistBasedOnSth {
 
     public PlaylistBasedOnSth(EntryBean entryBean) {
         this.entryBean = entryBean;
-    }
-
-    public void setMusicRepository(InfMusicRepository musicRepository) {
-        this.musicRepository = musicRepository;
-    }
-
-    public void setGenreRepository(InfGenreRepository genreRepository) {
-        this.genreRepository = genreRepository;
-    }
-
-    public void setPlaylistRepository(InfPlaylistRepository playlistRepository) {
-        this.playlistRepository = playlistRepository;
     }
 
     /**

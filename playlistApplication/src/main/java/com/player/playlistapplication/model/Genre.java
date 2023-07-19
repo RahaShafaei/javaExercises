@@ -7,11 +7,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import java.util.List;
 
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "genreId")
@@ -35,40 +43,4 @@ public class Genre {
 
     @OneToMany(mappedBy="genre")
     private List<Music> musicList;
-
-    public Genre() {
-    }
-
-    public long getGenreId() {
-        return genreId;
-    }
-
-    public void setGenreId(long genreId) {
-        this.genreId = genreId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Music> getMusicList() {
-        return musicList;
-    }
-
-    public void setMusicList(List<Music> musicSet) {
-        this.musicList = musicSet;
-    }
-
-    @Override
-    public String toString() {
-        return "Genre{" +
-                "genreId=" + genreId +
-                ", name='" + name + '\'' +
-                ", musicSet=" + musicList +
-                '}';
-    }
 }

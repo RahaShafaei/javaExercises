@@ -5,10 +5,18 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import java.util.List;
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "playlistId")
@@ -36,40 +44,4 @@ public class Playlist {
             joinColumns = @JoinColumn(name = "playlistId"),
             inverseJoinColumns = @JoinColumn(name = "musicId"))
     private List<Music> musicList;
-
-    public Playlist() {
-    }
-
-    public long getPlaylistId() {
-        return playlistId;
-    }
-
-    public void setPlaylistId(long id) {
-        this.playlistId = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Music> getMusicList() {
-        return musicList;
-    }
-
-    public void setMusicList(List<Music> musicList) {
-        this.musicList = musicList;
-    }
-
-    @Override
-    public String toString() {
-        return "Playlist{" +
-                "playlistId=" + playlistId +
-                ", name='" + name + '\'' +
-                ", musicSet=" + musicList +
-                '}';
-    }
 }

@@ -1,6 +1,9 @@
 package com.example.schoolPaymentManagement.dto;
 
 import com.example.schoolPaymentManagement.model.Student;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -15,6 +18,9 @@ import java.util.Map;
  * for {@link Student}.
  * </p>
  */
+@Getter
+@Setter
+@ToString
 public class StudentDto {
     private long studentId;
 
@@ -24,45 +30,4 @@ public class StudentDto {
 
     private Map<Long, BigDecimal> fees;
 
-    public long getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(long studentId) {
-        this.studentId = studentId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Map<Long, BigDecimal> getFees() {
-        return fees;
-    }
-
-    public void setFees(Map<Long, BigDecimal> fees) {
-        this.fees = fees;
-    }
-
-    @Override
-    public String toString() {
-        return "StudentDto{" +
-                "studentId=" + studentId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", fees=" + fees +
-                '}';
-    }
 }

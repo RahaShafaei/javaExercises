@@ -1,5 +1,9 @@
 package com.player.playlistapplication.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Map;
 /**
  * @author Raha
@@ -11,43 +15,14 @@ import java.util.Map;
  *     for {@link com.player.playlistapplication.model.Genre}.
  * </p>
  */
+
+@Getter
+@Setter
+@ToString
 public class GenreDto {
     private long genreId;
 
     private String name;
 
     private Map<Long, String> musicList;
-
-    public long getGenreId() {
-        return genreId;
-    }
-
-    public void setGenreId(long genreId) {
-        this.genreId = genreId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Map<Long, String> getMusicList() {
-        return musicList;
-    }
-
-    public void setMusicList(Map<Long, String> musicList) {
-        this.musicList = musicList;
-    }
-
-    @Override
-    public String toString() {
-        return "GenreDto{" +
-                "genreId=" + genreId +
-                ", name='" + name + '\'' +
-                ", musicList=" + musicList +
-                '}';
-    }
 }

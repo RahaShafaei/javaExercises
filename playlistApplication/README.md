@@ -23,3 +23,8 @@ This project uses technologies related to the Spring framework, and the main com
 * Use **Singleton Pattern** to  have a central controller that handles the playlist operations.
 * Use **Builder Pattern** to handle all `Controllers` constructor parameters.
 * Trying to adhere to **SOLID** principles.
+* For API documentation, **OpenAPI** is used with these addresses : `your server`/swagger-ui/index.html and `your server`/v3/api-docs
+
+## Some additional helper tools
+* [JSON Formatter](https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa?hl=en-US)
+* [Talend API Tester](https://chrome.google.com/webstore/detail/talend-api-tester-free-ed/aejoelaoggembcahagimdiliamlcdmfm?hl=en-US)

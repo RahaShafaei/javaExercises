@@ -6,12 +6,20 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "salaryId")
@@ -47,75 +55,4 @@ public class Salary {
     @OneToOne(mappedBy = "salary")
     private Payment payment;
 
-    public Salary() {
-    }
-
-    public long getSalaryId() {
-        return salaryId;
-    }
-
-    public void setSalaryId(long salaryId) {
-        this.salaryId = salaryId;
-    }
-
-    public BigDecimal getCost() {
-        return cost;
-    }
-
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
-
-    public LocalDate getDeadLine() {
-        return deadLine;
-    }
-
-    public void setDeadLine(LocalDate deadLine) {
-        this.deadLine = deadLine;
-    }
-
-    public Grade getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Grade grade) {
-        this.grade = grade;
-    }
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Salary{" +
-                "salaryId=" + salaryId +
-                ", cost=" + cost +
-                ", deadLine=" + deadLine +
-                ", status=" + status +
-                ", grade=" + grade +
-                ", teacher=" + teacher +
-                ", payment=" + payment +
-                '}';
-    }
 }

@@ -3,11 +3,11 @@ package com.example.schoolPaymentManagement.controller.builder;
 import com.example.schoolPaymentManagement.dto.FeeMapper;
 import com.example.schoolPaymentManagement.dto.GradeMapper;
 import com.example.schoolPaymentManagement.dto.StudentMapper;
-import com.example.schoolPaymentManagement.model.Fee;
 import com.example.schoolPaymentManagement.repository.InfFeeRepository;
 import com.example.schoolPaymentManagement.repository.InfGradeRepository;
 import com.example.schoolPaymentManagement.repository.InfStudentRepository;
 import com.example.schoolPaymentManagement.controller.FeeController;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
  * Handle all {@link FeeController} constructor parameters.
  * </p>
  */
+@Getter
 @Component
 public class FeeBuilder {
     private final InfFeeRepository feeRepository;
@@ -35,30 +36,6 @@ public class FeeBuilder {
         this.feeMapper = builder.feeMapper;
         this.studentMapper = builder.studentMapper;
         this.gradeMapper = builder.gradeMapper;
-    }
-
-    public InfFeeRepository getFeeRepository() {
-        return feeRepository;
-    }
-
-    public InfStudentRepository getStudentRepository() {
-        return studentRepository;
-    }
-
-    public InfGradeRepository getGradeRepository() {
-        return gradeRepository;
-    }
-
-    public FeeMapper getFeeMapper() {
-        return feeMapper;
-    }
-
-    public StudentMapper getStudentMapper() {
-        return studentMapper;
-    }
-
-    public GradeMapper getGradeMapper() {
-        return gradeMapper;
     }
 
     @Component

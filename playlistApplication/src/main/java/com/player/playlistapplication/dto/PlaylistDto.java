@@ -1,5 +1,9 @@
 package com.player.playlistapplication.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Map;
 /**
  * @author Raha
@@ -11,41 +15,11 @@ import java.util.Map;
  *     for {@link com.player.playlistapplication.model.Playlist}.
  * </p>
  */
+@Getter
+@Setter
+@ToString
 public class PlaylistDto {
     private long playlistId;
     private String name;
     private Map<Long, String> musicList;
-
-    public long getPlaylistId() {
-        return playlistId;
-    }
-
-    public void setPlaylistId(long playlistId) {
-        this.playlistId = playlistId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Map<Long, String> getMusicList() {
-        return musicList;
-    }
-
-    public void setMusicList(Map<Long, String> musicList) {
-        this.musicList = musicList;
-    }
-
-    @Override
-    public String toString() {
-        return "PlaylistDto{" +
-                "playlistId=" + playlistId +
-                ", name='" + name + '\'' +
-                ", musicList=" + musicList +
-                '}';
-    }
 }

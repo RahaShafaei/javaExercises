@@ -1,6 +1,5 @@
 package com.example.schoolPaymentManagement.dto;
 
-import com.example.schoolPaymentManagement.controller.builder.FeeBuilder;
 import com.example.schoolPaymentManagement.model.Fee;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +39,7 @@ public class FeeMapper {
                         this.gradeMapper.toDto(fee.getGrade()) :
                         null
         );
-        feeDto.setPaymentDto(
+        feeDto.setPaymentDate(
                 fee.getPayment() != null ?
                         fee.getPayment().getPaymentDate() :
                         null

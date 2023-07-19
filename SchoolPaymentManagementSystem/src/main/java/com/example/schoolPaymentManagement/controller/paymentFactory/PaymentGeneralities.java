@@ -10,6 +10,8 @@ import com.example.schoolPaymentManagement.model.Salary;
 import com.example.schoolPaymentManagement.repository.InfFeeRepository;
 import com.example.schoolPaymentManagement.repository.InfPaymentRepository;
 import com.example.schoolPaymentManagement.repository.InfSalaryRepository;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Raha
@@ -25,12 +27,19 @@ import com.example.schoolPaymentManagement.repository.InfSalaryRepository;
  * to add a Spring annotation for this class to use IOC.
  * </p>
  */
+@Getter
+@Setter
 public abstract class PaymentGeneralities {
     protected InfPaymentRepository infPaymentRepository;
+
     protected InfFeeRepository infFeeRepository;
+
     protected InfSalaryRepository infSalaryRepository;
+
     protected PaymentMapper paymentMapper;
+
     protected FeeMapper feeMapper;
+
     protected SalaryMapper salaryMapper;
 
     protected Payment payment;
@@ -39,54 +48,6 @@ public abstract class PaymentGeneralities {
     public PaymentGeneralities(Payment payment, Long typeId) {
         this.payment = payment;
         this.typeId = typeId;
-    }
-
-    public InfPaymentRepository getInfPaymentRepository() {
-        return infPaymentRepository;
-    }
-
-    public void setInfPaymentRepository(InfPaymentRepository infPaymentRepository) {
-        this.infPaymentRepository = infPaymentRepository;
-    }
-
-    public InfFeeRepository getInfFeeRepository() {
-        return infFeeRepository;
-    }
-
-    public void setInfFeeRepository(InfFeeRepository infFeeRepository) {
-        this.infFeeRepository = infFeeRepository;
-    }
-
-    public InfSalaryRepository getInfSalaryRepository() {
-        return infSalaryRepository;
-    }
-
-    public void setInfSalaryRepository(InfSalaryRepository infSalaryRepository) {
-        this.infSalaryRepository = infSalaryRepository;
-    }
-
-    public PaymentMapper getPaymentMapper() {
-        return paymentMapper;
-    }
-
-    public void setPaymentMapper(PaymentMapper paymentMapper) {
-        this.paymentMapper = paymentMapper;
-    }
-
-    public FeeMapper getFeeMapper() {
-        return feeMapper;
-    }
-
-    public void setFeeMapper(FeeMapper feeMapper) {
-        this.feeMapper = feeMapper;
-    }
-
-    public SalaryMapper getSalaryMapper() {
-        return salaryMapper;
-    }
-
-    public void setSalaryMapper(SalaryMapper salaryMapper) {
-        this.salaryMapper = salaryMapper;
     }
 
     /**

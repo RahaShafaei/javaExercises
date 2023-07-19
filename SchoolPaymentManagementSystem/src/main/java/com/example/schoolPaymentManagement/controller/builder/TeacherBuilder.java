@@ -4,6 +4,7 @@ import com.example.schoolPaymentManagement.controller.TeacherController;
 import com.example.schoolPaymentManagement.dto.*;
 import com.example.schoolPaymentManagement.repository.InfGradeRepository;
 import com.example.schoolPaymentManagement.repository.InfTeacherRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
  * Handle all {@link TeacherController} constructor parameters.
  * </p>
  */
+@Getter
 @Component
 public class TeacherBuilder {
     private final InfTeacherRepository teacherRepository;
@@ -27,22 +29,6 @@ public class TeacherBuilder {
         this.salaryMapper = builder.salaryMapper;
         this.gradeRepository = builder.gradeRepository;
         this.teacherRepository = builder.teacherRepository;
-    }
-
-    public InfTeacherRepository getTeacherRepository() {
-        return teacherRepository;
-    }
-
-    public InfGradeRepository getGradeRepository() {
-        return gradeRepository;
-    }
-
-    public TeacherMapper getTeacherMapper() {
-        return teacherMapper;
-    }
-
-    public SalaryMapper getSalaryMapper() {
-        return salaryMapper;
     }
 
     @Component

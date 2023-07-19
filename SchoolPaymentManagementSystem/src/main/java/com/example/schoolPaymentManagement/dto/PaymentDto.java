@@ -1,10 +1,12 @@
 package com.example.schoolPaymentManagement.dto;
 
 import com.example.schoolPaymentManagement.model.Payment;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Map;
 
 /**
  * @author Raha
@@ -16,6 +18,10 @@ import java.util.Map;
  * for {@link Payment}.
  * </p>
  */
+
+@Getter
+@Setter
+@ToString
 public class PaymentDto {
     private long paymentId;
 
@@ -26,54 +32,4 @@ public class PaymentDto {
 
     private SalaryDto salaryDto;
 
-    public long getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(long paymentId) {
-        this.paymentId = paymentId;
-    }
-
-    public LocalDate getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(LocalDate paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
-    public FeeDto getFeeDto() {
-        return feeDto;
-    }
-
-    public void setFeeDto(FeeDto feeDto) {
-        this.feeDto = feeDto;
-    }
-
-    public SalaryDto getSalaryDto() {
-        return salaryDto;
-    }
-
-    public void setSalaryDto(SalaryDto salaryDto) {
-        this.salaryDto = salaryDto;
-    }
-
-    public BigDecimal getCost() {
-        return cost;
-    }
-
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
-
-    @Override
-    public String toString() {
-        return "PaymentDto{" +
-                "feePaymentId=" + paymentId +
-                ", paymentDate=" + paymentDate +
-                ", cost=" + cost +
-                ", feeDto=" + feeDto +
-                ", salaryDto=" + salaryDto +
-                '}';
-    }
 }

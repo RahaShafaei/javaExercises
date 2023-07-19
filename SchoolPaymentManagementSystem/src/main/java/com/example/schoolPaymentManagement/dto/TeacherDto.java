@@ -1,6 +1,9 @@
 package com.example.schoolPaymentManagement.dto;
 
 import com.example.schoolPaymentManagement.model.Teacher;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -15,6 +18,9 @@ import java.util.Map;
  * for {@link Teacher}.
  * </p>
  */
+@Getter
+@Setter
+@ToString
 public class TeacherDto {
     private long teacherId;
 
@@ -24,45 +30,4 @@ public class TeacherDto {
 
     private Map<Long, BigDecimal> salaries;
 
-    public long getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(long teacherId) {
-        this.teacherId = teacherId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Map<Long, BigDecimal> getSalaries() {
-        return salaries;
-    }
-
-    public void setSalaries(Map<Long, BigDecimal> salaries) {
-        this.salaries = salaries;
-    }
-
-    @Override
-    public String toString() {
-        return "TeacherDto{" +
-                "teacherId=" + teacherId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", salaries=" + salaries +
-                '}';
-    }
 }

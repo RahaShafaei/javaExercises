@@ -8,6 +8,7 @@ import com.example.schoolPaymentManagement.dto.PaymentMapper;
 import com.example.schoolPaymentManagement.repository.InfFeeRepository;
 import com.example.schoolPaymentManagement.repository.InfPaymentRepository;
 import com.example.schoolPaymentManagement.repository.InfSalaryRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
  * Handle all {@link NotifyingController} constructor parameters.
  * </p>
  */
+@Getter
 @Component
 public class NotifyingBuilder {
 
@@ -32,18 +34,6 @@ public class NotifyingBuilder {
         this.infSalaryRepository = builder.infSalaryRepository;
         this.infFeeRepository = builder.infFeeRepository;
         this.paymentStatus = builder.paymentStatus;
-    }
-
-    public InfSalaryRepository getInfSalaryRepository() {
-        return infSalaryRepository;
-    }
-
-    public InfFeeRepository getInfFeeRepository() {
-        return infFeeRepository;
-    }
-
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
     }
 
     @Component

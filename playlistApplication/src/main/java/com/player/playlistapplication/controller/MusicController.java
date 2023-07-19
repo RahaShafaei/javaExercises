@@ -93,7 +93,7 @@ public class MusicController {
             throw new ItemNotFoundException(MUSIC_ID + id);
 
         return music.get()
-                .getPlaylist()
+                .getPlaylists()
                 .stream()
                 .map(playlistMapper::toDto)
                 .toList();

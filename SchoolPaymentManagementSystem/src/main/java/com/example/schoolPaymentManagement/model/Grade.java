@@ -4,11 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import java.util.List;
 
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "gradeId")
@@ -42,66 +50,4 @@ public class Grade {
     @ManyToMany(mappedBy = "gradeList")
     private List<Teacher> teacherList;
 
-    public Grade() {
-    }
-
-    public long getGradeId() {
-        return gradeId;
-    }
-
-    public void setGradeId(long gradeId) {
-        this.gradeId = gradeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Fee> getFees() {
-        return fees;
-    }
-
-    public void setFees(List<Fee> fees) {
-        this.fees = fees;
-    }
-
-    public List<Salary> getSalaries() {
-        return salaries;
-    }
-
-    public void setSalaries(List<Salary> salaries) {
-        this.salaries = salaries;
-    }
-
-    public List<Student> getStudentList() {
-        return studentList;
-    }
-
-    public void setStudentList(List<Student> studentList) {
-        this.studentList = studentList;
-    }
-
-    public List<Teacher> getTeacherList() {
-        return teacherList;
-    }
-
-    public void setTeacherList(List<Teacher> teacherList) {
-        this.teacherList = teacherList;
-    }
-
-    @Override
-    public String toString() {
-        return "Grade{" +
-                "gradeId=" + gradeId +
-                ", name='" + name + '\'' +
-                ", fees=" + fees +
-                ", salaries=" + salaries +
-                ", studentList=" + studentList +
-                ", teacherList=" + teacherList +
-                '}';
-    }
 }

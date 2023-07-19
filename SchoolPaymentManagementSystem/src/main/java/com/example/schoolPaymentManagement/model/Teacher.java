@@ -4,11 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import java.util.List;
 
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "teacherId")
@@ -42,57 +50,6 @@ public class Teacher {
             inverseJoinColumns = @JoinColumn(name = "gradeId"))
     private List<Grade> gradeList;
 
-    public Teacher() {
-    }
 
-    public long getTeacherId() {
-        return teacherId;
-    }
 
-    public void setTeacherId(long teacherId) {
-        this.teacherId = teacherId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public List<Salary> getSalaries() {
-        return salaries;
-    }
-
-    public void setSalaries(List<Salary> salaries) {
-        this.salaries = salaries;
-    }
-
-    public List<Grade> getGradeList() {
-        return gradeList;
-    }
-
-    public void setGradeList(List<Grade> gradeList) {
-        this.gradeList = gradeList;
-    }
-
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "teacherId=" + teacherId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", salaries=" + salaries +
-                ", gradeList=" + gradeList +
-                '}';
-    }
 }

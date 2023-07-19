@@ -4,6 +4,7 @@ import com.player.playlistapplication.controller.GenreController;
 import com.player.playlistapplication.dto.GenreMapper;
 import com.player.playlistapplication.dto.MusicMapper;
 import com.player.playlistapplication.repository.InfGenreRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
  * Handle all {@link GenreController} constructor parameters.
  * </p>
  */
+@Getter
 @Component
 public class GenreBuilder {
     private final InfGenreRepository repository;
@@ -25,18 +27,6 @@ public class GenreBuilder {
         this.repository = builder.repository;
         this.genreMapper = builder.genreMapper;
         this.musicMapper = builder.musicMapper;
-    }
-
-    public InfGenreRepository getRepository() {
-        return repository;
-    }
-
-    public GenreMapper getGenreMapper() {
-        return genreMapper;
-    }
-
-    public MusicMapper getMusicMapper() {
-        return musicMapper;
     }
 
     @Component
