@@ -1,6 +1,6 @@
 package com.player.playlistapplication.dto;
 
-import com.player.playlistapplication.helper.Helper;
+import com.player.playlistapplication.helper.ConvertListToMap;
 import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class PlaylistMapper {
         playlistDto.setName(playlist.getName());
 
         if (playlist.getMusicList() != null) {
-            Map<Long, String> musicDtl = Helper.convertListToMap(
+            Map<Long, String> musicDtl = ConvertListToMap.apply(
                     playlist.getMusicList(),
                     Music::getMusicId,
                     Music::getName

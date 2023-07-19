@@ -8,7 +8,7 @@ import com.example.schoolPaymentManagement.dto.PaymentDto;
 import com.example.schoolPaymentManagement.dto.PaymentMapper;
 import com.example.schoolPaymentManagement.dto.SalaryDto;
 import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
-import com.example.schoolPaymentManagement.exception.helper.EnmPaymentTypes;
+import com.example.schoolPaymentManagement.helper.EnmPaymentTypes;
 import com.example.schoolPaymentManagement.model.Fee;
 import com.example.schoolPaymentManagement.model.Payment;
 import com.example.schoolPaymentManagement.model.Salary;

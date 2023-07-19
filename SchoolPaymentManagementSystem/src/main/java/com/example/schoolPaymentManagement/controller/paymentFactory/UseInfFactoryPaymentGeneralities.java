@@ -4,7 +4,7 @@ import com.example.schoolPaymentManagement.dto.FeeMapper;
 import com.example.schoolPaymentManagement.dto.PaymentMapper;
 import com.example.schoolPaymentManagement.dto.SalaryMapper;
 import com.example.schoolPaymentManagement.exception.BadParameterException;
-import com.example.schoolPaymentManagement.exception.helper.EnmPaymentTypes;
+import com.example.schoolPaymentManagement.helper.EnmPaymentTypes;
 import com.example.schoolPaymentManagement.model.Payment;
 import com.example.schoolPaymentManagement.repository.InfFeeRepository;
 import com.example.schoolPaymentManagement.repository.InfPaymentRepository;

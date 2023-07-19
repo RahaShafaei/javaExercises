@@ -1,5 +1,6 @@
 package com.player.playlistapplication.controller;
 
+import com.player.playlistapplication.controller.builder.GenreBuilder;
 import com.player.playlistapplication.dto.GenreDto;
 import com.player.playlistapplication.dto.GenreMapper;
 import com.player.playlistapplication.dto.MusicDto;
@@ -27,16 +28,14 @@ import java.util.Optional;
  */
 @RestController
 public class GenreController {
-    private InfGenreRepository repository;
-    private GenreMapper genreMapper;
-    private MusicMapper musicMapper;
+    private final InfGenreRepository repository;
+    private final GenreMapper genreMapper;
+    private final MusicMapper musicMapper;
 
-    public GenreController(InfGenreRepository repository,
-                           GenreMapper genreMapper,
-                           MusicMapper musicMapper) {
-        this.repository = repository;
-        this.genreMapper = genreMapper;
-        this.musicMapper = musicMapper;
+    public GenreController(GenreBuilder genreBuilder) {
+        this.repository = genreBuilder.getRepository();
+        this.genreMapper = genreBuilder.getGenreMapper();
+        this.musicMapper = genreBuilder.getMusicMapper();
     }
 
     /**

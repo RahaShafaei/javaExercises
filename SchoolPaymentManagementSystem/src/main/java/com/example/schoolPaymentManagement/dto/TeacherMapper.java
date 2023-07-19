@@ -1,6 +1,6 @@
 package com.example.schoolPaymentManagement.dto;
 
-import com.example.schoolPaymentManagement.exception.helper.ConvertListToMap;
+import com.example.schoolPaymentManagement.helper.ConvertListToMap;
 import com.example.schoolPaymentManagement.model.Salary;
 import com.example.schoolPaymentManagement.model.Teacher;
 import org.springframework.stereotype.Component;

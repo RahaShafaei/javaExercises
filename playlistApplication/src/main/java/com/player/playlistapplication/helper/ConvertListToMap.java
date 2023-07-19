@@ -1,4 +1,4 @@
-package com.example.schoolPaymentManagement.exception.helper;
+package com.player.playlistapplication.helper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 /**
  * @author Raha
- * @since 2023-07-10
+ * @since 2023-06-22
  */
 public class ConvertListToMap<T, R, Y> {
 

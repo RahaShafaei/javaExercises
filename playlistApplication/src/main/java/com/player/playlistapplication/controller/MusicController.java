@@ -1,5 +1,6 @@
 package com.player.playlistapplication.controller;
 
+import com.player.playlistapplication.controller.builder.MusicBuilder;
 import com.player.playlistapplication.dto.MusicDto;
 import com.player.playlistapplication.dto.MusicMapper;
 import com.player.playlistapplication.dto.PlaylistDto;
@@ -38,14 +39,11 @@ public class MusicController {
     private final MusicMapper musicMapper;
     private final PlaylistMapper playlistMapper;
 
-    public MusicController(InfMusicRepository musicRepository,
-                           MusicMapper musicMapper,
-                           InfGenreRepository genreRepository,
-                           PlaylistMapper playlistMapper) {
-        this.musicRepository = musicRepository;
-        this.genreRepository = genreRepository;
-        this.musicMapper = musicMapper;
-        this.playlistMapper = playlistMapper;
+    public MusicController(MusicBuilder musicBuilder) {
+        this.musicRepository = musicBuilder.getMusicRepository();
+        this.genreRepository = musicBuilder.getGenreRepository();
+        this.musicMapper = musicBuilder.getMusicMapper();
+        this.playlistMapper = musicBuilder.getPlaylistMapper();
     }
 
     /**

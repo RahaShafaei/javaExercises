@@ -1,7 +1,7 @@
 package com.example.schoolPaymentManagement.dto;
 
 import com.example.schoolPaymentManagement.controller.builder.GradeBuilder;
-import com.example.schoolPaymentManagement.exception.helper.ConvertListToMap;
+import com.example.schoolPaymentManagement.helper.ConvertListToMap;
 import com.example.schoolPaymentManagement.model.Grade;
 import com.example.schoolPaymentManagement.model.Student;
 import com.example.schoolPaymentManagement.model.Teacher;

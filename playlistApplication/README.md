@@ -21,3 +21,5 @@ This project uses technologies related to the Spring framework, and the main com
 * Use **Observer Pattern** to notify the playlist or song objects when there are changes or updates.
 * Use **FactoryMethod Pattern** to create smart playlist based on genre, artist.
 * Use **Singleton Pattern** to  have a central controller that handles the playlist operations.
+* Use **Builder Pattern** to handle all `Controllers` constructor parameters.
+* Trying to adhere to **SOLID** principles.

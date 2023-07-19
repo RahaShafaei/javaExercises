@@ -1,6 +1,6 @@
 package com.player.playlistapplication.dto;
 
-import com.player.playlistapplication.helper.Helper;
+import com.player.playlistapplication.helper.ConvertListToMap;
 import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,7 @@ public class MusicMapper {
         musicDto.setGenre(tempGenre);
 
         if (music.getPlaylist() != null) {
-            Map<Long, String> playlistDtl = Helper.convertListToMap(
+            Map<Long, String> playlistDtl = ConvertListToMap.apply(
                     music.getPlaylist(),
                     Playlist::getPlaylistId,
                     Playlist::getName
