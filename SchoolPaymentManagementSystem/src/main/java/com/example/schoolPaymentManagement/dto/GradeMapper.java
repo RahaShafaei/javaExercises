@@ -24,9 +24,9 @@ public class GradeMapper {
 
     private final TeacherMapper teacherMapper;
 
-    public GradeMapper(GradeBuilder gradeBuilder) {
-        this.studentMapper = gradeBuilder.getStudentMapper();
-        this.teacherMapper = gradeBuilder.getTeacherMapper();
+    public GradeMapper(StudentMapper studentMapper, TeacherMapper teacherMapper) {
+        this.studentMapper = studentMapper;
+        this.teacherMapper = teacherMapper;
     }
 
     public GradeDto toDto(Grade grade) {

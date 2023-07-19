@@ -18,9 +18,9 @@ public class SalaryMapper {
 
     private final TeacherMapper teacherMapper;
 
-    public SalaryMapper(SalaryBuilder salaryBuilder) {
-        this.gradeMapper = salaryBuilder.getGradeMapper();
-        this.teacherMapper = salaryBuilder.getTeacherMapper();
+    public SalaryMapper(GradeMapper gradeMapper, TeacherMapper teacherMapper) {
+        this.gradeMapper = gradeMapper;
+        this.teacherMapper = teacherMapper;
     }
 
     public SalaryDto toDto(Salary salary) {

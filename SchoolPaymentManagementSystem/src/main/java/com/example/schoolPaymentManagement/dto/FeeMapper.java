@@ -19,9 +19,9 @@ public class FeeMapper {
 
     private final GradeMapper gradeMapper;
 
-    public FeeMapper(FeeBuilder feeBuilder) {
-        this.studentMapper = feeBuilder.getStudentMapper();
-        this.gradeMapper = feeBuilder.getGradeMapper();
+    public FeeMapper(StudentMapper studentMapper,GradeMapper gradeMapper) {
+        this.studentMapper = studentMapper;
+        this.gradeMapper = gradeMapper;
     }
 
     public FeeDto toDto(Fee fee) {
