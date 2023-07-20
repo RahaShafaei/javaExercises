@@ -1,26 +1,21 @@
 package com.example.schoolPaymentManagement.controller;
 
-import com.example.schoolPaymentManagement.controller.builder.PaymentBuilder;
-import com.example.schoolPaymentManagement.controller.paymentFactory.InfFactoryPaymentGeneralities;
-import com.example.schoolPaymentManagement.controller.paymentFactory.UseInfFactoryPaymentGeneralities;
 import com.example.schoolPaymentManagement.dto.FeeDto;
 import com.example.schoolPaymentManagement.dto.PaymentDto;
-import com.example.schoolPaymentManagement.dto.PaymentMapper;
 import com.example.schoolPaymentManagement.dto.SalaryDto;
-import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
 import com.example.schoolPaymentManagement.helper.EnmPaymentTypes;
 import com.example.schoolPaymentManagement.model.Fee;
 import com.example.schoolPaymentManagement.model.Payment;
 import com.example.schoolPaymentManagement.model.Salary;
-import com.example.schoolPaymentManagement.repository.InfPaymentRepository;
+import com.example.schoolPaymentManagement.service.PaymentService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -33,19 +28,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Handle all {@link Payment} interactions.
  * </p>
  */
+@AllArgsConstructor
 @RestController
 public class PaymentController {
 
-    private static final String PAYMENT_ID = "Payment id: ";
-    private final InfPaymentRepository infPaymentRepository;
-    private final PaymentMapper paymentMapper;
-    private final UseInfFactoryPaymentGeneralities useInfFactoryPaymentGeneralities;
-
-    public PaymentController(PaymentBuilder paymentBuilder) {
-        this.infPaymentRepository = paymentBuilder.getInfPaymentRepository();
-        this.paymentMapper = paymentBuilder.getPaymentMapper();
-        this.useInfFactoryPaymentGeneralities = paymentBuilder.getUseInfFactoryPaymentGeneralities();
-    }
+    PaymentService paymentService;
 
     /**
      * <p>Find all {@link Payment}s,convert them to {@link PaymentDto} and return them.</p>
@@ -54,10 +41,7 @@ public class PaymentController {
      */
     @GetMapping("/payments")
     public List<PaymentDto> retrieveAllPayment() {
-        return infPaymentRepository.findAll()
-                .stream()
-                .map(paymentMapper::toDto)
-                .toList();
+        return paymentService.getPayments();
     }
 
     /**
@@ -71,12 +55,7 @@ public class PaymentController {
      */
     @GetMapping("/payments/{id}")
     public PaymentDto retrievePayment(@PathVariable Long id) {
-        Optional<Payment> payment = infPaymentRepository.findById(id);
-
-        if (payment.isEmpty())
-            throw new ItemNotFoundException(PAYMENT_ID + id);
-
-        return paymentMapper.toDto(payment.get());
+        return paymentService.getPayment(id);
     }
 
     /**
@@ -96,12 +75,7 @@ public class PaymentController {
     public PaymentDto retrievePartOfPayment(@PathVariable Long id,
                                             @PathVariable String type
     ) {
-        InfFactoryPaymentGeneralities creation = useInfFactoryPaymentGeneralities;
-        useInfFactoryPaymentGeneralities.setTypeId(id);
-
-        return creation
-                .create(EnmPaymentTypes.valueOf(type.toUpperCase()))
-                .getPaymentPartsDetails();
+        return paymentService.getPartOfPayment(id, type);
     }
 
     /**
@@ -110,13 +84,14 @@ public class PaymentController {
      * @param id of {@link Payment}
      */
     @DeleteMapping("/payments/{id}")
-    public void deletePayment(@PathVariable Long id) {
-        Optional<Payment> payment = infPaymentRepository.findById(id);
+    public ResponseEntity<Void> deletePayment(@PathVariable Long id) {
+        boolean result = paymentService.deletePayment(id);
 
-        if (payment.isEmpty())
-            throw new ItemNotFoundException(PAYMENT_ID + id);
-
-        infPaymentRepository.deleteById(id);
+        if (result) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -134,13 +109,7 @@ public class PaymentController {
             @PathVariable Long id,
             @PathVariable String type,
             @Valid @RequestBody Payment payment) {
-        InfFactoryPaymentGeneralities creation = useInfFactoryPaymentGeneralities;
-        useInfFactoryPaymentGeneralities.setTypeId(id);
-        useInfFactoryPaymentGeneralities.setPayment(payment);
-
-        PaymentDto paymentDto = creation
-                .create(EnmPaymentTypes.valueOf(type.toUpperCase()))
-                .createPayment();
+        PaymentDto paymentDto = paymentService.createPaymentOfSpecificType(payment, type, id);
 
         EntityModel<PaymentDto> entityModel = EntityModel.of(paymentDto);
 
@@ -149,6 +118,5 @@ public class PaymentController {
 
         return ResponseEntity.created(link.toUri()).body(entityModel);
     }
-
 
 }

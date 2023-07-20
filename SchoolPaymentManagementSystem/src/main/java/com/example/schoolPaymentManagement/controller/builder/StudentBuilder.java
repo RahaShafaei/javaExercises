@@ -23,11 +23,13 @@ public class StudentBuilder {
     private final InfGradeRepository gradeRepository;
     private final StudentMapper studentMapper;
     private final FeeMapper feeMapper;
+    private final GradeMapper gradeMapper;
 
     private StudentBuilder(Builder builder) {
         this.studentRepository = builder.studentRepository;
         this.gradeRepository = builder.gradeRepository;
         this.feeMapper = builder.feeMapper;
+        this.gradeMapper = builder.gradeMapper;
         this.studentMapper = builder.studentMapper;
     }
 
@@ -44,5 +46,8 @@ public class StudentBuilder {
 
         @Autowired
         private FeeMapper feeMapper;
+
+        @Autowired
+        private GradeMapper gradeMapper;
     }
 }

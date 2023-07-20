@@ -2,7 +2,7 @@ package com.example.schoolPaymentManagement.controller;
 
 import com.example.schoolPaymentManagement.dto.FeeDto;
 import com.example.schoolPaymentManagement.dto.PaymentDto;
-import com.example.schoolPaymentManagement.model.FeePayment;
+import com.example.schoolPaymentManagement.model.Payment;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
@@ -24,13 +24,13 @@ import java.util.List;
  * @since 2023-07-10
  *
  * <p>
- * Handle all {@link FeePayment} tests.
+ * Handle all {@link Payment} tests.
  * </p>
  */
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class FeePaymentControllerIntegrationTest {
+class PaymentControllerIntegrationTest {
     @Value("${server.port}")
     private int serverPort;
 
@@ -41,15 +41,15 @@ class FeePaymentControllerIntegrationTest {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    @DisplayName("Test retrieved Fee of a FeePayment.")
-    void testRetrieveFeeOfFeePayment_whenFeePaymentExist_thenReturnStatus() {
+    @DisplayName("Test retrieved Fee of a Payment.")
+    void testRetrievePartOfPayment_whenPaymentExist_thenReturnStatus() {
         // Arrange Act
-        ResponseEntity<FeeDto> feePaymentResponse =
+        ResponseEntity<PaymentDto> feePaymentResponse =
                 testRestTemplate.exchange(
-                        "/feePayments/1/fee",
+                        "/payments/FEE/1",
                         HttpMethod.GET,
                         null,
-                        new ParameterizedTypeReference<FeeDto>() {
+                        new ParameterizedTypeReference<PaymentDto>() {
                         }
                 );
 
@@ -57,16 +57,16 @@ class FeePaymentControllerIntegrationTest {
         Assertions.assertEquals(
                 HttpStatus.OK,
                 feePaymentResponse.getStatusCode(),
-                "There isn't any Fee for this FeePayment."
+                "There isn't any Fee for this Payment."
         );
     }
 
     @Test
-    @DisplayName("Can delete a FeePayment.")
-    void testDeleteFeePayment_whenFeePaymentHasPlaylist_returnsServerError() {
+    @DisplayName("Can delete a Payment.")
+    void testDeletePayment_whenPaymentHasPlaylist_returnsServerError() {
         // Arrange
         ResponseEntity<Void> resp = testRestTemplate.exchange(
-                "/feePayments/1",
+                "/payments/1",
                 HttpMethod.DELETE,
                 HttpEntity.EMPTY,
                 Void.class
@@ -80,8 +80,8 @@ class FeePaymentControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("FeePayment can be created")
-    void testCreateFeePaymentOfFee_whenValidDetailsProvided_returnsFeePaymentDetails() throws JSONException {
+    @DisplayName("Payment can be created")
+    void testCreatePaymentOfSpecificType_whenValidDetailsProvided_returnsPaymentDetails() throws JSONException {
         // Arrange
         JSONObject feePaymentDetailsRequestJson = new JSONObject();
         feePaymentDetailsRequestJson.put("paymentDate", "2022-12-08");
@@ -94,7 +94,7 @@ class FeePaymentControllerIntegrationTest {
 
         // Act
         ResponseEntity<PaymentDto> createdFeePaymentDetailsEntity = testRestTemplate.postForEntity(
-                "/feePayments/fee/8",
+                "/payments/fee/8",
                 request,
                 PaymentDto.class
         );

@@ -1,7 +1,9 @@
 package com.example.schoolPaymentManagement.controller.builder;
 
 import com.example.schoolPaymentManagement.controller.TeacherController;
-import com.example.schoolPaymentManagement.dto.*;
+import com.example.schoolPaymentManagement.dto.GradeMapper;
+import com.example.schoolPaymentManagement.dto.SalaryMapper;
+import com.example.schoolPaymentManagement.dto.TeacherMapper;
 import com.example.schoolPaymentManagement.repository.InfGradeRepository;
 import com.example.schoolPaymentManagement.repository.InfTeacherRepository;
 import lombok.Getter;
@@ -23,10 +25,12 @@ public class TeacherBuilder {
     private final InfGradeRepository gradeRepository;
     private final TeacherMapper teacherMapper;
     private final SalaryMapper salaryMapper;
+    private final GradeMapper gradeMapper;
 
     private TeacherBuilder(Builder builder) {
         this.teacherMapper = builder.teacherMapper;
         this.salaryMapper = builder.salaryMapper;
+        this.gradeMapper = builder.gradeMapper;
         this.gradeRepository = builder.gradeRepository;
         this.teacherRepository = builder.teacherRepository;
     }
@@ -44,6 +48,9 @@ public class TeacherBuilder {
 
         @Autowired
         private SalaryMapper salaryMapper;
+
+        @Autowired
+        private GradeMapper gradeMapper;
     }
 
 }

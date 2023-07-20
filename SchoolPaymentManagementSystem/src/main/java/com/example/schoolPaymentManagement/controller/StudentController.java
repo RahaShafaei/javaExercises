@@ -1,25 +1,20 @@
 package com.example.schoolPaymentManagement.controller;
 
-import com.example.schoolPaymentManagement.controller.builder.StudentBuilder;
 import com.example.schoolPaymentManagement.dto.FeeDto;
-import com.example.schoolPaymentManagement.dto.FeeMapper;
+import com.example.schoolPaymentManagement.dto.GradeDto;
 import com.example.schoolPaymentManagement.dto.StudentDto;
-import com.example.schoolPaymentManagement.dto.StudentMapper;
-import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
 import com.example.schoolPaymentManagement.model.Fee;
 import com.example.schoolPaymentManagement.model.Grade;
 import com.example.schoolPaymentManagement.model.Student;
-import com.example.schoolPaymentManagement.repository.InfGradeRepository;
-import com.example.schoolPaymentManagement.repository.InfStudentRepository;
+import com.example.schoolPaymentManagement.service.StudentService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -32,19 +27,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Handle all {@link Student} interactions.
  * </p>
  */
+@AllArgsConstructor
 @RestController
 public class StudentController {
-    private static final String STUDENT_ID = "Student id: ";
-    private final InfStudentRepository studentRepository;
-    private final InfGradeRepository gradeRepository;
-    private final StudentMapper studentMapper;
-    private final FeeMapper feeMapper;
-    public StudentController(StudentBuilder studentBuilder) {
-        this.studentRepository = studentBuilder.getStudentRepository();
-        this.gradeRepository = studentBuilder.getGradeRepository();
-        this.studentMapper = studentBuilder.getStudentMapper();
-        this.feeMapper = studentBuilder.getFeeMapper();
-    }
+    private final StudentService studentService;
 
     /**
      * <p>Find all {@link Student}s,convert them to {@link StudentDto} and return them.</p>
@@ -53,10 +39,7 @@ public class StudentController {
      */
     @GetMapping("/students")
     public List<StudentDto> retrieveAllStudent() {
-        return studentRepository.findAll()
-                .stream()
-                .map(studentMapper::toDto)
-                .toList();
+        return studentService.getStudents();
     }
 
     /**
@@ -70,12 +53,7 @@ public class StudentController {
      */
     @GetMapping("/students/{id}")
     public StudentDto retrieveStudent(@PathVariable Long id) {
-        Optional<Student> student = studentRepository.findById(id);
-
-        if (student.isEmpty())
-            throw new ItemNotFoundException(STUDENT_ID + id);
-
-        return studentMapper.toDto(student.get());
+        return studentService.getStudent(id);
     }
 
     /**
@@ -89,16 +67,21 @@ public class StudentController {
      */
     @GetMapping("/students/{id}/fees")
     public List<FeeDto> retrieveFeesOfStudents(@PathVariable Long id) {
-        Optional<Student> student = studentRepository.findById(id);
+        return studentService.getFeesOfStudents(id);
+    }
 
-        if (student.isEmpty())
-            throw new ItemNotFoundException(STUDENT_ID + id);
-
-        return student.get()
-                .getFees()
-                .stream()
-                .map(feeMapper::toDto)
-                .toList();
+    /**
+     * <p>
+     * Find a specific {@link Student} according to taken id,
+     * get all of its {@link Grade}, convert them to {@link GradeDto} and return them.
+     * </p>
+     *
+     * @param id of a valid {@link Student}.
+     * @return list of {@link GradeDto}
+     */
+    @GetMapping("/students/{id}/grades")
+    public List<GradeDto> retrieveGradesOfStudents(@PathVariable Long id) {
+        return studentService.getGradesOfStudents(id);
     }
 
     /**
@@ -107,13 +90,14 @@ public class StudentController {
      * @param id of a valid {@link Student}.
      */
     @DeleteMapping("/students/{id}")
-    public void deleteStudent(@PathVariable Long id) {
-        Optional<Student> student = studentRepository.findById(id);
+    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+        boolean result = studentService.deleteStudent(id);
 
-        if (student.isEmpty())
-            throw new ItemNotFoundException(STUDENT_ID + id);
-
-        studentRepository.deleteById(id);
+        if (result) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -126,19 +110,9 @@ public class StudentController {
     @PostMapping("/students/grade/{gradeId}")
     public ResponseEntity<EntityModel<StudentDto>> createStudent(@Valid @RequestBody Student student,
                                                                  @PathVariable Long gradeId) {
+        StudentDto savedStudent = studentService.createStudent(student, gradeId);
 
-        Optional<Grade> grade = gradeRepository.findById(gradeId);
-
-        if (grade.isEmpty())
-            throw new ItemNotFoundException("Grade id : " + gradeId);
-
-        List<Grade> grades = new ArrayList<>();
-        grades.add(grade.get());
-
-        student.setGradeList(grades);
-        Student savedStudent = studentRepository.save(student);
-
-        EntityModel<StudentDto> entityModel = EntityModel.of(studentMapper.toDto(savedStudent));
+        EntityModel<StudentDto> entityModel = EntityModel.of(savedStudent);
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveStudent(savedStudent.getStudentId()));
         entityModel.add(link.withRel("student_link"));

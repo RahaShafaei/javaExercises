@@ -1,25 +1,20 @@
 package com.example.schoolPaymentManagement.controller;
 
-import com.example.schoolPaymentManagement.controller.builder.TeacherBuilder;
+import com.example.schoolPaymentManagement.dto.GradeDto;
 import com.example.schoolPaymentManagement.dto.SalaryDto;
-import com.example.schoolPaymentManagement.dto.SalaryMapper;
 import com.example.schoolPaymentManagement.dto.TeacherDto;
-import com.example.schoolPaymentManagement.dto.TeacherMapper;
-import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
 import com.example.schoolPaymentManagement.model.Grade;
 import com.example.schoolPaymentManagement.model.Salary;
 import com.example.schoolPaymentManagement.model.Teacher;
-import com.example.schoolPaymentManagement.repository.InfGradeRepository;
-import com.example.schoolPaymentManagement.repository.InfTeacherRepository;
+import com.example.schoolPaymentManagement.service.TeacherService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -32,20 +27,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Handle all {@link Teacher} interactions.
  * </p>
  */
+@AllArgsConstructor
 @RestController
 public class TeacherController {
-    private static final String TEACHER_ID = "Teacher id: ";
-    private final InfTeacherRepository teacherRepository;
-    private final InfGradeRepository gradeRepository;
-    private final TeacherMapper teacherMapper;
-    private final SalaryMapper salaryMapper;
-
-    public TeacherController(TeacherBuilder teacherBuilder) {
-        this.teacherRepository = teacherBuilder.getTeacherRepository();
-        this.gradeRepository = teacherBuilder.getGradeRepository();
-        this.teacherMapper = teacherBuilder.getTeacherMapper();
-        this.salaryMapper = teacherBuilder.getSalaryMapper();
-    }
+    TeacherService teacherService;
 
     /**
      * <p>Find all {@link Teacher}s,convert them to {@link TeacherDto} and return them.</p>
@@ -54,10 +39,7 @@ public class TeacherController {
      */
     @GetMapping("/teachers")
     public List<TeacherDto> retrieveAllTeacher() {
-        return teacherRepository.findAll()
-                .stream()
-                .map(teacherMapper::toDto)
-                .toList();
+        return teacherService.getTeachers();
     }
 
     /**
@@ -71,12 +53,7 @@ public class TeacherController {
      */
     @GetMapping("/teachers/{id}")
     public TeacherDto retrieveTeacher(@PathVariable Long id) {
-        Optional<Teacher> teacher = teacherRepository.findById(id);
-
-        if (teacher.isEmpty())
-            throw new ItemNotFoundException(TEACHER_ID + id);
-
-        return teacherMapper.toDto(teacher.get());
+        return teacherService.getTeacher(id);
     }
 
     /**
@@ -89,16 +66,21 @@ public class TeacherController {
      */
     @GetMapping("/teachers/{id}/salaries")
     public List<SalaryDto> retrieveSalariesOfTeachers(@PathVariable Long id) {
-        Optional<Teacher> teacher = teacherRepository.findById(id);
+        return teacherService.getSalariesOfTeachers(id);
+    }
 
-        if (teacher.isEmpty())
-            throw new ItemNotFoundException(TEACHER_ID + id);
-
-        return teacher.get()
-                .getSalaries()
-                .stream()
-                .map(salaryMapper::toDto)
-                .toList();
+    /**
+     * <p>
+     * Find a specific {@link Teacher} according to taken id,
+     * get all of its {@link Grade}, convert them to {@link GradeDto} and return them.
+     * </p>
+     *
+     * @param id of a valid {@link Teacher}.
+     * @return list of {@link GradeDto}
+     */
+    @GetMapping("/teachers/{id}/grades")
+    public List<GradeDto> retrieveGradesOTeachers(@PathVariable Long id) {
+        return teacherService.getGradesOfTeachers(id);
     }
 
     /**
@@ -107,13 +89,14 @@ public class TeacherController {
      * @param id of a valid {@link Teacher}.
      */
     @DeleteMapping("/teachers/{id}")
-    public void deleteTeacher(@PathVariable Long id) {
-        Optional<Teacher> teacher = teacherRepository.findById(id);
+    public ResponseEntity<Void> deleteTeacher(@PathVariable Long id) {
+        boolean result = teacherService.deleteTeacher(id);
 
-        if (teacher.isEmpty())
-            throw new ItemNotFoundException(TEACHER_ID + id);
-
-        teacherRepository.deleteById(id);
+        if (result) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -126,21 +109,12 @@ public class TeacherController {
     @PostMapping("/teachers/grade/{gradeId}")
     public ResponseEntity<EntityModel<TeacherDto>> createTeacher(@Valid @RequestBody Teacher teacher,
                                                                  @PathVariable Long gradeId) {
-        Optional<Grade> grade = gradeRepository.findById(gradeId);
+        TeacherDto teacherSaved = teacherService.createTeacher(teacher, gradeId);
 
-        if (grade.isEmpty())
-            throw new ItemNotFoundException("Grade id : " + gradeId);
-
-        List<Grade> grades = new ArrayList<>();
-        grades.add(grade.get());
-
-        teacher.setGradeList(grades);
-        Teacher teacherSaved = teacherRepository.save(teacher);
-
-        EntityModel<TeacherDto> entityModel = EntityModel.of(teacherMapper.toDto(teacherSaved));
+        EntityModel<TeacherDto> entityModel = EntityModel.of(teacherSaved);
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveTeacher(teacherSaved.getTeacherId()));
-        entityModel.add(link.withRel("student_link"));
+        entityModel.add(link.withRel("teacher_link"));
 
         return ResponseEntity.created(link.toUri()).body(entityModel);
     }

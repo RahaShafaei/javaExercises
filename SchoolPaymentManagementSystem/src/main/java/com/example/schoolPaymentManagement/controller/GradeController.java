@@ -1,18 +1,16 @@
 package com.example.schoolPaymentManagement.controller;
 
-import com.example.schoolPaymentManagement.controller.builder.GradeBuilder;
 import com.example.schoolPaymentManagement.dto.*;
-import com.example.schoolPaymentManagement.exception.ItemNotFoundException;
 import com.example.schoolPaymentManagement.model.*;
-import com.example.schoolPaymentManagement.repository.InfGradeRepository;
+import com.example.schoolPaymentManagement.service.GradeService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Raha
@@ -22,24 +20,12 @@ import java.util.Optional;
  * Handle all {@link Grade} interactions.
  * </p>
  */
+
+@AllArgsConstructor
 @RestController
 public class GradeController {
-    private static final String GRADE_ID = "Grade id: ";
-    private final InfGradeRepository gradeRepository;
-    private final GradeMapper gradeMapper;
-    private final StudentMapper studentMapper;
-    private final TeacherMapper teacherMapper;
-    private final FeeMapper feeMapper;
-    private final SalaryMapper salaryMapper;
 
-    public GradeController(GradeBuilder gradeBuilder) {
-        this.gradeRepository = gradeBuilder.getGradeRepository();
-        this.gradeMapper = gradeBuilder.getGradeMapper();
-        this.studentMapper = gradeBuilder.getStudentMapper();
-        this.teacherMapper = gradeBuilder.getTeacherMapper();
-        this.feeMapper = gradeBuilder.getFeeMapper();
-        this.salaryMapper = gradeBuilder.getSalaryMapper();
-    }
+    private final GradeService gradeService;
 
     /**
      * <p>Find all {@link Grade}s,convert them to {@link GradeDto} and return them.</p>
@@ -48,10 +34,7 @@ public class GradeController {
      */
     @GetMapping("/grades")
     public List<GradeDto> retrieveAllGrades() {
-        return gradeRepository.findAll()
-                .stream()
-                .map(gradeMapper::toDto)
-                .toList();
+        return gradeService.getGrades();
     }
 
     /**
@@ -65,12 +48,7 @@ public class GradeController {
      */
     @GetMapping("/grades/{id}")
     public GradeDto retrieveGrade(@PathVariable Long id) {
-        Optional<Grade> grade = gradeRepository.findById(id);
-
-        if (grade.isEmpty())
-            throw new ItemNotFoundException(GRADE_ID + id);
-
-        return gradeMapper.toDto(grade.get());
+        return gradeService.getGrade(id);
     }
 
     /**
@@ -84,16 +62,7 @@ public class GradeController {
      */
     @GetMapping("/grades/{id}/students")
     public List<StudentDto> retrieveStudentsOfGrade(@PathVariable Long id) {
-        Optional<Grade> grade = gradeRepository.findById(id);
-
-        if (grade.isEmpty())
-            throw new ItemNotFoundException(GRADE_ID + id);
-
-        return grade.get()
-                .getStudentList()
-                .stream()
-                .map(studentMapper::toDto)
-                .toList();
+        return gradeService.getGradeStudents(id);
     }
 
     /**
@@ -107,16 +76,7 @@ public class GradeController {
      */
     @GetMapping("/grades/{id}/teachers")
     public List<TeacherDto> retrieveTeachersOfGrade(@PathVariable Long id) {
-        Optional<Grade> grade = gradeRepository.findById(id);
-
-        if (grade.isEmpty())
-            throw new ItemNotFoundException(GRADE_ID + id);
-
-        return grade.get()
-                .getTeacherList()
-                .stream()
-                .map(teacherMapper::toDto)
-                .toList();
+        return gradeService.getGradeTeachers(id);
     }
 
     /**
@@ -130,16 +90,7 @@ public class GradeController {
      */
     @GetMapping("/grades/{id}/fees")
     public List<FeeDto> retrieveFeesOfGrade(@PathVariable Long id) {
-        Optional<Grade> grade = gradeRepository.findById(id);
-
-        if (grade.isEmpty())
-            throw new ItemNotFoundException(GRADE_ID + id);
-
-        return grade.get()
-                .getFees()
-                .stream()
-                .map(feeMapper::toDto)
-                .toList();
+        return gradeService.getGradeFees(id);
     }
 
     /**
@@ -153,16 +104,7 @@ public class GradeController {
      */
     @GetMapping("/grades/{id}/salaries")
     public List<SalaryDto> retrieveSalaryOfGrade(@PathVariable Long id) {
-        Optional<Grade> grade = gradeRepository.findById(id);
-
-        if (grade.isEmpty())
-            throw new ItemNotFoundException(GRADE_ID + id);
-
-        return grade.get()
-                .getSalaries()
-                .stream()
-                .map(salaryMapper::toDto)
-                .toList();
+        return gradeService.getSalaries(id);
     }
 
     /**
@@ -172,10 +114,9 @@ public class GradeController {
      */
     @DeleteMapping("/grades/{id}")
     public ResponseEntity<Void> deleteGrade(@PathVariable Long id) {
-        Optional<Grade> genre = gradeRepository.findById(id);
+        boolean result = gradeService.deleteGrade(id);
 
-        if (!genre.isEmpty()) {
-            gradeRepository.deleteById(id);
+        if (result) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -189,8 +130,8 @@ public class GradeController {
      * @return {@link ResponseEntity} of {@link Grade}
      */
     @PostMapping("/grades")
-    public ResponseEntity<Grade> createGrade(@Valid @RequestBody Grade grade) {
-        Grade savedGrade = gradeRepository.save(grade);
+    public ResponseEntity<GradeDto> createGrade(@Valid @RequestBody Grade grade) {
+        GradeDto savedGrade = gradeService.createGrade(grade);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
