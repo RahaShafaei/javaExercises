@@ -24,12 +24,14 @@ public class GenreMapper {
         genreDto.setGenreId(genre.getGenreId());
         genreDto.setName(genre.getName());
 
-        Map<Long, String> musicDtl = ConvertListToMap.apply(
-                genre.getMusicList(),
-                Music::getMusicId,
-                Music::getName
-        );
-        genreDto.setMusicList(musicDtl);
+        if (genre.getMusicList() != null){
+            Map<Long, String> musicDtl = ConvertListToMap.apply(
+                    genre.getMusicList(),
+                    Music::getMusicId,
+                    Music::getName
+            );
+            genreDto.setMusicList(musicDtl);
+        }
 
         return genreDto;
     }

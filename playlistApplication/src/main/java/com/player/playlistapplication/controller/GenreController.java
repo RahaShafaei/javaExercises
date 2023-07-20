@@ -1,22 +1,18 @@
 package com.player.playlistapplication.controller;
 
-import com.player.playlistapplication.controller.builder.GenreBuilder;
 import com.player.playlistapplication.dto.GenreDto;
-import com.player.playlistapplication.dto.GenreMapper;
 import com.player.playlistapplication.dto.MusicDto;
-import com.player.playlistapplication.dto.MusicMapper;
-import com.player.playlistapplication.exception.ItemNotFoundException;
 import com.player.playlistapplication.model.Genre;
 import com.player.playlistapplication.model.Music;
-import com.player.playlistapplication.repository.InfGenreRepository;
+import com.player.playlistapplication.service.GenreService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Raha
@@ -26,17 +22,10 @@ import java.util.Optional;
  * Handle all {@link Genre} interactions.
  * </p>
  */
+@AllArgsConstructor
 @RestController
 public class GenreController {
-    private final InfGenreRepository repository;
-    private final GenreMapper genreMapper;
-    private final MusicMapper musicMapper;
-
-    public GenreController(GenreBuilder genreBuilder) {
-        this.repository = genreBuilder.getRepository();
-        this.genreMapper = genreBuilder.getGenreMapper();
-        this.musicMapper = genreBuilder.getMusicMapper();
-    }
+    GenreService genreService;
 
     /**
      * <p>Find all {@link Genre}s,convert them to {@link GenreDto} and return them.</p>
@@ -45,10 +34,7 @@ public class GenreController {
      */
     @GetMapping("/genres")
     public List<GenreDto> retrieveAllGenres() {
-        return repository.findAll()
-                .stream()
-                .map(genreMapper::toDto)
-                .toList();
+        return genreService.getGenres();
     }
 
     /**
@@ -61,12 +47,7 @@ public class GenreController {
      */
     @GetMapping("/genres/{id}")
     public GenreDto retrieveGenre(@PathVariable Long id) {
-        Optional<Genre> genre = repository.findById(id);
-
-        if (genre.isEmpty())
-            throw new ItemNotFoundException("Genre id: " + id);
-
-        return genreMapper.toDto(genre.get());
+        return genreService.getGenre(id);
     }
 
     /**
@@ -79,16 +60,7 @@ public class GenreController {
      */
     @GetMapping("/genres/{id}/musics")
     public List<MusicDto> retrieveMusicsOfGenre(@PathVariable Long id) {
-        Optional<Genre> genre = repository.findById(id);
-
-        if (genre.isEmpty())
-            throw new ItemNotFoundException("Genre id: " + id);
-
-        return genre.get()
-                .getMusicList()
-                .stream()
-                .map(musicMapper::toDto)
-                .toList();
+        return genreService.getMusicsOfGenre(id);
     }
 
     /**
@@ -96,10 +68,9 @@ public class GenreController {
      */
     @DeleteMapping("/genres/{id}")
     public ResponseEntity<Void> deleteGenre(@PathVariable Long id) {
-        Optional<Genre> genre = repository.findById(id);
+        boolean result = genreService.deleteGenre(id);
 
-        if (!genre.isEmpty()) {
-            repository.deleteById(id);
+        if (result) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -112,8 +83,8 @@ public class GenreController {
      * @return {@link ResponseEntity} of {@link Genre}
      */
     @PostMapping("/genres")
-    public ResponseEntity<Genre> createGenre(@Valid @RequestBody Genre genre) {
-        Genre savedGenre = repository.save(genre);
+    public ResponseEntity<GenreDto> createGenre(@Valid @RequestBody Genre genre) {
+        GenreDto savedGenre = genreService.createGenre(genre);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

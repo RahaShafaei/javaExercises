@@ -11,7 +11,9 @@ import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.repository.InfGenreRepository;
 import com.player.playlistapplication.repository.InfMusicRepository;
+import com.player.playlistapplication.service.MusicService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -31,21 +33,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Handle all {@link Music} interactions.
  * </p>
  */
+@AllArgsConstructor
 @RestController
 public class MusicController {
-    private static final String MUSIC_ID = "Music id: ";
-    private final InfMusicRepository musicRepository;
-    private final InfGenreRepository genreRepository;
-    private final MusicMapper musicMapper;
-    private final PlaylistMapper playlistMapper;
-
-    public MusicController(MusicBuilder musicBuilder) {
-        this.musicRepository = musicBuilder.getMusicRepository();
-        this.genreRepository = musicBuilder.getGenreRepository();
-        this.musicMapper = musicBuilder.getMusicMapper();
-        this.playlistMapper = musicBuilder.getPlaylistMapper();
-    }
-
+    MusicService musicService;
     /**
      * <p>Find all {@link Music}s,convert them to {@link MusicDto} and return them.</p>
      *
@@ -53,10 +44,7 @@ public class MusicController {
      */
     @GetMapping("/musics")
     public List<MusicDto> retrieveAllMusic() {
-        return musicRepository.findAll()
-                .stream()
-                .map(musicMapper::toDto)
-                .toList();
+        return musicService.getMusics();
     }
 
     /**
@@ -69,12 +57,7 @@ public class MusicController {
      */
     @GetMapping("/musics/{id}")
     public MusicDto retrieveMusic(@PathVariable Long id) {
-        Optional<Music> music = musicRepository.findById(id);
-
-        if (music.isEmpty())
-            throw new ItemNotFoundException(MUSIC_ID + id);
-
-        return musicMapper.toDto(music.get());
+        return musicService.getMusic(id);
     }
 
     /**
@@ -87,29 +70,21 @@ public class MusicController {
      */
     @GetMapping("/musics/{id}/playlists")
     public List<PlaylistDto> retrievePlaylistsOfMusic(@PathVariable Long id) {
-        Optional<Music> music = musicRepository.findById(id);
-
-        if (music.isEmpty())
-            throw new ItemNotFoundException(MUSIC_ID + id);
-
-        return music.get()
-                .getPlaylists()
-                .stream()
-                .map(playlistMapper::toDto)
-                .toList();
+        return musicService.getPlaylistsOfMusic(id);
     }
 
     /**
      * Find a specific {@link Music} according to taken id and delete it.
      */
     @DeleteMapping("/musics/{id}")
-    public void deleteMusic(@PathVariable Long id) {
-        Optional<Music> music = musicRepository.findById(id);
+    public ResponseEntity<Void> deleteMusic(@PathVariable Long id) {
+        boolean result = musicService.deleteMusic(id);
 
-        if (music.isEmpty())
-            throw new ItemNotFoundException(MUSIC_ID + id);
-
-        musicRepository.deleteById(id);
+        if (result) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -122,15 +97,9 @@ public class MusicController {
             @PathVariable Long id,
             @Valid @RequestBody Music music
     ) {
-        Optional<Genre> genre = genreRepository.findById(id);
+        MusicDto savedMusic = musicService.createMusicOfGenre(id, music);
 
-        if (genre.isEmpty())
-            throw new ItemNotFoundException("Genre id: " + id);
-
-        music.setGenre(genre.get());
-        Music savedMusic = musicRepository.save(music);
-
-        EntityModel<MusicDto> entityModel = EntityModel.of(musicMapper.toDto(savedMusic));
+        EntityModel<MusicDto> entityModel = EntityModel.of(savedMusic);
 
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveMusic(savedMusic.getMusicId()));
         entityModel.add(link.withRel("music_link"));

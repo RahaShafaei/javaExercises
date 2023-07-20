@@ -141,7 +141,7 @@ class PlaylistControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Remove music to playlist")
+    @DisplayName("Remove music from playlist")
     void testRemoveMusicToPlaylist_whenValidMusicIdAndPlaylistIdProvided_returnsPlaylistDetails() {
         ResponseEntity<PlaylistDto> musicResponse =
                 testRestTemplate.exchange(

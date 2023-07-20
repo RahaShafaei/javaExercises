@@ -33,7 +33,7 @@ public class Genre {
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
                     @Parameter(name = "sequence_name", value = "genre_sequence"),
-                    @Parameter(name = "initial_value", value = "8"),
+                    @Parameter(name = "initial_value", value = "9"),
                     @Parameter(name = "increment_size", value = "1")
             }
     )
