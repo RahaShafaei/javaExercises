@@ -35,9 +35,9 @@ public class Student {
     )
     private long studentId;
 
-    @Size(min = 2, message = "FirstName should have at least 2 character")
+    @Size(min = 2, message = "{person.firstName.min}")
     private String firstName;
-    @Size(min = 2, message = "LastName should have at least 2 character")
+    @Size(min = 2, message = "{person.lastName.min}")
     private String lastName;
 
     @OneToMany(mappedBy = "student")

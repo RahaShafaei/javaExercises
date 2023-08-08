@@ -18,7 +18,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface BigDecimalLength {
     int minLength();
 
-    String message() default "Length must be greater or equal to {minLength}";
+    String message() default "{bigDecimalLength.min} {minLength}.";
 
     Class<?>[] groups() default {};
 
