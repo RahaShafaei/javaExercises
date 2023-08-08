@@ -40,13 +40,13 @@ public class Music {
     )
     private long musicId;
 
-    @Size(min = 2, message = "name should have at least 2 character")
+    @Size(min = 2, message = "{music.name.min}")
     private String name;
 
-    @Size(min = 2, message = "artist should have at least 2 character")
+    @Size(min = 2, message = "{music.artist.min}")
     private String artist;
 
-    @Digits(message = "pubYear should be a four-digit number", integer = 4, fraction = 0)
+    @Digits(message = "{music.pubYear.digits}", integer = 4, fraction = 0)
     private Integer pubYear;
 
     @ManyToMany(mappedBy = "musicList")

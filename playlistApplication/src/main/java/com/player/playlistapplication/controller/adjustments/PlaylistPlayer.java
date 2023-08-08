@@ -4,7 +4,6 @@ import com.player.playlistapplication.helper.EnmMusicSpeed;
 import com.player.playlistapplication.helper.EnmPlaybackState;
 import com.player.playlistapplication.helper.EnmPlaybackType;
 import com.player.playlistapplication.helper.EnmVolume;
-import com.player.playlistapplication.model.Music;
 import com.player.playlistapplication.model.Playlist;
 import com.player.playlistapplication.repository.InfMusicRepository;
 import com.player.playlistapplication.repository.InfPlaylistRepository;
@@ -16,8 +15,8 @@ import org.slf4j.LoggerFactory;
  * @since 2023-06-22
  *
  * <p>
- *     This is one of {@link Player} subclasses to implement Observer Pattern's
- *     settings for {@link Playlist}s.
+ * This is one of {@link Player} subclasses to implement Observer Pattern's
+ * settings for {@link Playlist}s.
  * </p>
  */
 

@@ -35,7 +35,7 @@ public class Playlist {
             }
     )
     private long playlistId;
-    @Size(min = 2, message = "Name should have at least 2 character")
+    @Size(min = 2, message = "{playlist.name.min}")
     private String name;
 
     @ManyToMany
