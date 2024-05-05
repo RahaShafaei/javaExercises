@@ -1,1 +1,1 @@
-Mancala
+Mancala Game
