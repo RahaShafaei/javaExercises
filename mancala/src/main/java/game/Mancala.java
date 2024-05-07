@@ -1,5 +1,12 @@
 package src.main.java.game;
 
-public class Mancala extends Hole{
+import lombok.*;
 
+@Setter
+@Getter
+@ToString
+@AllArgsConstructor
+public class Mancala extends Hole{
+    @NonNull
+    private Player player;
 }

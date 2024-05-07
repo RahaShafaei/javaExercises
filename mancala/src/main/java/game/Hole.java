@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 @Setter
 @Getter
-@AllArgsConstructor
+@ToString
 public class Hole {
-    @NonNull
-    Player player;
-    List<Stone> stones;
+
+    private List<Stone> stones;
 
     public Hole() {
         stones = new ArrayList<>();

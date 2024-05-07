@@ -1,15 +1,13 @@
 package src.main.java.game;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
 @AllArgsConstructor
+@ToString
 public class Player {
     @NonNull
-    String name;
-    StatusEnm status;
+    private String name;
+    private StatusEnm status;
 }
